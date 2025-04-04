@@ -15,6 +15,17 @@ const bannerServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	updateStatus: (
+		data: {
+			uuid: string;
+			status: number;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Banner/update-status`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default bannerServices;

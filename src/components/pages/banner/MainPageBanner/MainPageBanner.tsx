@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {IBanners, PropsMainPageBanner} from './interfaces';
 import styles from './MainPageBanner.module.scss';
 import {useRouter} from 'next/router';
-import {QUERY_KEY, TYPE_DATE} from '~/constants/config/enum';
+import {CONFIG_STATUS, QUERY_KEY, TYPE_DATE} from '~/constants/config/enum';
 import SearchBlock from '~/components/utils/SearchBlock';
 import FilterDateRange from '~/components/common/FilterDateRange';
 import Button from '~/components/common/Button';
@@ -20,7 +20,7 @@ import Popup from '~/components/common/Popup';
 import FormCreateBanner from '../FormCreateBanner';
 import images from '~/constants/images/images';
 import Dialog from '~/components/common/Dialog';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import bannerServices from '~/services/bannerServices';
 import moment from 'moment';
@@ -29,6 +29,7 @@ import Moment from 'react-moment';
 
 function MainPageBanner({}: PropsMainPageBanner) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const {_uuidUpdate, _uuidDetail, _open, _uuidAdd} = router.query;
 
@@ -76,6 +77,24 @@ function MainPageBanner({}: PropsMainPageBanner) {
 			}),
 		select(data) {
 			return data;
+		},
+	});
+
+	// Thay đổi trạng thái
+	const funcChangeStatus = useMutation({
+		mutationFn: (body: {uuid: string; status: number}) =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: bannerServices.updateStatus({
+					uuid: body?.uuid!,
+					status: body?.status,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				queryClient.invalidateQueries([QUERY_KEY.table_banners]);
+			}
 		},
 	});
 
@@ -160,7 +179,17 @@ function MainPageBanner({}: PropsMainPageBanner) {
 							},
 							{
 								title: 'Hiển thị',
-								render: (row, _) => <SwitchButton />,
+								render: (row, _) => (
+									<SwitchButton
+										checkOn={row?.status == CONFIG_STATUS.ACTIVE}
+										onClick={() =>
+											funcChangeStatus.mutate({
+												uuid: row?.uuid,
+												status: row?.status == CONFIG_STATUS.ACTIVE ? CONFIG_STATUS.LOCKED : CONFIG_STATUS.ACTIVE,
+											})
+										}
+									/>
+								),
 							},
 							{
 								title: 'Thời gian đăng',
