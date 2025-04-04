@@ -1,33 +1,42 @@
-.container {
-	position: relative;
-	background-color: #fff;
-	border: 2px solid #afbed3;
-	width: 40px;
-	height: 20px;
-	border-radius: 23px;
-	cursor: pointer;
-	user-select: none;
+.main {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-	&.checked {
-		background: #00b7c4;
-		border: 2px solid #00b7c4;
+	.btn {
+		cursor: pointer;
+		position: relative;
+		background-color: #fff;
+		border: 1px solid #afbed3;
+		width: 48px;
+		height: 24px;
+		border-radius: 18px;
+		transition: 0.3s;
 
-		&::after {
-			left: 23px;
-			background: #fff;
+		.switch {
+			transition: 0.3s;
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background-color: #afbed3;
+			left: 2px;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 	}
 
-	&::after {
-		content: '';
-		position: absolute;
-		left: 3px;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 14px;
-		height: 14px;
-		border-radius: 50%;
-		background: #afbed3;
-		transition: 0.2s;
+	.btn.on {
+		background-color: #00b7c4;
+		border: 1px solid #00b7c4;
+
+		.switch {
+			left: 25px;
+			background-color: #fff;
+		}
+	}
+
+	.text {
+		color: #fff;
 	}
 }
