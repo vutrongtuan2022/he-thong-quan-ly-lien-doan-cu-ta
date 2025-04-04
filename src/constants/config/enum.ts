@@ -26,8 +26,8 @@ export enum TYPE_NEWS {
 }
 
 export enum TYPE_DISPLAY {
-	PUBLIC,
 	PRIVATE,
+	PUBLIC,
 }
 
 export enum TYPE_DATE {

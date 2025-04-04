@@ -26,6 +26,16 @@ const bannerServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	updatePrivacy: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Banner/change-privacy`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default bannerServices;

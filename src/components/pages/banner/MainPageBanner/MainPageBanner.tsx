@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {IBanners, PropsMainPageBanner} from './interfaces';
 import styles from './MainPageBanner.module.scss';
 import {useRouter} from 'next/router';
-import {CONFIG_STATUS, QUERY_KEY, TYPE_DATE} from '~/constants/config/enum';
+import {CONFIG_STATUS, QUERY_KEY, TYPE_DATE, TYPE_DISPLAY} from '~/constants/config/enum';
 import SearchBlock from '~/components/utils/SearchBlock';
 import FilterDateRange from '~/components/common/FilterDateRange';
 import Button from '~/components/common/Button';
@@ -26,20 +26,21 @@ import bannerServices from '~/services/bannerServices';
 import moment from 'moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
+import Loading from '~/components/common/Loading';
 
 function MainPageBanner({}: PropsMainPageBanner) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_uuidUpdate, _uuidDetail, _open, _uuidAdd} = router.query;
+	const {_open} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
-	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
+	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
-	const [uuidDelete, setUuidDelete] = useState<string>('');
+	const [dataDelete, setDataDelete] = useState<IBanners | null>(null);
 
 	const resetFilter = () => {
 		setKeyword('');
@@ -80,15 +81,14 @@ function MainPageBanner({}: PropsMainPageBanner) {
 		},
 	});
 
-	// Thay đổi trạng thái
-	const funcChangeStatus = useMutation({
-		mutationFn: (body: {uuid: string; status: number}) =>
+	// Thay đổi hiển thị
+	const funcChangePrivacy = useMutation({
+		mutationFn: (body: {uuid: string}) =>
 			httpRequest({
 				showMessageFailed: false,
 				showMessageSuccess: false,
-				http: bannerServices.updateStatus({
+				http: bannerServices.updatePrivacy({
 					uuid: body?.uuid!,
-					status: body?.status,
 				}),
 			}),
 		onSuccess(data) {
@@ -98,8 +98,29 @@ function MainPageBanner({}: PropsMainPageBanner) {
 		},
 	});
 
+	// Thay đổi hiển thị
+	const funcDeleteBanner = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xóa banner thành công!',
+				http: bannerServices.updateStatus({
+					uuid: dataDelete?.uuid!,
+					status: CONFIG_STATUS.LOCKED,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setDataDelete(null);
+				queryClient.invalidateQueries([QUERY_KEY.table_banners]);
+			}
+		},
+	});
+
 	return (
 		<Fragment>
+			<Loading loading={funcDeleteBanner.isLoading} />
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -117,7 +138,6 @@ function MainPageBanner({}: PropsMainPageBanner) {
 					</div>
 				}
 			/>
-
 			<MainTable
 				icon={<Gallery size={28} color='#FC6A45' variant='Bold' />}
 				title='Danh sách banner'
@@ -181,11 +201,10 @@ function MainPageBanner({}: PropsMainPageBanner) {
 								title: 'Hiển thị',
 								render: (row, _) => (
 									<SwitchButton
-										checkOn={row?.status == CONFIG_STATUS.ACTIVE}
+										checkOn={row?.privacy == TYPE_DISPLAY.PUBLIC}
 										onClick={() =>
-											funcChangeStatus.mutate({
+											funcChangePrivacy.mutate({
 												uuid: row?.uuid,
-												status: row?.status == CONFIG_STATUS.ACTIVE ? CONFIG_STATUS.LOCKED : CONFIG_STATUS.ACTIVE,
 											})
 										}
 									/>
@@ -214,14 +233,12 @@ function MainPageBanner({}: PropsMainPageBanner) {
 												})
 											}
 										/>
-
 										<IconCustom
 											icon={<Trash color='#FA4B4B' size={24} />}
 											tooltip='Xóa'
 											background='#FA4B4B1A'
-											onClick={() => setUuidDelete('1')}
+											onClick={() => setDataDelete(row)}
 										/>
-
 										<IconCustom
 											icon={<Eye color='#6170E3' size={24} />}
 											tooltip='Xem chi tiết'
@@ -278,12 +295,12 @@ function MainPageBanner({}: PropsMainPageBanner) {
 
 			<Dialog
 				type='error'
-				open={!!uuidDelete}
-				onClose={() => setUuidDelete('')}
+				open={!!dataDelete}
+				onClose={() => setDataDelete(null)}
 				title='Xác nhận xóa banner'
-				note='Bạn có chắc chắn muốn xóa banner ABC không?'
+				note='Bạn có chắc chắn muốn xóa banner này không?'
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
-				onSubmit={() => setUuidDelete('')}
+				onSubmit={funcDeleteBanner.mutate}
 			/>
 		</Fragment>
 	);
