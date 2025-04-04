@@ -136,8 +136,17 @@ function MainPageBanner({}: PropsMainPageBanner) {
 								title: 'Hình ảnh',
 								render: (row, _) => (
 									<div>
-										<Image className={styles.avatar} src={row?.imagePath} alt='Image' width={72} height={44} />
-										{/* <Image className={styles.avatar} src={row?.imagePath ? ${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath} : icons.avatarDefault} alt='Image' width={72} height={44} /> */}
+										<Image
+											className={styles.avatar}
+											src={
+												row?.imagePath
+													? `${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`
+													: images.avatar_default
+											}
+											alt='Image'
+											width={72}
+											height={44}
+										/>
 									</div>
 								),
 							},

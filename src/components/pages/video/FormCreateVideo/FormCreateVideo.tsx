@@ -25,7 +25,7 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 					uuid: '',
 					title: form.title,
 					videoLink: form.videoLink,
-					sort: form.sort,
+					sort: Number(form.sort),
 					privacy: form.privacy,
 				}),
 			});
@@ -41,6 +41,7 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 	const handleSubmit = () => {
 		return funcCreateMaterial.mutate();
 	};
+	console.log(form);
 
 	return (
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
@@ -76,11 +77,10 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 					/>
 					<Input
 						placeholder='Nhập số thứ tự hiển thị vd: 1'
-						name='privacy '
+						name='sort'
 						type='number'
-						value={form.privacy}
+						value={form.sort}
 						isRequired
-						max={255}
 						label={
 							<span>
 								Thứ tự hiển thị <span style={{color: '#EE0033'}}>*</span>
