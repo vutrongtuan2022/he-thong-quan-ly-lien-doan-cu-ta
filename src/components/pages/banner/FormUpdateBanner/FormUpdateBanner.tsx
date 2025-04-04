@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 
-import {ICreateBanner, PropsFormCreateBanner} from './interfaces';
-import styles from './FormCreateBanner.module.scss';
+import {IUpdateBanner, PropsFormUpdateBanner} from './interfaces';
+import styles from './FormUpdateBanner.module.scss';
 import Form, {FormContext, Input} from '~/components/common/Form';
 import {IoClose} from 'react-icons/io5';
 import Button from '~/components/common/Button';
 import UploadImage from '~/components/utils/UploadImage';
 import SwitchButton from '~/components/common/SwitchButton';
-import {TYPE_DISPLAY} from '~/constants/config/enum';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {QUERY_KEY, TYPE_DISPLAY} from '~/constants/config/enum';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import bannerServices from '~/services/bannerServices';
 import {price} from '~/common/funcs/convertCoin';
@@ -16,26 +16,46 @@ import {toastWarn} from '~/common/funcs/toast';
 import uploadService from '~/services/uploadService';
 import Loading from '~/components/common/Loading';
 
-function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
+function FormUpdateBanner({uuid, queryKeys, onClose}: PropsFormUpdateBanner) {
 	const queryClient = useQueryClient();
 
 	const [file, setFile] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [form, setForm] = useState<ICreateBanner>({
+	const [form, setForm] = useState<IUpdateBanner>({
 		title: '',
 		imagePath: '',
 		sort: 0,
 		privacy: TYPE_DISPLAY.PUBLIC,
 	});
 
-	const funcCreateBanner = useMutation({
+	useQuery([QUERY_KEY.detail_banners], {
+		queryFn: () =>
+			httpRequest({
+				http: bannerServices.detailBanner({
+					uuid: uuid,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setForm({
+					title: data?.title || '',
+					imagePath: data?.imagePath || '',
+					sort: data?.sort || 0,
+					privacy: data?.privacy || TYPE_DISPLAY.PUBLIC,
+				});
+			}
+		},
+		enabled: !!uuid,
+	});
+
+	const funcUpdateBanner = useMutation({
 		mutationFn: (body: {imagePath: string}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Thêm mới banner thành công!',
+				msgSuccess: 'Chỉnh sửa banner thành công!',
 				http: bannerServices.upsertBanner({
-					uuid: '',
+					uuid: uuid,
 					title: form?.title,
 					sort: price(form.sort),
 					privacy: form.privacy,
@@ -57,26 +77,32 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 	});
 
 	const handleSubmit = async () => {
-		if (!file) {
+		if (!file && !form.imagePath) {
 			return toastWarn({msg: 'Vui lòng chọn ảnh!'});
 		}
 
-		const dataImage = await httpRequest({
-			setLoading,
-			http: uploadService.uploadSingleImage(file, '8'),
-		});
+		if (!!file) {
+			const dataImage = await httpRequest({
+				setLoading,
+				http: uploadService.uploadSingleImage(file, '8'),
+			});
 
-		return funcCreateBanner.mutate({
-			imagePath: dataImage,
-		});
+			return funcUpdateBanner.mutate({
+				imagePath: dataImage,
+			});
+		} else {
+			return funcUpdateBanner.mutate({
+				imagePath: form.imagePath,
+			});
+		}
 	};
 
 	return (
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
-			<Loading loading={funcCreateBanner.isLoading || loading} />
+			<Loading loading={funcUpdateBanner.isLoading || loading} />
 			<div className={styles.container}>
 				<div className={styles.wrapper}>
-					<h4 className={styles.title}>Thêm mới banner</h4>
+					<h4 className={styles.title}>Chỉnh sửa banner</h4>
 					<IoClose className={styles.close} size={28} color='#8492A6' onClick={onClose} />
 				</div>
 				<div className={styles.form}>
@@ -89,7 +115,13 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 						name='banner'
 						file={file}
 						setFile={setFile}
-						path={''}
+						path={form?.imagePath ? `${process.env.NEXT_PUBLIC_IMAGE}/${form?.imagePath}` : ''}
+						resetPath={() =>
+							setForm((prev) => ({
+								...prev,
+								imagePath: '',
+							}))
+						}
 					/>
 					<div className={styles.mt}>
 						<Input
@@ -146,7 +178,7 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 						{({isDone}) => (
 							<div>
 								<Button disable={!isDone} p_12_20 aquamarine rounded_6>
-									Lưu lại
+									Cập nhật
 								</Button>
 							</div>
 						)}
@@ -157,4 +189,4 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 	);
 }
 
-export default FormCreateBanner;
+export default FormUpdateBanner;

@@ -1,11 +1,11 @@
 export interface PropsFormCreateBanner {
 	onClose: () => void;
+	queryKeys: number[];
 }
 
 export interface ICreateBanner {
-	name: string;
-	account: string;
-	email: string;
-	password: string;
-	role: string;
+	title: string;
+	imagePath: string;
+	sort: number;
+	privacy: number;
 }

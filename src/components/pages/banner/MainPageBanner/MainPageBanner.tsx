@@ -27,12 +27,13 @@ import moment from 'moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
+import FormUpdateBanner from '../FormUpdateBanner';
 
 function MainPageBanner({}: PropsMainPageBanner) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_open} = router.query;
+	const {_open, _uuidUpdate} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
@@ -107,7 +108,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 				msgSuccess: 'Xóa banner thành công!',
 				http: bannerServices.updateStatus({
 					uuid: dataDelete?.uuid!,
-					status: CONFIG_STATUS.LOCKED,
+					status: 0, // Xóa trạng thái = 0
 				}),
 			}),
 		onSuccess(data) {
@@ -228,7 +229,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 													pathname: router.pathname,
 													query: {
 														...router.query,
-														_uuidUpdate: '1',
+														_uuidUpdate: row.uuid,
 													},
 												})
 											}
@@ -283,8 +284,34 @@ function MainPageBanner({}: PropsMainPageBanner) {
 				}}
 			>
 				<FormCreateBanner
+					queryKeys={[QUERY_KEY.table_banners]}
 					onClose={() => {
 						const {_open, ...rest} = router.query;
+						router.replace({
+							pathname: router.pathname,
+							query: rest,
+						});
+					}}
+				/>
+			</Popup>
+
+			<Popup
+				open={!!_uuidUpdate}
+				onClose={() => {
+					const {_uuidUpdate, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: rest,
+					});
+				}}
+			>
+				<FormUpdateBanner
+					uuid={_uuidUpdate as string}
+					queryKeys={[QUERY_KEY.table_banners]}
+					onClose={() => {
+						const {_uuidUpdate, ...rest} = router.query;
+
 						router.replace({
 							pathname: router.pathname,
 							query: rest,

@@ -10,7 +10,7 @@ import {IoClose} from 'react-icons/io5';
 
 const MAXIMUM_FILE = 10; // MB
 
-function UploadImage({label, name, path, file, setFile, isWidthFull = true}: PropsUploadImage) {
+function UploadImage({label, name, path, file, setFile, resetPath, isWidthFull = true}: PropsUploadImage) {
 	const [dragging, setDragging] = useState<boolean>(false);
 	const [imageBase64, setImageBase64] = useState<string>('');
 
@@ -80,6 +80,7 @@ function UploadImage({label, name, path, file, setFile, isWidthFull = true}: Pro
 	const handleRemoveImg = () => {
 		setImageBase64('');
 		setFile(null);
+		resetPath && resetPath();
 	};
 
 	return (

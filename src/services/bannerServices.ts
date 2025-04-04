@@ -15,6 +15,20 @@ const bannerServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	upsertBanner: (
+		data: {
+			uuid: string;
+			title: string;
+			imagePath: string;
+			sort: number;
+			privacy: number;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Banner/upsert-banner`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	updateStatus: (
 		data: {
 			uuid: string;
@@ -33,6 +47,16 @@ const bannerServices = {
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/Banner/change-privacy`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	detailBanner: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Banner/get-detail-banner`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

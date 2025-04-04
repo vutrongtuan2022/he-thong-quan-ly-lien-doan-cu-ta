@@ -9,6 +9,7 @@ export enum QUERY_KEY {
 	detail_user,
 	detail_policy,
 	detail_admin,
+	detail_banners,
 
 	dropdown_category_role,
 }
