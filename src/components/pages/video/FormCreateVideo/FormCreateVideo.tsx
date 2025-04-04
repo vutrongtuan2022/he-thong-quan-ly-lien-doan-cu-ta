@@ -9,6 +9,7 @@ import SwitchButton from '~/components/common/SwitchButton';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import videoServices from '~/services/videoServices';
+import {QUERY_KEY, TYPE_DISPLAY} from '~/constants/config/enum';
 
 function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 	const queryClient = useQueryClient();
@@ -33,6 +34,12 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 		onSuccess(data) {
 			if (data) {
 				onClose();
+				setForm({
+					title: '',
+					videoLink: '',
+					sort: 0,
+					privacy: TYPE_DISPLAY.PUBLIC,
+				});
 				queryKeys?.map((key) => queryClient.invalidateQueries([key]));
 			}
 		},
@@ -41,7 +48,6 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 	const handleSubmit = () => {
 		return funcCreateMaterial.mutate();
 	};
-	console.log(form);
 
 	return (
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
@@ -92,7 +98,15 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 						Trạng thái hiển thị <span style={{color: '#EE0033'}}>*</span>
 					</p>
 					<p>
-						<SwitchButton />
+						<SwitchButton
+							checkOn={form?.privacy == TYPE_DISPLAY.PUBLIC}
+							onClick={() =>
+								setForm((prev) => ({
+									...prev,
+									privacy: prev?.privacy == TYPE_DISPLAY.PUBLIC ? TYPE_DISPLAY.PRIVATE : TYPE_DISPLAY.PUBLIC,
+								}))
+							}
+						/>
 					</p>
 
 					<div className={styles.group_button}>

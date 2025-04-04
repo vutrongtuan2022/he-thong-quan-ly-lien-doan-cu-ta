@@ -39,6 +39,27 @@ const videoServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	detailVideo: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Video/get-detail-video`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	updateStatus: (
+		data: {
+			uuid: string;
+			status: number;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Video/update-status`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default videoServices;

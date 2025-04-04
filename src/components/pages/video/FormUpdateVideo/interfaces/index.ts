@@ -1,10 +1,11 @@
 export interface PropsFormUpdateVideo {
 	uuid: string;
-	queryKeys: number[];
 	onClose: () => void;
+	queryKeys: number[];
 }
 export interface IFormUpdateVideo {
-	name: string;
-	linkYou: string;
-	second: number;
+	title: string;
+	videoLink: string;
+	sort: number;
+	privacy: number;
 }

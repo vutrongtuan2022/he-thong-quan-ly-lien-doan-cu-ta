@@ -75,10 +75,9 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 			<Loading loading={funcCreateBanner.isLoading || loading} />
 			<div className={styles.container}>
-				<div className={styles.wrapper}>
-					<h4 className={styles.title}>Thêm mới banner</h4>
-					<IoClose className={styles.close} size={28} color='#8492A6' onClick={onClose} />
-				</div>
+				<h4 className={styles.title}>Thêm mới banner</h4>
+				<div className={styles.line}></div>
+				<IoClose className={styles.close} size={28} color='#8492A6' onClick={onClose} />
 				<div className={styles.form}>
 					<UploadImage
 						label={

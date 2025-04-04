@@ -15,7 +15,7 @@ import DataWrapper from '~/components/common/DataWrapper';
 import Table from '~/components/common/Table';
 import IconCustom from '~/components/common/IconCustom';
 import FilterDateRange from '~/components/common/FilterDateRange';
-import {QUERY_KEY, TYPE_DATE} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_DATE, TYPE_DISPLAY} from '~/constants/config/enum';
 import Dialog from '~/components/common/Dialog';
 import Popup from '~/components/common/Popup';
 
@@ -24,15 +24,17 @@ import SwitchButton from '~/components/common/SwitchButton';
 import FormUpdateVideo from '../FormUpdateVideo';
 import FormCreateVideo from '../FormCreateVideo';
 import Link from 'next/link';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import videoServices from '~/services/videoServices';
 import moment from 'moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
+import Loading from '~/components/common/Loading';
 
 function MainPageVideo({}: PropsMainPageVideo) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const {_view, _uuidUpdate, action} = router.query;
 
@@ -42,7 +44,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
-	const [uuidCancel, setUuidCancel] = useState<string>('');
+	const [dataDelete, setDataDelete] = useState<IVideos | null>(null);
 
 	const resetFilter = () => {
 		setKeyword('');
@@ -83,8 +85,46 @@ function MainPageVideo({}: PropsMainPageVideo) {
 		},
 	});
 
+	// Thay đổi hiển thị
+	const funcChangePrivacy = useMutation({
+		mutationFn: (body: {uuid: string}) =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: videoServices.changePrivacy({
+					uuid: body?.uuid!,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				queryClient.invalidateQueries([QUERY_KEY.table_videos]);
+			}
+		},
+	});
+
+	// Xóa Video
+	const funcDeleteVideo = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xóa video thành công!',
+				http: videoServices.updateStatus({
+					uuid: dataDelete?.uuid!,
+					status: 0, // Xóa trạng thái = 0
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setDataDelete(null);
+				queryClient.invalidateQueries([QUERY_KEY.table_videos]);
+			}
+		},
+	});
+
 	return (
 		<Fragment>
+			<Loading loading={funcDeleteVideo.isLoading} />
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -154,7 +194,16 @@ function MainPageVideo({}: PropsMainPageVideo) {
 
 								{
 									title: 'Hiển thị',
-									render: (row, _) => <SwitchButton />,
+									render: (row, _) => (
+										<SwitchButton
+											checkOn={row?.privacy == TYPE_DISPLAY.PUBLIC}
+											onClick={() =>
+												funcChangePrivacy.mutate({
+													uuid: row?.uuid,
+												})
+											}
+										/>
+									),
 								},
 								{
 									title: 'Thời gian đăng',
@@ -175,7 +224,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 														pathname: router.pathname,
 														query: {
 															...router.query,
-															_uuidUpdate: '1',
+															_uuidUpdate: row.uuid,
 														},
 													})
 												}
@@ -185,7 +234,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 												icon={<Trash color='#EB2E2E' size={24} />}
 												tooltip='Xóa'
 												background='rgba(244, 97, 97, 0.10)'
-												onClick={() => setUuidCancel('1')}
+												onClick={() => setDataDelete(row)}
 											/>
 											<IconCustom
 												icon={<Eye color='#6170E3' size={24} />}
@@ -214,12 +263,12 @@ function MainPageVideo({}: PropsMainPageVideo) {
 
 			<Dialog
 				type='error'
-				open={!!uuidCancel}
-				onClose={() => setUuidCancel('')}
+				open={!!dataDelete}
+				onClose={() => setDataDelete(null)}
 				title='Xóa video'
 				note='Bạn có chắc chắn muốn xóa video này không?'
 				icon={<Image alt='icon question' src={icons.iconQuestion} width={86} height={86} />}
-				onSubmit={() => setUuidCancel('')}
+				onSubmit={funcDeleteVideo.mutate}
 			/>
 
 			<Popup
@@ -265,15 +314,13 @@ function MainPageVideo({}: PropsMainPageVideo) {
 			>
 				<FormUpdateVideo
 					uuid={_uuidUpdate as string}
-					queryKeys={[]}
+					queryKeys={[QUERY_KEY.table_videos]}
 					onClose={() => {
 						const {_uuidUpdate, ...rest} = router.query;
 
 						router.replace({
 							pathname: router.pathname,
-							query: {
-								...rest,
-							},
+							query: rest,
 						});
 					}}
 				/>
