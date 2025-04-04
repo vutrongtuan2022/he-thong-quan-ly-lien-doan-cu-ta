@@ -1,0 +1,54 @@
+@import '../../../styles/variables';
+
+.container {
+	min-height: 100vh;
+	background-color: #f1f4f9;
+}
+
+.nav {
+	position: fixed;
+	width: $width-tab;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition: width $duration ease-in-out;
+	z-index: 2;
+}
+
+.header {
+	background-color: #f1f4f9;
+	position: fixed;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	left: 0;
+	padding: $padding-layout $padding-layout $padding-layout 0;
+	margin-left: calc($width-tab + $padding-layout);
+	transition: width $duration ease-in-out, left $duration ease-in-out;
+}
+
+.main {
+	padding: calc($height-header + ($padding-layout * 2)) $padding-layout $padding-layout calc($width-tab + $padding-layout);
+	transition: padding-left $duration ease-in-out;
+	z-index: 1;
+}
+
+@media (max-width: $widthTablet) {
+	.nav {
+		position: fixed;
+		max-height: 100vh;
+		left: -100%;
+		top: 0;
+		bottom: 0;
+		transition: 0.3s;
+	}
+
+	.header {
+		padding: 0 0 $padding-layout-mobile 0;
+		margin-left: 0;
+	}
+
+	.main {
+		padding: calc($height-header + $padding-layout-mobile) $padding-layout-mobile $padding-layout-mobile $padding-layout-mobile;
+	}
+}

@@ -1,0 +1,65 @@
+$bg-input: #fff;
+$bg-focus-input: #fff;
+$bg-disable-input: #f2f2f2;
+
+$color-placeholder: #b4b5bc;
+$color-focus: #fc6a45;
+$color-done: #1cad4c;
+$color-error: #eb2e2e;
+
+$border-input: #dae1ea;
+$border-disable-input: #f2f2f2;
+
+$border-radius: 8px;
+$padding-input: 10px 20px;
+$font-size-input: 16px;
+
+.container {
+	width: 100%;
+
+	.label {
+		font-size: $font-size-input;
+		font-weight: 500;
+		margin-bottom: 8px;
+		display: block;
+	}
+
+	.textarea {
+		width: 100%;
+		min-height: 140px;
+		resize: none;
+		border-radius: $border-radius;
+		border: 1px solid $border-input;
+		background-color: $bg-input;
+		font-size: $font-size-input;
+		font-weight: 500;
+		padding: $padding-input;
+
+		&::placeholder {
+			font-weight: 500;
+			color: $color-placeholder;
+		}
+		&.focus {
+			border: 1px solid $color-focus;
+		}
+		&.done {
+			background-color: $bg-focus-input;
+			border: 1px solid $color-done;
+		}
+		&.error {
+			background-color: $bg-focus-input;
+			border: 1px solid $color-error;
+		}
+
+		&.readOnly {
+			background-color: $bg-disable-input;
+			border: 1px solid $border-disable-input;
+		}
+	}
+
+	.errorText {
+		margin-left: 6px;
+		font-size: 12px;
+		color: $color-error !important;
+	}
+}

@@ -1,0 +1,33 @@
+.container {
+	position: relative;
+	background-color: #fff;
+	border: 2px solid #afbed3;
+	width: 40px;
+	height: 20px;
+	border-radius: 23px;
+	cursor: pointer;
+	user-select: none;
+
+	&.checked {
+		background: #00b7c4;
+		border: 2px solid #00b7c4;
+
+		&::after {
+			left: 23px;
+			background: #fff;
+		}
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 3px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 14px;
+		height: 14px;
+		border-radius: 50%;
+		background: #afbed3;
+		transition: 0.2s;
+	}
+}

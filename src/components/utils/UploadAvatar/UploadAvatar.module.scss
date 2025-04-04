@@ -1,0 +1,88 @@
+.container {
+	display: flex;
+	gap: 12px;
+}
+
+.avatar {
+	border-radius: 6px;
+	border: 1px solid #fd8b6e;
+}
+
+.main {
+	& > p {
+		color: #9aa9b6;
+		font-size: 14px;
+		font-weight: 400;
+	}
+}
+
+.control {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.box_input {
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	height: 48px;
+
+	.file {
+		height: 100%;
+		padding: 0 20px;
+		background: #fafafb;
+		border-radius: 8px 0px 0px 8px;
+		box-shadow: 0px 0px 3px 0px rgba(175, 190, 211, 0.2) inset;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.name_file {
+		height: 100%;
+		padding: 0 20px;
+		width: 328px;
+		border-radius: 0px 8px 8px 0px;
+		background: #f1f8ff;
+		box-shadow: 0px 3px 3px 0px rgba(175, 190, 211, 0.2) inset;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	p {
+		color: #445463;
+		font-size: 14px;
+		font-weight: 700;
+	}
+}
+
+.btn {
+	cursor: pointer;
+	user-select: none;
+	height: 48px;
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-radius: 8px;
+	background: rgba(154, 169, 182, 0.1);
+	will-change: transform;
+	transition: 0.3s;
+
+	& > p {
+		color: #445463;
+		font-size: 16px;
+		font-weight: 700;
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+
+	&:hover {
+		opacity: 0.7;
+	}
+}

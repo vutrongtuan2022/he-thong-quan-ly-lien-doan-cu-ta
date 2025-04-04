@@ -1,0 +1,36 @@
+.accordion {
+	transition: 0.3s;
+}
+
+.head {
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: 0.3s;
+
+	& > h4 {
+		color: #314353;
+		font-size: 16px;
+		font-weight: 700;
+	}
+
+	.icon {
+		transition: 0.3s;
+	}
+
+	&:hover {
+		opacity: 0.8;
+	}
+
+	&.active {
+		.icon {
+			transform: rotate(-180deg);
+		}
+	}
+}
+
+.main {
+	margin-top: 16px;
+}

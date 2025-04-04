@@ -1,0 +1,32 @@
+.btn {
+	margin-top: 24px;
+}
+
+.des {
+	text-align: center;
+	color: #23262f;
+	font-size: 16px;
+	font-weight: 500;
+	margin-bottom: 16px;
+}
+
+.countDown {
+	color: #23262f;
+	text-align: center;
+	font-size: 15px;
+	font-weight: 500;
+	margin-top: 20px;
+}
+
+.textGreen {
+	cursor: pointer;
+	margin-left: 4px;
+	color: #fc6a45;
+	font-size: 15px;
+	font-weight: 500;
+	transition: 0.3s;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

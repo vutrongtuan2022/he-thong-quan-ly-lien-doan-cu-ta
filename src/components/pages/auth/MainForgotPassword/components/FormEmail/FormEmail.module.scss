@@ -1,0 +1,20 @@
+.btn {
+	margin-top: 24px;
+}
+
+.link {
+	margin-top: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	color: #353945;
+	font-size: 14px;
+	font-weight: 500;
+	transition: 0.3s;
+
+	&:hover {
+		color: #066bb1;
+		text-decoration: underline;
+	}
+}

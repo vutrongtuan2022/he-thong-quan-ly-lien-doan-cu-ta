@@ -1,0 +1,161 @@
+.container {
+	padding-bottom: 4px;
+	overflow: auto;
+
+	&.fixedHeader {
+		thead {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+		}
+	}
+
+	&::-webkit-scrollbar {
+		width: 12px;
+		height: 12px;
+	}
+
+	/* Track */
+	&::-webkit-scrollbar-track {
+		background: #f8f8f8;
+	}
+
+	/* Handle */
+	&::-webkit-scrollbar-thumb {
+		background: #ccc;
+	}
+
+	table,
+	td,
+	th {
+		text-align: left;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0 2px;
+		width: 100%;
+	}
+
+	th,
+	td {
+		padding: 14px 16px;
+		line-height: 16px;
+		white-space: nowrap;
+	}
+
+	th {
+		color: #23262f;
+		font-size: 16px;
+		font-weight: 600;
+		white-space: nowrap;
+
+		&.checkBox {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			width: 100%;
+		}
+	}
+
+	thead {
+		box-sizing: border-box;
+		background: #f4f7fa;
+
+		.fixedLeft,
+		.fixedRight {
+			background: #f4f7fa;
+		}
+
+		.fixedLeft {
+			box-shadow: inset -2px 0 2px -2px rgba(0, 0, 0, 0.3);
+			border-top-left-radius: 8px;
+		}
+
+		.fixedRight {
+			box-shadow: inset 2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	td {
+		color: #23262f;
+		font-size: 14px;
+		font-weight: 500;
+
+		.checkBox {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			width: 100%;
+		}
+	}
+
+	tbody {
+		.fixedLeft,
+		.fixedRight {
+			background: inherit;
+		}
+
+		.fixedLeft {
+			box-shadow: inset -2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+
+		.fixedRight {
+			box-shadow: inset 2px 0 2px -2px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	.tr_data:nth-child(even) {
+		background-color: #f8f8fb;
+	}
+
+	.tr_data:nth-child(odd) {
+		background-color: #fff;
+	}
+}
+
+.fixedRight {
+	position: sticky !important;
+	right: 0;
+	z-index: 1;
+	box-shadow: inset 0px 2px 8px rgba(99, 99, 99, 0.2);
+}
+
+.fixedLeft {
+	position: sticky !important;
+	left: 0;
+	z-index: 1;
+}
+
+.checkbox {
+	cursor: pointer;
+	user-select: none;
+	margin-right: 8px;
+	width: 18px;
+	height: 18px;
+	appearance: none;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	position: relative;
+	transition: background-color 0.2s ease;
+
+	&:checked {
+		background-color: #06d7a0;
+		border-color: #06d7a0;
+	}
+
+	&:checked::after {
+		content: '✓';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: white;
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	&:hover {
+		border-color: #06d7a0;
+	}
+}
