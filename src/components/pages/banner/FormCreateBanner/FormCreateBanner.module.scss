@@ -13,17 +13,11 @@
 	flex-direction: column;
 }
 
-.wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
 .title {
 	color: #2f3d50;
 	font-size: 24px;
 	font-weight: 600;
-	padding: 24px 0;
+	padding: 10px 0;
 }
 
 .groupBtn {
@@ -31,10 +25,13 @@
 	align-items: center;
 	justify-content: flex-end;
 	gap: 10px;
-	padding: 24px 0;
+	padding: 8px 0;
 }
 
 .close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
 	cursor: pointer;
 	user-select: none;
 	transition: 0.3s;

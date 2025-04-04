@@ -41,7 +41,7 @@ function FormUpdateBanner({uuid, queryKeys, onClose}: PropsFormUpdateBanner) {
 					title: data?.title || '',
 					imagePath: data?.imagePath || '',
 					sort: data?.sort || 0,
-					privacy: data?.privacy || TYPE_DISPLAY.PUBLIC,
+					privacy: data?.privacy,
 				});
 			}
 		},
@@ -101,10 +101,8 @@ function FormUpdateBanner({uuid, queryKeys, onClose}: PropsFormUpdateBanner) {
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 			<Loading loading={funcUpdateBanner.isLoading || loading} />
 			<div className={styles.container}>
-				<div className={styles.wrapper}>
-					<h4 className={styles.title}>Chỉnh sửa banner</h4>
-					<IoClose className={styles.close} size={28} color='#8492A6' onClick={onClose} />
-				</div>
+				<h4 className={styles.title}>Chỉnh sửa banner</h4>
+				<IoClose className={styles.close} size={28} color='#8492A6' onClick={onClose} />
 				<div className={styles.form}>
 					<UploadImage
 						label={
