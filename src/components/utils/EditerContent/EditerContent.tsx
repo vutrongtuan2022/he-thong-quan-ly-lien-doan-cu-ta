@@ -4,7 +4,6 @@ import React from 'react';
 
 import {PropsEditerContent} from './interfaces';
 import styles from './EditerContent.module.scss';
-import {Input} from '~/components/common/Form';
 import dynamic from 'next/dynamic';
 
 const JoditEditor = dynamic(() => import('jodit-react'), {ssr: false});
