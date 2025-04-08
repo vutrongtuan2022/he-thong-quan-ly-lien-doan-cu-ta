@@ -100,7 +100,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 		if (!!file) {
 			const dataImage = await httpRequest({
 				setLoading,
-				http: uploadService.uploadSingleImage(file, '8'),
+				http: uploadService.uploadSingleImage(file, '5'),
 			});
 
 			return funcUpdateProfile.mutate({

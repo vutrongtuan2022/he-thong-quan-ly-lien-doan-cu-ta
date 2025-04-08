@@ -8,7 +8,7 @@ import GridColumn from '~/components/layouts/GridColumn';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import Popup from '~/components/common/Popup';
-import FormUpdatePadsword from '../FormUpdatePadsword';
+import FormChangePassword from '../FormChangePassword';
 import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
@@ -107,7 +107,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 					});
 				}}
 			>
-				<FormUpdatePadsword
+				<FormChangePassword
 					onClose={() => {
 						const {_action, ...rest} = router.query;
 						router.replace({

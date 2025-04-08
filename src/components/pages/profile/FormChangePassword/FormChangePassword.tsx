@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {IUpdatePaddWord, PropsFormUpdatePassword} from './interfaces';
+import {IFormChangePassword, PropsFormChangePassword} from './interfaces';
 import styles from './FormUpdatePassword.module.scss';
 import {IoClose} from 'react-icons/io5';
 import Form, {FormContext, Input} from '~/components/common/Form';
@@ -12,10 +12,10 @@ import md5 from 'md5';
 import {QUERY_KEY} from '~/constants/config/enum';
 import Loading from '~/components/common/Loading';
 
-function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
+function FormChangePassword({onClose}: PropsFormChangePassword) {
 	const queryClient = useQueryClient();
 
-	const [form, setForm] = useState<IUpdatePaddWord>({
+	const [form, setForm] = useState<IFormChangePassword>({
 		old_password: '',
 		new_password: '',
 		confirm_password: '',
@@ -128,4 +128,4 @@ function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
 	);
 }
 
-export default FormUpdatePadsword;
+export default FormChangePassword;

@@ -1,7 +1,7 @@
-export interface PropsFormUpdatePassword {
+export interface PropsFormChangePassword {
 	onClose: () => void;
 }
-export interface IUpdatePaddWord {
+export interface IFormChangePassword {
 	old_password: string;
 	new_password: string;
 	confirm_password: string;

@@ -113,7 +113,7 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 		if (!!file) {
 			const dataImage = await httpRequest({
 				setLoading,
-				http: uploadService.uploadSingleImage(file, '8'),
+				http: uploadService.uploadSingleImage(file, '6'),
 			});
 
 			return funcUpdateBlog.mutate({
