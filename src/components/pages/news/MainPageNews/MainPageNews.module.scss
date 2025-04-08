@@ -30,6 +30,7 @@
 		flex-direction: column;
 		justify-content: center;
 		row-gap: 4px;
+		max-width: 200px;
 
 		.label {
 			color: #ff8357;
@@ -41,6 +42,13 @@
 			color: #9aa9b6;
 			font-size: 12px;
 			font-style: italic;
+		}
+
+		.label,
+		.desc {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 }

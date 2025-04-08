@@ -47,18 +47,17 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 				}),
 			}),
 		onSuccess(data) {
-			console.log('data:', data);
 			if (data) {
 				setForm({
 					title: data?.title || '',
 					imagePath: data?.imagePath || '',
-					sort: data?.sort || 1,
-					privacy: data?.privacy || TYPE_DISPLAY.PUBLIC,
+					sort: data?.sort || 0,
+					privacy: data?.privacy,
 					content: data?.content || '',
-					catalog: data?.catalog || TYPE_NEWS.NEWS,
-					blockComment: data?.blockComment !== undefined ? data.blockComment : false,
+					catalog: data?.catalog,
+					blockComment: data?.blockComment,
 					timePublic: data?.timePublic ? new Date(data.timePublic) : new Date(),
-					isSpecial: data?.isSpecial !== undefined ? data.isSpecial : false,
+					isSpecial: data?.isSpecial,
 					link: data?.link || '',
 				});
 			}
@@ -131,7 +130,7 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 			<Loading loading={funcUpdateBlog.isLoading || loading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.head_main}>
-					<Breadcrumb titles={['Quản lý tin tức', 'Chỉnh sửa bài viết']} listHref={[PATH.News]} />
+					<Breadcrumb titles={['Quản lý bài viết', 'Chỉnh sửa bài viết']} listHref={[PATH.News]} />
 					<div className={styles.group_button}>
 						<Button p_10_24 grey rounded_8 onClick={() => router.back()}>
 							Hủy bỏ
