@@ -49,5 +49,10 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	detailPersonalAccount: (data: {}, tokenAxios?: any) => {
+		return axiosClient.post(`/Account/get-detail-personal-account`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 export default accountServices;
