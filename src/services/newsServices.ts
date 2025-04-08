@@ -26,6 +26,26 @@ const newsServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	upsertBlog: (
+		data: {
+			uuid: string;
+			title: string;
+			content: string;
+			catalog: number;
+			privacy: number;
+			timePublic: string;
+			isSpecial: boolean;
+			link: string;
+			sort: number;
+			blockComment: boolean;
+			imagePath: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Blog/upsert-blog`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	deleteBlog: (
 		data: {
 			uuid: string;

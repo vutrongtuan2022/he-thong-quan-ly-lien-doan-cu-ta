@@ -4,7 +4,7 @@ import TippyHeadless from '@tippyjs/react/headless';
 import {PropsFormInfoNews} from './interfaces';
 import styles from './FormInfoNews.module.scss';
 import Accordion from '~/components/utils/Accordion';
-import {TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
+import {FEATURED_BLOG, TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
 import UploadImage from '~/components/utils/UploadImage';
 import SwitchButton from '~/components/common/SwitchButton';
 import DateTimePicker from '~/components/utils/DateTimePicker';
@@ -12,7 +12,7 @@ import moment from 'moment';
 import {Add, Minus} from 'iconsax-react';
 import clsx from 'clsx';
 
-function FormInfoNews({form, setForm}: PropsFormInfoNews) {
+function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 	const [openDisplay, setOpenDisplay] = useState<boolean>(false);
 	const [openDate, setOpenDate] = useState<boolean>(false);
 
@@ -33,40 +33,40 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 									<h4>Hiển thị</h4>
 									<div className={styles.itemDisplay}>
 										<input
-											name='display'
+											name='privacy'
 											type='radio'
-											id='display_public'
-											value={form.display}
-											checked={form.display == TYPE_DISPLAY.PUBLIC}
+											id='privacy_public'
+											value={form.privacy}
+											checked={form.privacy == TYPE_DISPLAY.PUBLIC}
 											onChange={() => {
 												setOpenDisplay(false);
 												setForm((prev) => ({
 													...prev,
-													display: TYPE_DISPLAY.PUBLIC,
+													privacy: TYPE_DISPLAY.PUBLIC,
 												}));
 											}}
 										/>
-										<label htmlFor='display_public'>
+										<label htmlFor='privacy_public'>
 											<p>Công khai</p>
 											<p>Hiển thị với tất cả mọi người</p>
 										</label>
 									</div>
 									<div className={styles.itemDisplay}>
 										<input
-											name='display'
+											name='privacy'
 											type='radio'
-											id='display_private'
-											value={form.display}
-											checked={form.display == TYPE_DISPLAY.PRIVATE}
+											id='privacy_private'
+											value={form.privacy}
+											checked={form.privacy == TYPE_DISPLAY.PRIVATE}
 											onChange={() => {
 												setOpenDisplay(false);
 												setForm((prev) => ({
 													...prev,
-													display: TYPE_DISPLAY.PRIVATE,
+													privacy: TYPE_DISPLAY.PRIVATE,
 												}));
 											}}
 										/>
-										<label htmlFor='display_private'>
+										<label htmlFor='privacy_private'>
 											<p>Riêng tư</p>
 											<p>Chỉ hiển thị với quản trị viên và biên tập</p>
 										</label>
@@ -75,8 +75,8 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 							)}
 						>
 							<p onClick={() => setOpenDisplay(!openDisplay)}>
-								{form.display == TYPE_DISPLAY.PUBLIC && 'Công khai'}
-								{form.display == TYPE_DISPLAY.PRIVATE && 'Riêng tư'}
+								{form.privacy == TYPE_DISPLAY.PUBLIC && 'Công khai'}
+								{form.privacy == TYPE_DISPLAY.PRIVATE && 'Riêng tư'}
 							</p>
 						</TippyHeadless>
 					</div>
@@ -90,44 +90,52 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 							placement='bottom-start'
 							render={(attrs: any) => (
 								<DateTimePicker
-									date={form.date}
+									date={form.timePublic ? moment(form.timePublic).toDate() : new Date()}
 									setDate={(d: any) =>
 										setForm((prev) => ({
 											...prev,
-											date: d,
+											timePublic: d,
 										}))
 									}
 								/>
 							)}
 						>
-							<p onClick={() => setOpenDate(!openDate)}>{moment(form.date).format('HH:mm, DD/MM/YYYY')}</p>
+							<p onClick={() => setOpenDate(!openDate)}>{moment(form.timePublic).format('HH:mm, DD/MM/YYYY')}</p>
 						</TippyHeadless>
 					</div>
 					<div className={styles.view}>
 						<p>Bài viết nổi bật:</p>
-						<SwitchButton />
+						<SwitchButton
+							checkOn={form?.isSpecial}
+							onClick={() =>
+								setForm((prev) => ({
+									...prev,
+									isSpecial: !prev?.isSpecial,
+								}))
+							}
+						/>
 					</div>
 					<div className={styles.view}>
 						<p>Thứ tự hiển thị:</p>
 						<div className={styles.order}>
 							<div
-								className={clsx(styles.item_order, {[styles.disable]: form.order == 1})}
+								className={clsx(styles.item_order, {[styles.disable]: form.sort == 1})}
 								onClick={() =>
 									setForm((prev) => ({
 										...prev,
-										order: prev.order - 1,
+										sort: prev.sort - 1,
 									}))
 								}
 							>
 								<Minus size={18} />
 							</div>
-							<div className={styles.item_order}>{form.order}</div>
+							<div className={styles.item_order}>{form.sort}</div>
 							<div
 								className={clsx(styles.item_order, {[styles.disable]: false})}
 								onClick={() =>
 									setForm((prev) => ({
 										...prev,
-										order: prev.order + 1,
+										sort: prev.sort + 1,
 									}))
 								}
 							>
@@ -142,15 +150,15 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 				<div className={styles.category}>
 					<div className={styles.item}>
 						<input
-							name='type'
+							name='catalog'
 							type='checkbox'
 							id='category_news'
-							value={form.type}
-							checked={form.type == TYPE_NEWS.NEWS}
+							value={form.catalog}
+							checked={form.catalog == TYPE_NEWS.NEWS}
 							onChange={() =>
 								setForm((prev) => ({
 									...prev,
-									type: TYPE_NEWS.NEWS,
+									catalog: TYPE_NEWS.NEWS,
 								}))
 							}
 						/>
@@ -158,15 +166,15 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 					</div>
 					<div className={styles.item}>
 						<input
-							name='type'
+							name='catalog'
 							type='checkbox'
 							id='category_opportunity'
-							value={form.type}
-							checked={form.type == TYPE_NEWS.OPPORTUNITY}
+							value={form.catalog}
+							checked={form.catalog == TYPE_NEWS.OPPORTUNITY}
 							onChange={() =>
 								setForm((prev) => ({
 									...prev,
-									type: TYPE_NEWS.OPPORTUNITY,
+									catalog: TYPE_NEWS.OPPORTUNITY,
 								}))
 							}
 						/>
@@ -174,15 +182,15 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 					</div>
 					<div className={styles.item}>
 						<input
-							name='type'
+							name='catalog'
 							type='checkbox'
 							id='category_event'
-							value={form.type}
-							checked={form.type == TYPE_NEWS.EVENT}
+							value={form.catalog}
+							checked={form.catalog == TYPE_NEWS.EVENT}
 							onChange={() =>
 								setForm((prev) => ({
 									...prev,
-									type: TYPE_NEWS.EVENT,
+									catalog: TYPE_NEWS.EVENT,
 								}))
 							}
 						/>
@@ -190,15 +198,15 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 					</div>
 					<div className={styles.item}>
 						<input
-							name='type'
+							name='catalog'
 							type='checkbox'
 							id='category_document'
-							value={form.type}
-							checked={form.type == TYPE_NEWS.DOCUMENT}
+							value={form.catalog}
+							checked={form.catalog == TYPE_NEWS.DOCUMENT}
 							onChange={() =>
 								setForm((prev) => ({
 									...prev,
-									type: TYPE_NEWS.DOCUMENT,
+									catalog: TYPE_NEWS.DOCUMENT,
 								}))
 							}
 						/>
@@ -208,35 +216,22 @@ function FormInfoNews({form, setForm}: PropsFormInfoNews) {
 			</Accordion>
 			<div className={styles.line}></div>
 			<Accordion title='Ảnh đại diện'>
-				<UploadImage
-					isWidthFull={true}
-					name='thumbnail'
-					path={form.thumbnail}
-					file={form.file}
-					setFile={(f) =>
-						setForm((prev) => ({
-							...prev,
-							file: f,
-						}))
-					}
-				/>
+				<UploadImage isWidthFull={true} name='imagePath' path={form.imagePath} file={file} setFile={(f) => setFile(f)} />
 			</Accordion>
 			<div className={styles.line}></div>
 			<Accordion title='Thảo luận'>
 				<div className={styles.category}>
 					<div className={styles.item}>
 						<input
-							name='allowComments'
+							name='blockComment'
 							type='checkbox'
 							id='allowComments'
-							value={form.allowComments}
-							checked={form.allowComments == 1}
+							checked={!form.blockComment}
 							onChange={(e) => {
 								const {checked} = e.target;
-
 								setForm((prev) => ({
 									...prev,
-									allowComments: checked ? 1 : 0,
+									blockComment: !checked,
 								}));
 							}}
 						/>

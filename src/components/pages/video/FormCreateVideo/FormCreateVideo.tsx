@@ -24,10 +24,10 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 				msgSuccess: 'Thêm mới video thành công!',
 				http: videoServices.upsertVideo({
 					uuid: '',
-					title: form.title,
-					videoLink: form.videoLink,
-					sort: Number(form.sort),
-					privacy: form.privacy,
+					title: form?.title,
+					videoLink: form?.videoLink,
+					sort: Number(form?.sort),
+					privacy: form?.privacy,
 				}),
 			});
 		},

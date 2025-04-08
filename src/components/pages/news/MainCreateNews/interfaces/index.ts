@@ -1,13 +1,17 @@
-export interface PropsMainCreateNews {}
+export interface PropsMainCreateNews {
+	onClose: () => void;
+	queryKeys: number[];
+}
 
 export interface IFormCreateNews {
 	title: string;
 	content: string;
-	thumbnail: string;
-	file: any;
-	type: number;
-	display: number;
-	allowComments: 0 | 1;
-	date: Date;
-	order: number;
+	catalog: number;
+	privacy: number;
+	timePublic: string;
+	isSpecial: boolean;
+	link: string;
+	sort: number;
+	blockComment: boolean;
+	imagePath: string;
 }
