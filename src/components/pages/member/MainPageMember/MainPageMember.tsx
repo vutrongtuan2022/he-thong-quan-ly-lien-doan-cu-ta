@@ -19,6 +19,7 @@ import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
+import FilterCustom from '~/components/common/FilterCustom';
 
 function MainPageMember({}: PropsMainPageMember) {
 	const queryClient = useQueryClient();
@@ -26,6 +27,7 @@ function MainPageMember({}: PropsMainPageMember) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
+	const [status, setStatus] = useState<number | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
 
@@ -44,12 +46,13 @@ function MainPageMember({}: PropsMainPageMember) {
 			totalCount: number;
 			totalPage: number;
 		};
-	}>([QUERY_KEY.table_member, page, pageSize, keyword], {
+	}>([QUERY_KEY.table_member, page, pageSize, status, keyword], {
 		queryFn: () =>
 			httpRequest({
 				http: accountServices.listUserAccount({
 					page: page,
 					pageSize: pageSize,
+					status: status,
 					keyword: keyword,
 				}),
 			}),
@@ -99,7 +102,32 @@ function MainPageMember({}: PropsMainPageMember) {
 	return (
 		<Fragment>
 			<Loading loading={funcLocked.isLoading || funcOpen.isLoading} />
-			<SearchBlock keyword={keyword} setKeyword={setKeyword} placeholder='Tìm kiếm theo tên người dùng, email, số điện thoại' />
+			<SearchBlock
+				keyword={keyword}
+				setKeyword={setKeyword}
+				placeholder='Tìm kiếm theo tên người dùng, email, số điện thoại'
+				action={
+					<div className={styles.filter}>
+						<div className={styles.flex}>
+							<FilterCustom
+								name='Trạng thái'
+								value={status}
+								setValue={setStatus}
+								listOption={[
+									{
+										uuid: CONFIG_STATUS.ACTIVE,
+										name: 'Hoạt động',
+									},
+									{
+										uuid: CONFIG_STATUS.LOCKED,
+										name: 'Đang khóa',
+									},
+								]}
+							/>
+						</div>
+					</div>
+				}
+			/>
 
 			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách người tài khoản'>
 				<DataWrapper
@@ -213,7 +241,7 @@ function MainPageMember({}: PropsMainPageMember) {
 						pageSize={pageSize}
 						onSetPageSize={setPageSize}
 						total={data?.pagination?.totalCount || 0}
-						dependencies={[pageSize, keyword]}
+						dependencies={[pageSize, keyword, status]}
 					/>
 				</div>
 			</MainTable>

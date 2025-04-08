@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import styles from './MainPageProfile.module.scss';
-import {PropsMainPageProfile} from './interfaces';
+import {IDetailLogin, PropsMainPageProfile} from './interfaces';
 import Button from '~/components/common/Button';
 import Breadcrumb from '~/components/utils/Breadcrumb';
 import {PATH} from '~/constants/config';
@@ -8,26 +8,25 @@ import GridColumn from '~/components/layouts/GridColumn';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import Popup from '~/components/common/Popup';
-import Form from '~/components/common/Form';
 import FormUpdatePadsword from '../FormUpdatePadsword';
+import {useQuery} from '@tanstack/react-query';
+import {QUERY_KEY} from '~/constants/config/enum';
+import {httpRequest} from '~/services';
+import accountServices from '~/services/accountServices';
+import MainUpdateProfile from '../MainUpdateProfile';
 
 function MainPageProfile({}: PropsMainPageProfile) {
 	const router = useRouter();
 	const {_action} = router.query;
-	const [form, setForm] = useState<{
-		uuid: string;
-		name: string;
-		email: string;
-		username: string;
-		role: string;
-		avatar: string;
-	}>({
-		uuid: '1',
-		name: 'Dương Công Tử',
-		email: 'vuthanhduong246@gmail.com',
-		username: 'duongcongtu',
-		role: 'Admin',
-		avatar: '',
+
+	const {data: detatilPersonal} = useQuery<IDetailLogin>([QUERY_KEY.detail_profile], {
+		queryFn: () =>
+			httpRequest({
+				http: accountServices.detailPersonalAccount({}),
+			}),
+		select(data) {
+			return data;
+		},
 	});
 
 	return (
@@ -54,7 +53,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 							</Button>
 						</div>
 
-						<Button p_10_24 aquamarine rounded_8 href={PATH.Profile + '/update-profile'}>
+						<Button p_10_24 aquamarine rounded_8 href={`${PATH.UpdateProfile}?_uuid=${detatilPersonal?.uuid}`}>
 							Chỉnh sửa
 						</Button>
 					</div>
@@ -64,7 +63,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 					<div className={styles.group_info}>
 						<Image
 							alt='Avatar'
-							src={`${process.env.NEXT_PUBLIC_IMAGE}/${form?.avatar}`}
+							src={`${process.env.NEXT_PUBLIC_IMAGE}/${detatilPersonal?.imagePath}`}
 							width={120}
 							height={120}
 							className={styles.avatar}
@@ -74,19 +73,19 @@ function MainPageProfile({}: PropsMainPageProfile) {
 						<GridColumn col_2>
 							<div className={styles.item}>
 								<p>Tên tài khoản</p>
-								<p>{form?.name || '---'}</p>
+								<p>{detatilPersonal?.accountName || '---'}</p>
 							</div>
 							<div className={styles.item}>
 								<p>Email</p>
-								<p>{form?.email || '---'}</p>
+								<p>{detatilPersonal?.email || '---'}</p>
 							</div>
 							<div className={styles.item}>
 								<p>Username</p>
-								<p>{form?.username || '---'}</p>
+								<p>{detatilPersonal?.userName || '---'}</p>
 							</div>
 							<div className={styles.item}>
 								<p>Vai trò sử dụng</p>
-								<p>{form?.role || '---'}</p>
+								<p>{detatilPersonal?.role?.name || '---'}</p>
 							</div>
 						</GridColumn>
 					</div>

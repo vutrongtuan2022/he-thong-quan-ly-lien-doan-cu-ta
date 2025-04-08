@@ -12,6 +12,7 @@ export enum QUERY_KEY {
 	detail_banners,
 	detail_blog,
 	detail_video,
+	detail_profile,
 
 	dropdown_category_role,
 }
