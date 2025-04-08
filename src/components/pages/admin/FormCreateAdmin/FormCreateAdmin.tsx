@@ -17,6 +17,7 @@ import md5 from 'md5';
 
 function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 	const queryClient = useQueryClient();
+
 	const [form, setForm] = useState<ICreateAdmin>({
 		userName: '',
 		account: '',
@@ -72,6 +73,7 @@ function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 		if (!form.role) {
 			return toastWarn({msg: 'Vui lòng chọn nhóm quyền!'});
 		}
+
 		return funcCreateAdmin.mutate();
 	};
 

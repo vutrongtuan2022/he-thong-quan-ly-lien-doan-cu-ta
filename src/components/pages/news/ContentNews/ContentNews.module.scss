@@ -1,0 +1,30 @@
+.form {
+	padding: 24px;
+	border-radius: 16px;
+	background: #fff;
+}
+
+.item {
+	& > p:nth-child(1) {
+		color: #697586;
+		font-size: 13px;
+		font-weight: 500;
+		margin-bottom: 4px;
+	}
+	& > p:nth-child(2) {
+		color: #202939;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.link {
+		color: #066bb1;
+		font-size: 16px;
+		font-weight: 400;
+		text-decoration: underline;
+	}
+}
+
+.item + .item {
+	margin-top: 16px;
+}

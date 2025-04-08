@@ -21,6 +21,7 @@ import {useRouter} from 'next/router';
 
 function MainUpdateNews({}: PropsMainUpdateNews) {
 	const router = useRouter();
+
 	const {_uuid} = router.query;
 
 	const [file, setFile] = useState<any>(null);
@@ -39,7 +40,7 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 		imagePath: '',
 	});
 
-	useQuery([QUERY_KEY.detail_blog], {
+	useQuery([QUERY_KEY.detail_news], {
 		queryFn: () =>
 			httpRequest({
 				http: newsServices.detailBlog({

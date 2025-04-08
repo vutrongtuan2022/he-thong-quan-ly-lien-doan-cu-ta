@@ -60,7 +60,7 @@ function MenuProfile({onClose}: PropsMenuProfile) {
 				</div>
 			</Link>
 			<div className={styles.line}></div>
-			<Link href={PATH.Any} className={clsx(styles.item, {[styles.active]: checkActive(PATH.Any)})} onClick={onClose}>
+			<Link href={`${PATH.Profile}?_action=change_update`} className={clsx(styles.item)} onClick={onClose}>
 				<ShieldSecurity size={20} className={styles.icon} />
 				<div className={styles.box}>
 					<p>Đổi mật khẩu</p>

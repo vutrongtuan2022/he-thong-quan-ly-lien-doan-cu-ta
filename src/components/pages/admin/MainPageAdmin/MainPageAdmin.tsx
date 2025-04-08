@@ -30,6 +30,7 @@ import FilterCustom from '~/components/common/FilterCustom';
 function MainPageAdmin({}: PropsMainPageAdmin) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+
 	const {_open, _uuidUpdate} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');

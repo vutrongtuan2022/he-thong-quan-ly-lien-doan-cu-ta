@@ -1,12 +1,37 @@
 import React from 'react';
 
-import {PropsMainDetailNews} from './interfaces';
+import {INews, PropsMainDetailNews} from './interfaces';
 import styles from './MainDetailNews.module.scss';
 import Breadcrumb from '~/components/utils/Breadcrumb';
 import {PATH} from '~/constants/config';
 import Button from '~/components/common/Button';
+import {useRouter} from 'next/router';
+import {useQuery} from '@tanstack/react-query';
+import {QUERY_KEY} from '~/constants/config/enum';
+import {httpRequest} from '~/services';
+import newsServices from '~/services/newsServices';
+import CommentNews from '../CommentNews';
+import ContentNews from '../ContentNews';
+import TabNavLink from '~/components/common/TabNavLink';
+import InfoNews from '../InfoNews';
 
 function MainDetailNews({}: PropsMainDetailNews) {
+	const router = useRouter();
+
+	const {_uuid, _type} = router.query;
+
+	const {data: news} = useQuery<INews>([QUERY_KEY.detail_news], {
+		queryFn: () =>
+			httpRequest({
+				http: newsServices.detailBlog({
+					uuid: _uuid as string,
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+		enabled: !!_uuid,
+	});
 	return (
 		<div className={styles.container}>
 			<div className={styles.head_main}>
@@ -21,21 +46,29 @@ function MainDetailNews({}: PropsMainDetailNews) {
 				</div>
 			</div>
 			<div className={styles.main}>
+				<ContentNews news={news!} />
 				<div className={styles.form}>
-					<div className={styles.item}>
-						<p>Tiêu đề bài viết</p>
-						<p>1</p>
-					</div>
-					<div className={styles.item}>
-						<p>Link đăng ký sự kiện</p>
-						<p>1</p>
-					</div>
-					<div className={styles.item}>
-						<p>Nội dung bài viết</p>
-						<div dangerouslySetInnerHTML={{__html: ''}}></div>
+					<TabNavLink
+						listHref={[
+							{
+								title: 'Chi tiết tin tức',
+								pathname: router.pathname,
+								query: null,
+							},
+							{
+								title: `Bình luận (${news?.countComment || 0})`,
+								pathname: router.pathname,
+								query: 'comment',
+							},
+						]}
+						query='_type'
+						outline={true}
+					/>
+					<div className={styles.main_display}>
+						{!_type && <InfoNews news={news!} />}
+						{_type == 'comment' && <CommentNews />}
 					</div>
 				</div>
-				<div className={styles.form}></div>
 			</div>
 		</div>
 	);

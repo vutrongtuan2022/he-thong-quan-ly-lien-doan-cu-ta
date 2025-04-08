@@ -20,6 +20,7 @@ function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 	const queryClient = useQueryClient();
 
 	const {_uuidUpdate} = router.query;
+
 	const [form, setForm] = useState<IUpdateAdmin>({
 		uuid: '',
 		userName: '',
@@ -75,6 +76,7 @@ function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 			}
 		},
 	});
+
 	const listRole = useQuery([QUERY_KEY.dropdown_category_role], {
 		queryFn: () =>
 			httpRequest({
@@ -91,6 +93,7 @@ function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 		if (!form.role) {
 			return toastWarn({msg: 'Vui lòng chọn nhóm quyền!'});
 		}
+
 		return funcUpdateAdmin.mutate();
 	};
 

@@ -1,5 +1,5 @@
 import {Award, ClipboardText, Gallery, People, PresentionChart, ProfileTick, UserOctagon, VideoPlay} from 'iconsax-react';
-import {TYPE_DATE} from './enum';
+import {ROLE_ADMIN, TYPE_DATE} from './enum';
 
 export enum PATH {
 	Home = '/',
@@ -39,6 +39,7 @@ export const Menus: {
 		pathActive: string;
 		title: string;
 		icon: any;
+		role: ROLE_ADMIN;
 	}[];
 }[] = [
 	{
@@ -49,18 +50,21 @@ export const Menus: {
 				icon: ProfileTick,
 				path: PATH.Home,
 				pathActive: PATH.Home,
+				role: ROLE_ADMIN.ADMIN,
 			},
 			{
 				title: 'Thành viên',
 				icon: People,
 				path: PATH.Member,
 				pathActive: PATH.Member,
+				role: ROLE_ADMIN.LEAGUE,
 			},
 			{
 				title: 'Quản trị viên',
 				icon: UserOctagon,
 				path: PATH.Admin,
 				pathActive: PATH.Admin,
+				role: ROLE_ADMIN.LEAGUE,
 			},
 		],
 	},
@@ -72,12 +76,14 @@ export const Menus: {
 				icon: ClipboardText,
 				path: PATH.News,
 				pathActive: PATH.News,
+				role: ROLE_ADMIN.ADMIN,
 			},
 			{
 				title: 'Quản lý video',
 				icon: VideoPlay,
 				path: PATH.Video,
 				pathActive: PATH.Video,
+				role: ROLE_ADMIN.ADMIN,
 			},
 		],
 	},
@@ -89,18 +95,21 @@ export const Menus: {
 				icon: PresentionChart,
 				path: PATH.Any,
 				pathActive: PATH.Any,
+				role: ROLE_ADMIN.ADMIN,
 			},
 			{
 				title: 'Quản lý banner',
 				icon: Gallery,
 				path: PATH.Banner,
 				pathActive: PATH.Banner,
+				role: ROLE_ADMIN.ADMIN,
 			},
 			{
 				title: 'Chính sách bảo mật',
 				icon: Award,
 				path: PATH.PrivacyPolicy,
 				pathActive: PATH.PrivacyPolicy,
+				role: ROLE_ADMIN.ADMIN,
 			},
 		],
 	},

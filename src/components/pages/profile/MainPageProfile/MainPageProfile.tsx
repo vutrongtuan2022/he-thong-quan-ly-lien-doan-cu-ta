@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment} from 'react';
 import styles from './MainPageProfile.module.scss';
 import {IDetailLogin, PropsMainPageProfile} from './interfaces';
 import Button from '~/components/common/Button';
@@ -13,10 +13,11 @@ import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
-import MainUpdateProfile from '../MainUpdateProfile';
+import images from '~/constants/images/images';
 
 function MainPageProfile({}: PropsMainPageProfile) {
 	const router = useRouter();
+
 	const {_action} = router.query;
 
 	const {data: detatilPersonal} = useQuery<IDetailLogin>([QUERY_KEY.detail_profile], {
@@ -53,7 +54,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 							</Button>
 						</div>
 
-						<Button p_10_24 aquamarine rounded_8 href={`${PATH.UpdateProfile}?_uuid=${detatilPersonal?.uuid}`}>
+						<Button p_10_24 aquamarine rounded_8 href={`${PATH.UpdateProfile}`}>
 							Chỉnh sửa
 						</Button>
 					</div>
@@ -63,7 +64,11 @@ function MainPageProfile({}: PropsMainPageProfile) {
 					<div className={styles.group_info}>
 						<Image
 							alt='Avatar'
-							src={`${process.env.NEXT_PUBLIC_IMAGE}/${detatilPersonal?.imagePath}`}
+							src={
+								detatilPersonal?.imagePath
+									? `${process.env.NEXT_PUBLIC_IMAGE}/${detatilPersonal?.imagePath}`
+									: images?.avatar_default
+							}
 							width={120}
 							height={120}
 							className={styles.avatar}

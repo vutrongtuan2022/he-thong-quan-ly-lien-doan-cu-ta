@@ -8,8 +8,7 @@ import Breadcrumb from '~/components/utils/Breadcrumb';
 import {PATH} from '~/constants/config';
 import GridColumn from '~/components/layouts/GridColumn';
 import Form, {FormContext, Input} from '~/components/common/Form';
-import Select, {Option} from '~/components/common/Select';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
@@ -17,10 +16,15 @@ import Loading from '~/components/common/Loading';
 import {toastWarn} from '~/common/funcs/toast';
 import uploadService from '~/services/uploadService';
 import {useRouter} from 'next/router';
+import {RootState, store} from '~/redux/store';
+import {setInfoUser} from '~/redux/reducer/user';
+import {useSelector} from 'react-redux';
 
 function MainUpdateProfile({}: PropsMainUpdateProfile) {
-	const queryClient = useQueryClient();
 	const router = useRouter();
+
+	const {infoUser} = useSelector((state: RootState) => state.user);
+
 	const [file, setFile] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [form, setForm] = useState<IDetailLogin>({
@@ -39,12 +43,12 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 			}),
 		onSuccess(data) {
 			setForm({
-				userName: data?.userName,
-				accountName: data?.accountName,
-				email: data?.email,
-				role: data?.role?.name,
-				imagePath: data?.imagePath,
-				uuid: data?.uuid,
+				userName: data?.userName || '',
+				accountName: data?.accountName || '',
+				email: data?.email || '',
+				role: data?.role?.name || '',
+				imagePath: data?.imagePath || '',
+				uuid: data?.uuid || '',
 			});
 		},
 		select(data) {
@@ -65,11 +69,25 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 				}),
 			});
 		},
-		onSuccess(data) {
+		onSuccess(data, variable) {
 			if (data) {
 				setForm({accountName: '', email: '', imagePath: '', uuid: form?.uuid, role: form?.role, userName: form?.userName});
+				store.dispatch(
+					setInfoUser({
+						token: infoUser?.token!,
+						uuid: infoUser?.uuid!,
+						userName: form?.userName!,
+						email: form?.email!,
+						userUuid: infoUser?.userUuid!,
+						avatar: variable?.imagePath ? variable?.imagePath : form?.imagePath!,
+						fullname: infoUser?.fullname!,
+						rolesUuid: infoUser?.rolesUuid!,
+						isRegistered: infoUser?.isRegistered!,
+						accountName: form?.accountName!,
+						role: infoUser?.role!,
+					})
+				);
 				router.back();
-				queryClient.invalidateQueries([QUERY_KEY.detail_profile]);
 			}
 		},
 	});
@@ -124,6 +142,12 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 								path={form?.imagePath ? `${process.env.NEXT_PUBLIC_IMAGE}/${form?.imagePath}` : images?.avatar_default}
 								name='avatar'
 								onSetFile={setFile}
+								resetPath={() =>
+									setForm((prev) => ({
+										...prev,
+										imagePath: '',
+									}))
+								}
 							/>
 						</div>
 						<div className={styles.divider}></div>

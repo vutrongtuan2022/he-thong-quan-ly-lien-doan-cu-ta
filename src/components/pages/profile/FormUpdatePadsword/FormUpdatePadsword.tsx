@@ -9,17 +9,18 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
 import md5 from 'md5';
-import {useRouter} from 'next/router';
 import {QUERY_KEY} from '~/constants/config/enum';
 import Loading from '~/components/common/Loading';
+
 function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
 	const queryClient = useQueryClient();
-	const router = useRouter();
+
 	const [form, setForm] = useState<IUpdatePaddWord>({
 		old_password: '',
 		new_password: '',
 		confirm_password: '',
 	});
+
 	const funcChangePassPersonal = useMutation({
 		mutationFn: () => {
 			return httpRequest({
@@ -29,7 +30,6 @@ function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
 				http: accountServices.changePassPersonal({
 					oldPassword: md5(`${form?.old_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
 					newPassword: md5(`${form?.new_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
-					// newPass: md5(`${form?.password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
 				}),
 			});
 		},

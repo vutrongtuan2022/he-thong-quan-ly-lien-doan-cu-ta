@@ -6,11 +6,13 @@ export enum QUERY_KEY {
 	table_admin,
 	table_member,
 
+	list_comment_news,
+
 	detail_user,
 	detail_policy,
 	detail_admin,
 	detail_banners,
-	detail_blog,
+	detail_news,
 	detail_video,
 	detail_profile,
 
@@ -77,4 +79,9 @@ export enum CONFIG_STATUS {
 export enum FEATURED_BLOG {
 	OUTSTANDING = 1, // Nổi bật
 	NOT_OUTSTANDING, // Không nổi bật
+}
+
+export enum ROLE_ADMIN {
+	ADMIN = 'ADMIN',
+	LEAGUE = 'LEAGUE',
 }

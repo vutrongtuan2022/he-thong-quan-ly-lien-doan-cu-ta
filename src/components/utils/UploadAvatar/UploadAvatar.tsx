@@ -8,7 +8,7 @@ import icons from '~/constants/images/icons';
 
 const MAXIMUM_FILE = 10;
 
-function UploadAvatar({path, name, onSetFile}: PropsUploadAvatar) {
+function UploadAvatar({path, name, onSetFile, resetPath}: PropsUploadAvatar) {
 	const [imageBase64, setImageBase64] = useState<string>('');
 	const [fileName, setFileName] = useState<string>('');
 
@@ -47,6 +47,7 @@ function UploadAvatar({path, name, onSetFile}: PropsUploadAvatar) {
 		setImageBase64('');
 		setFileName('');
 		onSetFile && onSetFile(null);
+		resetPath && resetPath();
 	};
 
 	return (

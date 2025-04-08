@@ -1,0 +1,90 @@
+@import '../../../styles/variables';
+
+.container {
+	overflow: auto;
+	white-space: nowrap;
+	padding-bottom: 10px;
+
+	&::-webkit-scrollbar {
+		height: 3px;
+	}
+
+	&.outline {
+		z-index: 1;
+
+		.item {
+			position: relative;
+			min-width: 60px;
+			cursor: pointer;
+			user-select: none;
+			display: inline-block;
+			text-align: center;
+			font-size: 16px;
+			font-weight: 500;
+			padding: 0;
+			border-radius: 0;
+			background: transparent;
+			color: #a9a9aa;
+			border: 1px solid transparent;
+
+			& + .item {
+				margin-left: 16px;
+			}
+
+			&.active {
+				color: #00b7c4;
+				background: transparent;
+				border: 1px solid transparent;
+			}
+
+			&.active {
+				&::after {
+					position: absolute;
+					bottom: -4px;
+					left: 0;
+					right: 0;
+					content: '';
+					height: 2px;
+					background-color: #00b7c4;
+				}
+			}
+		}
+	}
+}
+
+.item {
+	min-width: 60px;
+	cursor: pointer;
+	user-select: none;
+	display: inline-block;
+	text-align: center;
+	font-size: 16px;
+	font-weight: 500;
+	padding: 10px 24px;
+	border-radius: 8px;
+	background: rgba(154, 169, 182, 0.1);
+	color: #314353;
+	border: 1px solid rgba(154, 169, 182, 0.1);
+
+	& + .item {
+		margin-left: 8px;
+	}
+
+	&.active {
+		color: #fff;
+		background: #00b7c4;
+		border: 1px solid #00b7c4;
+	}
+}
+
+@media (max-width: $widthMobile) {
+	.item {
+		font-size: 13px;
+	}
+}
+
+@media (min-width: $widthMobile) and (max-width: $widthTablet) {
+	.item {
+		font-size: 14px;
+	}
+}

@@ -15,6 +15,7 @@ function DateTimePicker({date, setDate}: PropsDateTimePicker) {
 				value={date}
 				onChange={(value) => setDate(value)}
 				closeOnSelect
+				timeFormat='HH:mm'
 				renderMonth={(props, month) => <td {...props}>Tháng {month + 1}</td>}
 				isValidDate={(current) => {
 					const yesterday = moment().subtract(1, 'day');

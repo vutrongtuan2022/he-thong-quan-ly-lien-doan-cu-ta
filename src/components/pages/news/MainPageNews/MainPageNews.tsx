@@ -2,7 +2,6 @@ import React, {Fragment, useState} from 'react';
 import Image from 'next/image';
 import {INews, PropsMainPageNews} from './interfaces';
 import styles from './MainPageNews.module.scss';
-import {useRouter} from 'next/router';
 import {QUERY_KEY, TYPE_NEWS, TYPE_DATE, TYPE_DISPLAY} from '~/constants/config/enum';
 import SearchBlock from '~/components/utils/SearchBlock';
 import FilterCustom from '~/components/common/FilterCustom';
@@ -29,7 +28,6 @@ import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
 
 function MainPageNews({}: PropsMainPageNews) {
-	const router = useRouter();
 	const queryClient = useQueryClient();
 
 	const [keyword, setKeyword] = useState<string>('');

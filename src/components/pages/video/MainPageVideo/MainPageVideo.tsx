@@ -7,7 +7,7 @@ import Button from '~/components/common/Button';
 import Image from 'next/image';
 import icons from '~/constants/images/icons';
 import MainTable from '~/components/utils/MainTable';
-import {Edit, Eye, Trash, VideoPlay} from 'iconsax-react';
+import {Edit, Trash, VideoPlay} from 'iconsax-react';
 import {useRouter} from 'next/router';
 
 import Pagination from '~/components/common/Pagination';
@@ -36,14 +36,13 @@ function MainPageVideo({}: PropsMainPageVideo) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_view, _uuidUpdate, action} = router.query;
+	const {_uuidUpdate, action} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
-
 	const [dataDelete, setDataDelete] = useState<IVideos | null>(null);
 
 	const resetFilter = () => {
@@ -167,82 +166,80 @@ function MainPageVideo({}: PropsMainPageVideo) {
 					</div>
 				}
 			>
-				{!_view && (
-					<DataWrapper data={data?.items || []} loading={isLoading} title='Video trống!' note='Danh sách video hiện đang trống!'>
-						<Table<IVideos>
-							data={data?.items || []}
-							column={[
-								{
-									title: 'STT',
-									render: (_, index) => <>{index + 1}</>,
-								},
-								{
-									title: 'Video',
-									render: (row, _) => (
-										<>
-											<p style={{marginBottom: '10px'}}>{row?.title || '---'}</p>
-											<Link className={styles.link} href={row?.videoLink || '#'} target='_blank'>
-												{row?.videoLink || '---'}
-											</Link>
-										</>
-									),
-								},
-								{
-									title: 'Thứ tự hiển thị',
-									render: (row, _) => <>{convertCoin(row?.sort) || 0}</>,
-								},
+				<DataWrapper data={data?.items || []} loading={isLoading} title='Video trống!' note='Danh sách video hiện đang trống!'>
+					<Table<IVideos>
+						data={data?.items || []}
+						column={[
+							{
+								title: 'STT',
+								render: (_, index) => <>{index + 1}</>,
+							},
+							{
+								title: 'Video',
+								render: (row, _) => (
+									<>
+										<p style={{marginBottom: '10px'}}>{row?.title || '---'}</p>
+										<Link className={styles.link} href={row?.videoLink || '#'} target='_blank'>
+											{row?.videoLink || '---'}
+										</Link>
+									</>
+								),
+							},
+							{
+								title: 'Thứ tự hiển thị',
+								render: (row, _) => <>{convertCoin(row?.sort) || 0}</>,
+							},
 
-								{
-									title: 'Hiển thị',
-									render: (row, _) => (
-										<SwitchButton
-											checkOn={row?.privacy == TYPE_DISPLAY.PUBLIC}
+							{
+								title: 'Hiển thị',
+								render: (row, _) => (
+									<SwitchButton
+										checkOn={row?.privacy == TYPE_DISPLAY.PUBLIC}
+										onClick={() =>
+											funcChangePrivacy.mutate({
+												uuid: row?.uuid,
+											})
+										}
+									/>
+								),
+							},
+							{
+								title: 'Thời gian đăng',
+								render: (row, _) => <Moment date={row?.created} format='HH:mm - DD/MM/YYYY' />,
+							},
+
+							{
+								title: 'Tác vụ',
+								fixedRight: true,
+								render: (row, _) => (
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<IconCustom
+											icon={<Edit color='#3772FF' size={24} />}
+											tooltip='Chỉnh sửa'
+											background='rgba(55, 114, 255, 0.10)'
 											onClick={() =>
-												funcChangePrivacy.mutate({
-													uuid: row?.uuid,
+												router.replace({
+													pathname: router.pathname,
+													query: {
+														...router.query,
+														_uuidUpdate: row.uuid,
+													},
 												})
 											}
 										/>
-									),
-								},
-								{
-									title: 'Thời gian đăng',
-									render: (row, _) => <Moment date={row?.created} format='HH:mm - DD/MM/YYYY' />,
-								},
 
-								{
-									title: 'Tác vụ',
-									fixedRight: true,
-									render: (row, _) => (
-										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-											<IconCustom
-												icon={<Edit color='#3772FF' size={24} />}
-												tooltip='Chỉnh sửa'
-												background='rgba(55, 114, 255, 0.10)'
-												onClick={() =>
-													router.replace({
-														pathname: router.pathname,
-														query: {
-															...router.query,
-															_uuidUpdate: row.uuid,
-														},
-													})
-												}
-											/>
-
-											<IconCustom
-												icon={<Trash color='#EB2E2E' size={24} />}
-												tooltip='Xóa'
-												background='rgba(244, 97, 97, 0.10)'
-												onClick={() => setDataDelete(row)}
-											/>
-										</div>
-									),
-								},
-							]}
-						/>
-					</DataWrapper>
-				)}
+										<IconCustom
+											icon={<Trash color='#EB2E2E' size={24} />}
+											tooltip='Xóa'
+											background='rgba(244, 97, 97, 0.10)'
+											onClick={() => setDataDelete(row)}
+										/>
+									</div>
+								),
+							},
+						]}
+					/>
+				</DataWrapper>
 
 				<div className={styles.pagination}>
 					<Pagination

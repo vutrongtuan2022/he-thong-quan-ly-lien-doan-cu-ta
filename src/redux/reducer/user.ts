@@ -11,6 +11,7 @@ interface IUser {
 	rolesUuid: string;
 	isRegistered: boolean;
 	accountName: string;
+	role: string;
 }
 
 export interface UserState {

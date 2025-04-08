@@ -28,19 +28,6 @@
 	background: #fff;
 }
 
-.item {
-	& > p:nth-child(1) {
-		color: #697586;
-		font-size: 13px;
-		font-weight: 500;
-	}
-	& > p:nth-child(2) {
-		color: #202939;
-		font-size: 14px;
-		font-weight: 500;
-	}
-}
-
-.item + .item {
-	margin-top: 16px;
+.main_display {
+	margin-top: 12px;
 }
