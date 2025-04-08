@@ -287,15 +287,7 @@ function MainPageNews({}: PropsMainPageNews) {
 											icon={<Eye color='#6170E3' size={24} />}
 											tooltip='Xem chi tiết'
 											background='#6170E31A'
-											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {
-														...router.query,
-														_uuidDetail: '1',
-													},
-												})
-											}
+											href={`${PATH.News}/${row.uuid}`}
 										/>
 									</div>
 								),
@@ -315,7 +307,6 @@ function MainPageNews({}: PropsMainPageNews) {
 					/>
 				</div>
 			</MainTable>
-
 			<Dialog
 				type='error'
 				open={!!dataDelete}
