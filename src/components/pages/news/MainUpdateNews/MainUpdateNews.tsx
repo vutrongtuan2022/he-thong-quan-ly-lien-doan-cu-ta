@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 
-import {IFormCreateNews, PropsMainCreateNews} from './interfaces';
-import styles from './MainCreateNews.module.scss';
+import {IFormUpdateNews, PropsMainUpdateNews} from './interfaces';
+import styles from './MainUpdateNews.module.scss';
 import Breadcrumb from '~/components/utils/Breadcrumb';
 import {PATH} from '~/constants/config';
 import Button from '~/components/common/Button';
 import EditerContent from '../../../utils/EditerContent';
 import Form, {FormContext, Input} from '~/components/common/Form';
 import FormInfoNews from '../FormInfoNews';
-import {TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
-import {useMutation} from '@tanstack/react-query';
+import {QUERY_KEY, TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import newsServices from '~/services/newsServices';
 import {price} from '~/common/funcs/convertCoin';
@@ -19,13 +19,13 @@ import uploadService from '~/services/uploadService';
 import moment from 'moment';
 import {useRouter} from 'next/router';
 
-function MainCreateNews({}: PropsMainCreateNews) {
+function MainUpdateNews({uuid}: PropsMainUpdateNews) {
 	const router = useRouter();
 
 	const [file, setFile] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const [form, setForm] = useState<IFormCreateNews>({
+	const [form, setForm] = useState<IFormUpdateNews>({
 		title: '',
 		content: '',
 		catalog: TYPE_NEWS.NEWS,
@@ -38,14 +38,40 @@ function MainCreateNews({}: PropsMainCreateNews) {
 		imagePath: '',
 	});
 
-	const funcCreateBlog = useMutation({
+	useQuery([QUERY_KEY.detail_blog], {
+		queryFn: () =>
+			httpRequest({
+				http: newsServices.detailBlog({
+					uuid: uuid,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setForm({
+					title: data?.title || '',
+					imagePath: data?.imagePath || '',
+					sort: data?.sort || 1,
+					privacy: data?.privacy || TYPE_DISPLAY.PUBLIC,
+					content: data?.content || '',
+					catalog: data?.catalog || TYPE_NEWS.NEWS,
+					blockComment: data?.blockComment !== undefined ? data.blockComment : false,
+					timePublic: data?.timePublic ? new Date(data.timePublic) : new Date(),
+					isSpecial: data?.isSpecial !== undefined ? data.isSpecial : false,
+					link: data?.link || '',
+				});
+			}
+		},
+		enabled: !!uuid,
+	});
+
+	const funcUpdateBlog = useMutation({
 		mutationFn: (body: {imagePath: string}) =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Thêm mới bài viết thành công!',
+				msgSuccess: 'Chỉnh sửa bài viết thành công!',
 				http: newsServices.upsertBlog({
-					uuid: '',
+					uuid: uuid,
 					title: form?.title,
 					content: form?.content,
 					catalog: price(form?.catalog),
@@ -78,26 +104,32 @@ function MainCreateNews({}: PropsMainCreateNews) {
 	});
 
 	const handleSubmit = async () => {
-		if (!file) {
+		if (!file && !form.imagePath) {
 			return toastWarn({msg: 'Vui lòng chọn ảnh!'});
 		}
 
-		const dataImage = await httpRequest({
-			setLoading,
-			http: uploadService.uploadSingleImage(file, '8'),
-		});
+		if (!!file) {
+			const dataImage = await httpRequest({
+				setLoading,
+				http: uploadService.uploadSingleImage(file, '8'),
+			});
 
-		return funcCreateBlog.mutate({
-			imagePath: dataImage,
-		});
+			return funcUpdateBlog.mutate({
+				imagePath: dataImage,
+			});
+		} else {
+			return funcUpdateBlog.mutate({
+				imagePath: form.imagePath,
+			});
+		}
 	};
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcCreateBlog.isLoading || loading} />
+			<Loading loading={funcUpdateBlog.isLoading || loading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.head_main}>
-					<Breadcrumb titles={['Quản lý tin tức', 'Thêm mới']} listHref={[PATH.News]} />
+					<Breadcrumb titles={['Quản lý tin tức', 'Chỉnh sửa bài viết']} listHref={[PATH.News]} />
 					<div className={styles.group_button}>
 						<Button p_10_24 grey rounded_8 onClick={() => router.back()}>
 							Hủy bỏ
@@ -106,7 +138,7 @@ function MainCreateNews({}: PropsMainCreateNews) {
 							{({isDone}) => (
 								<div>
 									<Button disable={!isDone} p_10_24 aquamarine rounded_8>
-										Đăng bài
+										Cập nhật
 									</Button>
 								</div>
 							)}
@@ -118,6 +150,7 @@ function MainCreateNews({}: PropsMainCreateNews) {
 						<Input
 							isRequired
 							name='title'
+							type='text'
 							placeholder='Nhập tiêu đề bài viết'
 							value={form.title}
 							max={150}
@@ -164,4 +197,4 @@ function MainCreateNews({}: PropsMainCreateNews) {
 	);
 }
 
-export default MainCreateNews;
+export default MainUpdateNews;

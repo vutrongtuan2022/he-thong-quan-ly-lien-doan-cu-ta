@@ -205,7 +205,17 @@ function MainPageNews({}: PropsMainPageNews) {
 								title: 'Bài viết',
 								render: (row, _) => (
 									<div className={styles.wrapper}>
-										<Image className={styles.avatar} src={images.avatar_default} alt='Image' width={44} height={44} />
+										<Image
+											className={styles.avatar}
+											src={
+												row?.imagePath
+													? `${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`
+													: images.avatar_default
+											}
+											alt='Image'
+											width={44}
+											height={44}
+										/>
 										<div className={styles.content}>
 											<Link href={'#'} className={styles.label}>
 												{row?.title || '---'}
@@ -267,15 +277,7 @@ function MainPageNews({}: PropsMainPageNews) {
 											icon={<Edit color='#3772FF' size={24} />}
 											tooltip='Chỉnh sửa'
 											background='#3772FF1A'
-											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {
-														...router.query,
-														_uuidUpdate: '1',
-													},
-												})
-											}
+											href={`${PATH.NewsUpdate}?_uuid=${row.uuid}`}
 										/>
 										<IconCustom
 											icon={<Trash color='#FA4B4B' size={24} />}
