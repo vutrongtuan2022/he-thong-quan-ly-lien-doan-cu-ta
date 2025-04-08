@@ -10,6 +10,7 @@ export interface IDetailLogin {
 	};
 	created: string;
 	updated: string;
+	imagePath: string;
 	status: number;
 	uuid: string;
 }

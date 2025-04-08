@@ -21,7 +21,7 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
-	listUserAccount: (data: {pageSize: number; page: number; keyword: string}, tokenAxios?: any) => {
+	listUserAccount: (data: {pageSize: number; page: number; keyword: string; status: number | null}, tokenAxios?: any) => {
 		return axiosClient.post(`/Account/get-page-list-user-account`, data, {
 			cancelToken: tokenAxios,
 		});
@@ -39,7 +39,7 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
-	listAdminAccount: (data: {pageSize: number; page: number; keyword: string; role: string}, tokenAxios?: any) => {
+	listAdminAccount: (data: {pageSize: number; page: number; keyword: string; role: string; status: number | null}, tokenAxios?: any) => {
 		return axiosClient.post(`/Account/get-page-list-admin-account`, data, {
 			cancelToken: tokenAxios,
 		});
@@ -51,6 +51,16 @@ const accountServices = {
 	},
 	detailPersonalAccount: (data: {}, tokenAxios?: any) => {
 		return axiosClient.post(`/Account/get-detail-personal-account`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	updatePersonalAccount: (data: {accountName: string; email: string; imagePath: string}, tokenAxios?: any) => {
+		return axiosClient.post(`/Account/update-personal-account`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	changePassPersonal: (data: {oldPassword: string; newPassword: string}, tokenAxios?: any) => {
+		return axiosClient.post(`Account/change-pass-personal`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

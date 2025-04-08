@@ -8,12 +8,12 @@ import GridColumn from '~/components/layouts/GridColumn';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import Popup from '~/components/common/Popup';
-import Form from '~/components/common/Form';
 import FormUpdatePadsword from '../FormUpdatePadsword';
 import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
+import MainUpdateProfile from '../MainUpdateProfile';
 
 function MainPageProfile({}: PropsMainPageProfile) {
 	const router = useRouter();
@@ -53,7 +53,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 							</Button>
 						</div>
 
-						<Button p_10_24 aquamarine rounded_8 href={PATH.Profile + '/update-profile'}>
+						<Button p_10_24 aquamarine rounded_8 href={`${PATH.UpdateProfile}?_uuid=${detatilPersonal?.uuid}`}>
 							Chỉnh sửa
 						</Button>
 					</div>
@@ -61,13 +61,13 @@ function MainPageProfile({}: PropsMainPageProfile) {
 				<div className={styles.form_main}>
 					<h4>Thông tin cá nhân</h4>
 					<div className={styles.group_info}>
-						{/* <Image
+						<Image
 							alt='Avatar'
-							src={`${process.env.NEXT_PUBLIC_IMAGE}/${detatilPersonal?.}`}
+							src={`${process.env.NEXT_PUBLIC_IMAGE}/${detatilPersonal?.imagePath}`}
 							width={120}
 							height={120}
 							className={styles.avatar}
-						/> */}
+						/>
 
 						<div className={styles.divider}></div>
 						<GridColumn col_2>

@@ -25,6 +25,7 @@ import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
+import FilterCustom from '~/components/common/FilterCustom';
 
 function MainPageAdmin({}: PropsMainPageAdmin) {
 	const router = useRouter();
@@ -34,6 +35,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
+	const [status, setStatus] = useState<number | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
 
@@ -52,13 +54,14 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			totalCount: number;
 			totalPage: number;
 		};
-	}>([QUERY_KEY.table_admin, page, pageSize, keyword], {
+	}>([QUERY_KEY.table_admin, page, status, pageSize, keyword], {
 		queryFn: () =>
 			httpRequest({
 				http: accountServices.listAdminAccount({
 					page: page,
 					pageSize: pageSize,
 					keyword: keyword,
+					status: status,
 					role: '',
 				}),
 			}),
@@ -108,7 +111,32 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 	return (
 		<Fragment>
 			<Loading loading={funcLocked.isLoading || funcOpen.isLoading} />
-			<SearchBlock keyword={keyword} setKeyword={setKeyword} placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email, nhóm quyền' />
+			<SearchBlock
+				keyword={keyword}
+				setKeyword={setKeyword}
+				placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email, nhóm quyền'
+				action={
+					<div className={styles.filter}>
+						<div className={styles.flex}>
+							<FilterCustom
+								name='Trạng thái'
+								value={status}
+								setValue={setStatus}
+								listOption={[
+									{
+										uuid: CONFIG_STATUS.ACTIVE,
+										name: 'Hoạt động',
+									},
+									{
+										uuid: CONFIG_STATUS.LOCKED,
+										name: 'Đang khóa',
+									},
+								]}
+							/>
+						</div>
+					</div>
+				}
+			/>
 			<MainTable
 				icon={<UserOctagon size={28} color='#FC6A45' variant='Bold' />}
 				title='Danh sách người đăng ký'
@@ -240,7 +268,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 						pageSize={pageSize}
 						onSetPageSize={setPageSize}
 						total={data?.pagination?.totalCount || 0}
-						dependencies={[pageSize, keyword]}
+						dependencies={[pageSize, keyword, status]}
 					/>
 				</div>
 			</MainTable>
