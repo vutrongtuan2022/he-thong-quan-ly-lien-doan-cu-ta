@@ -34,7 +34,6 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
-	const [dataStatus, setDataStatus] = useState<IPageAdmin | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
 
@@ -68,20 +67,39 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 		},
 	});
 
-	const funcUpdateStatus = useMutation({
+	const funcLocked = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageSuccess: true,
 				showMessageFailed: true,
-				msgSuccess: dataStatus?.status == CONFIG_STATUS.ACTIVE ? 'Khóa thành viên thành công!' : 'Mở khóa thành viên thành công!',
+				msgSuccess: 'Khóa thành viên thành công!',
 				http: accountServices.updateStatus({
-					uuid: dataStatus?.uuid!,
-					status: dataStatus?.status == CONFIG_STATUS.ACTIVE ? CONFIG_STATUS.LOCKED : CONFIG_STATUS.ACTIVE,
+					uuid: uuidLocked,
+					status: CONFIG_STATUS.LOCKED,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
-				setDataStatus(null);
+				setUuidLocked('');
+				queryClient.invalidateQueries([QUERY_KEY.table_admin]);
+			}
+		},
+	});
+
+	const funcOpen = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageSuccess: true,
+				showMessageFailed: true,
+				msgSuccess: 'Mở khóa thành viên thành công!',
+				http: accountServices.updateStatus({
+					uuid: uuidOpen,
+					status: CONFIG_STATUS.ACTIVE,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setUuidOpen('');
 				queryClient.invalidateQueries([QUERY_KEY.table_admin]);
 			}
 		},
@@ -89,7 +107,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 
 	return (
 		<Fragment>
-			<Loading loading={funcUpdateStatus.isLoading} />
+			<Loading loading={funcLocked.isLoading || funcOpen.isLoading} />
 			<SearchBlock keyword={keyword} setKeyword={setKeyword} placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email, nhóm quyền' />
 			<MainTable
 				icon={<UserOctagon size={28} color='#FC6A45' variant='Bold' />}
@@ -182,10 +200,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 													icon={<HiOutlineLockClosed color='#FA4B4B' size={24} />}
 													tooltip='Khóa thành viên'
 													background='rgba(250, 75, 75, 0.10)'
-													onClick={() => {
-														setDataStatus(row);
-														setUuidLocked(row?.uuid);
-													}}
+													onClick={() => setUuidLocked(row?.uuid)}
 												/>
 											)}
 											{row?.status === CONFIG_STATUS.LOCKED && (
@@ -193,10 +208,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 													icon={<HiOutlineLockOpen color=' #33C041' size={24} />}
 													tooltip='Mở khóa thành viên'
 													background='rgba(51, 192, 65, 0.10)'
-													onClick={() => {
-														setDataStatus(row);
-														setUuidOpen(row?.uuid);
-													}}
+													onClick={() => setUuidOpen(row?.uuid)}
 												/>
 											)}
 										</div>
@@ -222,7 +234,14 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				</DataWrapper>
 
 				<div className={styles.pagination}>
-					<Pagination total={100} page={page} onSetPage={setPage} pageSize={pageSize} onSetPageSize={setPageSize} />
+					<Pagination
+						page={page}
+						onSetPage={setPage}
+						pageSize={pageSize}
+						onSetPageSize={setPageSize}
+						total={data?.pagination?.totalCount || 0}
+						dependencies={[pageSize, keyword]}
+					/>
 				</div>
 			</MainTable>
 
@@ -277,7 +296,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				title='Xác nhận mở khóa tài khoản'
 				note='Bạn có chắc chắn muốn mở khóa tài khoản không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcUpdateStatus.mutate}
+				onSubmit={funcOpen.mutate}
 			/>
 
 			<Dialog
@@ -287,7 +306,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				title='Xác nhận khóa tài khoản'
 				note='Bạn có chắc chắn muốn khóa tài khoản không?'
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
-				onSubmit={funcUpdateStatus.mutate}
+				onSubmit={funcLocked.mutate}
 			/>
 		</Fragment>
 	);

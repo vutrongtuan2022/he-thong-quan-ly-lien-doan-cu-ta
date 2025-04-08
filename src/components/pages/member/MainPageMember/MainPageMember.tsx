@@ -29,7 +29,6 @@ function MainPageMember({}: PropsMainPageMember) {
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
 
-	const [dataStatus, setDataStatus] = useState<IMember | null>(null);
 	const {
 		data = {
 			items: [],
@@ -59,20 +58,39 @@ function MainPageMember({}: PropsMainPageMember) {
 		},
 	});
 
-	const funcUpdateStatus = useMutation({
+	const funcLocked = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: dataStatus?.status == CONFIG_STATUS.ACTIVE ? 'Khóa thành viên thành công!' : 'Mở khóa thành viên thành công!',
+				msgSuccess: 'Khóa thành viên thành công!',
 				http: accountServices.updateStatus({
-					uuid: dataStatus?.uuid!,
-					status: dataStatus?.status == CONFIG_STATUS.ACTIVE ? CONFIG_STATUS.LOCKED : CONFIG_STATUS.ACTIVE,
+					uuid: uuidLocked,
+					status: CONFIG_STATUS.LOCKED,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
-				setDataStatus(null);
+				setUuidLocked('');
+				queryClient.invalidateQueries([QUERY_KEY.table_member]);
+			}
+		},
+	});
+
+	const funcOpen = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Mở khóa thành viên thành công!',
+				http: accountServices.updateStatus({
+					uuid: uuidOpen,
+					status: CONFIG_STATUS.ACTIVE,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setUuidOpen('');
 				queryClient.invalidateQueries([QUERY_KEY.table_member]);
 			}
 		},
@@ -80,7 +98,7 @@ function MainPageMember({}: PropsMainPageMember) {
 
 	return (
 		<Fragment>
-			<Loading loading={funcUpdateStatus.isLoading} />
+			<Loading loading={funcLocked.isLoading || funcOpen.isLoading} />
 			<SearchBlock keyword={keyword} setKeyword={setKeyword} placeholder='Tìm kiếm theo tên người dùng, email, số điện thoại' />
 
 			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách người tài khoản'>
@@ -167,7 +185,6 @@ function MainPageMember({}: PropsMainPageMember) {
 												tooltip='Khóa thành viên'
 												background='rgba(250, 75, 75, 0.10)'
 												onClick={() => {
-													setDataStatus(row);
 													setUuidLocked(row?.uuid);
 												}}
 											/>
@@ -178,7 +195,6 @@ function MainPageMember({}: PropsMainPageMember) {
 												tooltip='Mở khóa thành viên'
 												background='rgba(51, 192, 65, 0.10)'
 												onClick={() => {
-													setDataStatus(row);
 													setUuidOpen(row?.uuid);
 												}}
 											/>
@@ -209,7 +225,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				title='Xác nhận mở khóa thành viên'
 				note='Bạn có chắc chắn muốn mở khóa thành viên ABC không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcUpdateStatus.mutate}
+				onSubmit={funcOpen.mutate}
 			/>
 
 			<Dialog
@@ -219,7 +235,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				title='Xác nhận khóa thành viên'
 				note={`Bạn có chắc chắn muốn khóa thành viên không?`}
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
-				onSubmit={funcUpdateStatus.mutate}
+				onSubmit={funcLocked.mutate}
 			/>
 		</Fragment>
 	);

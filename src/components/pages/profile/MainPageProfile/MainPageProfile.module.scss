@@ -29,17 +29,32 @@
     display: flex;
     flex-direction: column;
 }
-.add_avatar {
-    margin: 32px 0;
-}
 
-.divider {
-    opacity: 0.5;
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.2); /* Màu đen với độ trong suốt 20% */
-    border: none;
-}
+.group_info {
+    margin-top: 16px;
 
-.name_acount {
-    margin-top: 40px;
+    .avatar {
+        border-radius: 6px;
+        // margin-bottom: 12px;
+    }
+    .divider {
+        opacity: 0.5;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.2); /* Màu đen với độ trong suốt 20% */
+        border: none;
+        margin: 12px 0;
+    }
+
+    .item {
+        & > p:nth-child(1) {
+            color: #697586;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        & > p:nth-child(2) {
+            color: #202939;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    }
 }

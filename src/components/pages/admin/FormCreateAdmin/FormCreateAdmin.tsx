@@ -13,6 +13,7 @@ import {QUERY_KEY} from '~/constants/config/enum';
 import roleServices from '~/services/roleServices';
 import Loading from '~/components/common/Loading';
 import {toastWarn} from '~/common/funcs/toast';
+import md5 from 'md5';
 
 function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 	const queryClient = useQueryClient();
@@ -47,7 +48,7 @@ function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 					userName: form.userName,
 					accountName: form.account,
 					email: form.email,
-					password: form.password,
+					password: md5(`${form?.password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
 					roleUuid: form.role,
 				}),
 			});
@@ -164,15 +165,15 @@ function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 
 					<div className={styles.group_button}>
 						<div>
-							<Button p_10_14 white rounded_6 onClick={onClose}>
+							<Button p_10_24 white rounded_6 onClick={onClose}>
 								Hủy bỏ
 							</Button>
 						</div>
 						<FormContext.Consumer>
 							{({isDone}) => (
 								<div>
-									<Button disable={!isDone} p_10_14 aquamarine rounded_6>
-										Thêm video
+									<Button disable={!isDone} p_10_24 aquamarine rounded_6>
+										Tạo mới
 									</Button>
 								</div>
 							)}
