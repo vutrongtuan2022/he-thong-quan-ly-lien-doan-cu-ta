@@ -7,8 +7,8 @@ export default function Page() {
 	return (
 		<Fragment>
 			<Head>
-				<title>Chỉnh sửa tin tức</title>
-				<meta name='description' content='Chỉnh sửa tin tức' />
+				<title>Chỉnh sửa bài viết</title>
+				<meta name='description' content='Chỉnh sửa bài viết' />
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
