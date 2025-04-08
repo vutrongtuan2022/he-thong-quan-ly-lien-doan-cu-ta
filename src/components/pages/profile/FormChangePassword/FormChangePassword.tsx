@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {IFormChangePassword, PropsFormChangePassword} from './interfaces';
-import styles from './FormUpdatePassword.module.scss';
+import styles from './FormChangePassword.module.scss';
 import {IoClose} from 'react-icons/io5';
 import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
