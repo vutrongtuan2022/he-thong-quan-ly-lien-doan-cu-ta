@@ -17,6 +17,22 @@ const userServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	exportListUser: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			expertiseType: number | null;
+			state: number | null;
+			startDate: string | null;
+			endDate: string | null;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/export-list-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 	getDetailUser: (
 		data: {
 			uuid: string;

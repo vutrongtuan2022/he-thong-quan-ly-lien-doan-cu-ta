@@ -154,9 +154,38 @@ function MainPageHome({}: PropsMainPageHome) {
 		},
 	});
 
+	const funcExportData = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: userServices.exportListUser({
+					page: page,
+					pageSize: pageSize,
+					keyword: keyword,
+					state: state,
+					expertiseType: expertiseType,
+					startDate: date?.from ? moment(date.from).format('YYYY-MM-DD') : null,
+					endDate: date?.to ? moment(date.to).format('YYYY-MM-DD') : null,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+			}
+		},
+	});
+
 	return (
 		<Fragment>
-			<Loading loading={funcApproveUser.isLoading || funcConfirmPaymenUser.isLoading || funcConfirmCardUser.isLoading} />
+			<Loading
+				loading={
+					funcApproveUser.isLoading ||
+					funcConfirmPaymenUser.isLoading ||
+					funcConfirmCardUser.isLoading ||
+					funcExportData.isLoading
+				}
+			/>
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -212,6 +241,7 @@ function MainPageHome({}: PropsMainPageHome) {
 								rounded_8
 								bold
 								icon={<Image alt='icon download' src={icons.iconBtnDownload} width={16} height={16} />}
+								onClick={funcExportData.mutate}
 							>
 								Xuất dữ liệu
 							</Button>
