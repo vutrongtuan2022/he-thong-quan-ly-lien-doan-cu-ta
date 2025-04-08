@@ -13,6 +13,7 @@ import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
 import roleServices from '~/services/roleServices';
 import {toastWarn} from '~/common/funcs/toast';
+import Loading from '~/components/common/Loading';
 
 function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 	const router = useRouter();
@@ -95,6 +96,7 @@ function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 
 	return (
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+			<Loading loading={funcUpdateAdmin.isLoading} />
 			<div className={styles.container}>
 				<h4 className={styles.title}>Chỉnh sửa thông tin </h4>
 				<div className={styles.line}></div>
@@ -170,14 +172,14 @@ function FormUpdateAdmin({onClose}: PropsFormUpdateAdmin) {
 
 					<div className={styles.group_button}>
 						<div>
-							<Button p_10_14 white rounded_6 onClick={onClose}>
+							<Button p_10_24 white rounded_6 onClick={onClose}>
 								Hủy bỏ
 							</Button>
 						</div>
 						<FormContext.Consumer>
 							{({isDone}) => (
 								<div>
-									<Button disable={!isDone} p_10_14 aquamarine rounded_6>
+									<Button disable={!isDone} p_10_24 aquamarine rounded_6>
 										Lưu lại
 									</Button>
 								</div>

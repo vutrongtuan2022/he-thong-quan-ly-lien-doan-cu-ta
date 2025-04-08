@@ -22,7 +22,7 @@ export enum PATH {
 
 	//Profile
 	Profile = '/profile',
-	// UpdateProfile = '/profile/update-profile',
+	UpdateProfile = '/profile/update-profile',
 
 	// System
 	Banner = '/banner',
