@@ -15,7 +15,7 @@ import Loading from '~/components/common/Loading';
 
 function FormUpdateVideo({uuid, queryKeys, onClose}: PropsFormUpdateVideo) {
 	const queryClient = useQueryClient();
-	const [form, setForm] = useState<IFormUpdateVideo>({title: '', videoLink: '', sort: 0, privacy: 0});
+	const [form, setForm] = useState<IFormUpdateVideo>({title: '', videoLink: '', sort: 0, privacy: TYPE_DISPLAY.PUBLIC});
 	const [loading, setLoading] = useState<boolean>(false);
 
 	useQuery([QUERY_KEY.detail_video], {
