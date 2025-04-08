@@ -129,7 +129,7 @@ function MainPageNews({}: PropsMainPageNews) {
 					<div className={styles.filter}>
 						<div className={styles.flex}>
 							<FilterCustom
-								name='Loại tin tức'
+								name='Loại bài viết'
 								value={typeNews}
 								setValue={setTypeNews}
 								listOption={[
@@ -164,7 +164,7 @@ function MainPageNews({}: PropsMainPageNews) {
 
 			<MainTable
 				icon={<ClipboardText size={28} color='#FC6A45' variant='Bold' />}
-				title='Danh sách tin tức'
+				title='Danh sách bài viết'
 				action={
 					<div className={styles.action}>
 						<Button
@@ -175,7 +175,7 @@ function MainPageNews({}: PropsMainPageNews) {
 							icon={<Image alt='icon download' src={icons.iconAdd} width={20} height={20} />}
 							href={PATH.NewsCreate}
 						>
-							Thêm tin tức
+							Thêm bài viết
 						</Button>
 					</div>
 				}
@@ -183,8 +183,8 @@ function MainPageNews({}: PropsMainPageNews) {
 				<DataWrapper
 					data={data?.items || []}
 					loading={isLoading}
-					title='Tin tức trống!'
-					note='Danh sách tin tức hiện đang trống!'
+					title='Bài viết trống!'
+					note='Danh sách bài viết hiện đang trống!'
 					button={
 						<Button
 							p_8_24
@@ -194,7 +194,7 @@ function MainPageNews({}: PropsMainPageNews) {
 							icon={<Image alt='icon download' src={icons.iconAdd} width={20} height={20} />}
 							href={PATH.NewsCreate}
 						>
-							Thêm tin tức
+							Thêm bài viết
 						</Button>
 					}
 				>
@@ -228,7 +228,7 @@ function MainPageNews({}: PropsMainPageNews) {
 								),
 							},
 							{
-								title: 'Loại tin tức',
+								title: 'Loại bài viết',
 								render: (row, _) => (
 									<>
 										{row?.catalog === TYPE_NEWS.NEWS && 'Tin tức'}
@@ -322,7 +322,7 @@ function MainPageNews({}: PropsMainPageNews) {
 				type='error'
 				open={!!dataDelete}
 				onClose={() => setDataDelete(null)}
-				title='Xác nhận xóa tin tức'
+				title='Xác nhận xóa bài viết'
 				note='Bạn có chắc chắn muốn xóa bài viết ABC không?'
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
 				onSubmit={funcDeleteBlog.mutate}

@@ -97,7 +97,7 @@ function MainCreateNews({}: PropsMainCreateNews) {
 			<Loading loading={funcCreateBlog.isLoading || loading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.head_main}>
-					<Breadcrumb titles={['Quản lý tin tức', 'Thêm mới']} listHref={[PATH.News]} />
+					<Breadcrumb titles={['Quản lý bài viết', 'Thêm mới']} listHref={[PATH.News]} />
 					<div className={styles.group_button}>
 						<Button p_10_24 grey rounded_8 onClick={() => router.back()}>
 							Hủy bỏ
