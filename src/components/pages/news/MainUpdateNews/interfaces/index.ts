@@ -1,6 +1,4 @@
-export interface PropsMainUpdateNews {
-	uuid: string;
-}
+export interface PropsMainUpdateNews {}
 
 export interface IFormUpdateNews {
 	title: string;
