@@ -8,7 +8,7 @@ export interface IFormCreateNews {
 	content: string;
 	catalog: number;
 	privacy: number;
-	timePublic: string;
+	timePublic: string | Date;
 	isSpecial: boolean;
 	link: string;
 	sort: number;
