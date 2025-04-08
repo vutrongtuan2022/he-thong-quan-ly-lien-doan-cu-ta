@@ -2,18 +2,53 @@ import React, {useState} from 'react';
 import {IUpdatePaddWord, PropsFormUpdatePassword} from './interfaces';
 import styles from './FormUpdatePassword.module.scss';
 import {IoClose} from 'react-icons/io5';
-import Form, {Input} from '~/components/common/Form';
+import Form, {FormContext, Input} from '~/components/common/Form';
 import Button from '~/components/common/Button';
 import {ShieldSecurity} from 'iconsax-react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {httpRequest} from '~/services';
+import accountServices from '~/services/accountServices';
+import md5 from 'md5';
+import {useRouter} from 'next/router';
+import {QUERY_KEY} from '~/constants/config/enum';
+import Loading from '~/components/common/Loading';
 function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
+	const queryClient = useQueryClient();
+	const router = useRouter();
 	const [form, setForm] = useState<IUpdatePaddWord>({
 		old_password: '',
 		new_password: '',
 		confirm_password: '',
 	});
+	const funcChangePassPersonal = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Cập nhật mât khẩu thành công',
+				http: accountServices.changePassPersonal({
+					oldPassword: md5(`${form?.old_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
+					newPassword: md5(`${form?.new_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
+					// newPass: md5(`${form?.password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				setForm({old_password: '', new_password: '', confirm_password: ''});
+				onClose();
+				queryClient.invalidateQueries([QUERY_KEY.detail_profile]);
+			}
+		},
+	});
+
+	const handleSubmit = () => {
+		return funcChangePassPersonal.mutate();
+	};
 
 	return (
-		<Form form={form} setForm={setForm}>
+		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+			<Loading loading={funcChangePassPersonal.isLoading} />
 			<div className={styles.container}>
 				<h4 className={styles.title}>Đổi mật khẩu </h4>
 				<div className={styles.line}></div>
@@ -75,9 +110,13 @@ function FormUpdatePadsword({onClose}: PropsFormUpdatePassword) {
 						</div>
 
 						<div>
-							<Button p_10_24 aquamarine rounded_6>
-								Xác nhận
-							</Button>
+							<FormContext.Consumer>
+								{({isDone}) => (
+									<Button p_10_24 aquamarine rounded_6 disable={!isDone}>
+										Xác nhận
+									</Button>
+								)}
+							</FormContext.Consumer>
 						</div>
 					</div>
 				</div>
