@@ -16,6 +16,7 @@ export enum PATH {
 	// News
 	News = '/news',
 	NewsCreate = '/news/create',
+	NewsUpdate = '/news/update',
 
 	//Video
 	Video = '/video',
