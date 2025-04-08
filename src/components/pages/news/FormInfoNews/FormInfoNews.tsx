@@ -216,7 +216,19 @@ function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 			</Accordion>
 			<div className={styles.line}></div>
 			<Accordion title='Ảnh đại diện'>
-				<UploadImage isWidthFull={true} name='imagePath' path={form.imagePath} file={file} setFile={(f) => setFile(f)} />
+				<UploadImage
+					isWidthFull={true}
+					name='imagePath'
+					path={form?.imagePath ? `${process.env.NEXT_PUBLIC_IMAGE}/${form?.imagePath}` : ''}
+					file={file}
+					setFile={(f) => setFile(f)}
+					resetPath={() =>
+						setForm((prev) => ({
+							...prev,
+							imagePath: '',
+						}))
+					}
+				/>
 			</Accordion>
 			<div className={styles.line}></div>
 			<Accordion title='Thảo luận'>

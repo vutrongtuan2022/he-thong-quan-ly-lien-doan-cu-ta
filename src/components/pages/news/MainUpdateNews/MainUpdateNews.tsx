@@ -19,8 +19,9 @@ import uploadService from '~/services/uploadService';
 import moment from 'moment';
 import {useRouter} from 'next/router';
 
-function MainUpdateNews({uuid}: PropsMainUpdateNews) {
+function MainUpdateNews({}: PropsMainUpdateNews) {
 	const router = useRouter();
+	const {_uuid} = router.query;
 
 	const [file, setFile] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -42,10 +43,11 @@ function MainUpdateNews({uuid}: PropsMainUpdateNews) {
 		queryFn: () =>
 			httpRequest({
 				http: newsServices.detailBlog({
-					uuid: uuid,
+					uuid: _uuid as string,
 				}),
 			}),
 		onSuccess(data) {
+			console.log('data:', data);
 			if (data) {
 				setForm({
 					title: data?.title || '',
@@ -61,7 +63,7 @@ function MainUpdateNews({uuid}: PropsMainUpdateNews) {
 				});
 			}
 		},
-		enabled: !!uuid,
+		enabled: !!_uuid,
 	});
 
 	const funcUpdateBlog = useMutation({
@@ -71,7 +73,7 @@ function MainUpdateNews({uuid}: PropsMainUpdateNews) {
 				showMessageSuccess: true,
 				msgSuccess: 'Chỉnh sửa bài viết thành công!',
 				http: newsServices.upsertBlog({
-					uuid: uuid,
+					uuid: _uuid as string,
 					title: form?.title,
 					content: form?.content,
 					catalog: price(form?.catalog),
