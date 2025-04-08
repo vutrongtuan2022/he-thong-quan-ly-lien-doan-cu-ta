@@ -4,7 +4,7 @@ import TippyHeadless from '@tippyjs/react/headless';
 import {PropsFormInfoNews} from './interfaces';
 import styles from './FormInfoNews.module.scss';
 import Accordion from '~/components/utils/Accordion';
-import {FEATURED_BLOG, TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
+import {TYPE_DISPLAY, TYPE_NEWS} from '~/constants/config/enum';
 import UploadImage from '~/components/utils/UploadImage';
 import SwitchButton from '~/components/common/SwitchButton';
 import DateTimePicker from '~/components/utils/DateTimePicker';

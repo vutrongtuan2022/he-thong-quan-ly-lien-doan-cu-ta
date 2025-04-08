@@ -16,6 +16,7 @@ import {price} from '~/common/funcs/convertCoin';
 import Loading from '~/components/common/Loading';
 import {toastWarn} from '~/common/funcs/toast';
 import uploadService from '~/services/uploadService';
+import moment from 'moment';
 
 function MainCreateNews({queryKeys, onClose}: PropsMainCreateNews) {
 	const queryClient = useQueryClient();
@@ -27,7 +28,7 @@ function MainCreateNews({queryKeys, onClose}: PropsMainCreateNews) {
 		content: '',
 		catalog: TYPE_NEWS.NEWS,
 		privacy: TYPE_DISPLAY.PUBLIC,
-		timePublic: '',
+		timePublic: new Date(),
 		isSpecial: true,
 		link: '',
 		sort: 1,
@@ -47,7 +48,7 @@ function MainCreateNews({queryKeys, onClose}: PropsMainCreateNews) {
 					content: form?.content,
 					catalog: price(form?.catalog),
 					privacy: form?.privacy,
-					timePublic: form?.timePublic,
+					timePublic: moment(form?.timePublic).format('YYYY-MM-DD HH:mm'),
 					isSpecial: form?.isSpecial,
 					link: form?.link,
 					sort: price(form?.sort),
@@ -125,6 +126,19 @@ function MainCreateNews({queryKeys, onClose}: PropsMainCreateNews) {
 								</span>
 							}
 						/>
+						{form.catalog == TYPE_NEWS.EVENT && (
+							<Input
+								isRequired
+								name='link'
+								placeholder='Nhập link đăng ký sự kiện'
+								value={form.link}
+								label={
+									<span>
+										Link đăng ký sự kiện <span style={{color: 'red'}}>*</span>
+									</span>
+								}
+							/>
+						)}
 						<div className={styles.editer}>
 							<EditerContent
 								label={
