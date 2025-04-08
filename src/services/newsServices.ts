@@ -56,6 +56,16 @@ const newsServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	detailBlog: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Blog/get-detail-blog`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default newsServices;

@@ -1,6 +1,8 @@
-export interface PropsMainCreateNews {}
+export interface PropsMainUpdateNews {
+	uuid: string;
+}
 
-export interface IFormCreateNews {
+export interface IFormUpdateNews {
 	title: string;
 	content: string;
 	catalog: number;

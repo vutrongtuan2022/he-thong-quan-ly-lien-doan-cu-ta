@@ -1,18 +1,18 @@
 import Head from 'next/head';
 import {Fragment, ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
-import MainCreateNews from '~/components/pages/news/MainCreateNews';
+import MainUpdateNews from '~/components/pages/news/MainUpdateNews';
 
 export default function Page() {
 	return (
 		<Fragment>
 			<Head>
-				<title>Thêm mới bài viết</title>
-				<meta name='description' content='Thêm mới bài viết' />
+				<title>Chỉnh sửa tin tức</title>
+				<meta name='description' content='Chỉnh sửa tin tức' />
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<MainCreateNews />
+			<MainUpdateNews />
 		</Fragment>
 	);
 }
