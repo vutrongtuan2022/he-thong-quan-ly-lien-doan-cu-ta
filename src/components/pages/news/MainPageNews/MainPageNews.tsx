@@ -3,7 +3,7 @@ import Image from 'next/image';
 import {INews, PropsMainPageNews} from './interfaces';
 import styles from './MainPageNews.module.scss';
 import {useRouter} from 'next/router';
-import {QUERY_KEY, TYPE_NEWS, TYPE_DATE} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_NEWS, TYPE_DATE, TYPE_DISPLAY} from '~/constants/config/enum';
 import SearchBlock from '~/components/utils/SearchBlock';
 import FilterCustom from '~/components/common/FilterCustom';
 import FilterDateRange from '~/components/common/FilterDateRange';
@@ -20,15 +20,17 @@ import images from '~/constants/images/images';
 import {PATH} from '~/constants/config';
 import Dialog from '~/components/common/Dialog';
 import Link from 'next/link';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import newsServices from '~/services/newsServices';
 import moment from 'moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
+import Loading from '~/components/common/Loading';
 
 function MainPageNews({}: PropsMainPageNews) {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
@@ -37,7 +39,7 @@ function MainPageNews({}: PropsMainPageNews) {
 	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
-	const [uuidDelete, setUuidDelete] = useState<string>('');
+	const [dataDelete, setDataDelete] = useState<INews | null>(null);
 
 	const resetFilter = () => {
 		setKeyword('');
@@ -80,8 +82,45 @@ function MainPageNews({}: PropsMainPageNews) {
 		},
 	});
 
+	// Thay đổi hiển thị
+	const funcChangePrivacy = useMutation({
+		mutationFn: (body: {uuid: string}) =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: newsServices.changePrivacy({
+					uuid: body?.uuid!,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				queryClient.invalidateQueries([QUERY_KEY.table_news]);
+			}
+		},
+	});
+
+	// Xóa Blog
+	const funcDeleteBlog = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xóa bài viết thành công!',
+				http: newsServices.deleteBlog({
+					uuid: dataDelete?.uuid!,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setDataDelete(null);
+				queryClient.invalidateQueries([QUERY_KEY.table_news]);
+			}
+		},
+	});
+
 	return (
 		<Fragment>
+			<Loading loading={funcDeleteBlog.isLoading} />
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -191,7 +230,16 @@ function MainPageNews({}: PropsMainPageNews) {
 							},
 							{
 								title: 'Hiển thị',
-								render: (row, _) => <SwitchButton />,
+								render: (row, _) => (
+									<SwitchButton
+										checkOn={row?.privacy == TYPE_DISPLAY.PUBLIC}
+										onClick={() =>
+											funcChangePrivacy.mutate({
+												uuid: row?.uuid,
+											})
+										}
+									/>
+								),
 							},
 							{
 								title: 'Lượt xem',
@@ -233,7 +281,7 @@ function MainPageNews({}: PropsMainPageNews) {
 											icon={<Trash color='#FA4B4B' size={24} />}
 											tooltip='Xóa'
 											background='#FA4B4B1A'
-											onClick={() => setUuidDelete('1')}
+											onClick={() => setDataDelete(row)}
 										/>
 										<IconCustom
 											icon={<Eye color='#6170E3' size={24} />}
@@ -270,12 +318,12 @@ function MainPageNews({}: PropsMainPageNews) {
 
 			<Dialog
 				type='error'
-				open={!!uuidDelete}
-				onClose={() => setUuidDelete('')}
+				open={!!dataDelete}
+				onClose={() => setDataDelete(null)}
 				title='Xác nhận xóa tin tức'
-				note='Bạn có chắc chắn muốn xóa tin tức ABC không?'
+				note='Bạn có chắc chắn muốn xóa bài viết ABC không?'
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
-				onSubmit={() => setUuidDelete('')}
+				onSubmit={funcDeleteBlog.mutate}
 			/>
 		</Fragment>
 	);

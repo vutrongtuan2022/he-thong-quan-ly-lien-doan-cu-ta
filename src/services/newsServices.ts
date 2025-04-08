@@ -16,6 +16,26 @@ const newsServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	changePrivacy: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Blog/change-privacy`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	deleteBlog: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/Blog/delete-blog`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default newsServices;
