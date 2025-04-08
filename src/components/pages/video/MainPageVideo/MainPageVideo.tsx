@@ -236,11 +236,6 @@ function MainPageVideo({}: PropsMainPageVideo) {
 												background='rgba(244, 97, 97, 0.10)'
 												onClick={() => setDataDelete(row)}
 											/>
-											<IconCustom
-												icon={<Eye color='#6170E3' size={24} />}
-												tooltip='Xem chi tiết'
-												background='rgba(97, 112, 227, 0.10)'
-											/>
 										</div>
 									),
 								},

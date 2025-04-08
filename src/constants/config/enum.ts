@@ -71,3 +71,8 @@ export enum CONFIG_STATUS {
 	ACTIVE = 1, // Hoạt động
 	LOCKED, // Bị khóa
 }
+
+export enum FEATURED_BLOG {
+	OUTSTANDING = 1, // Nổi bật
+	NOT_OUTSTANDING, // Không nổi bật
+}

@@ -3,5 +3,7 @@ import {IFormCreateNews} from '../../MainCreateNews/interfaces';
 
 export interface PropsFormInfoNews {
 	form: IFormCreateNews;
-	setForm: Dispatch<SetStateAction<IFormCreateNews>>;
+	setForm: React.Dispatch<React.SetStateAction<IFormCreateNews>>;
+	setFile: React.Dispatch<React.SetStateAction<any>>;
+	file: any;
 }
