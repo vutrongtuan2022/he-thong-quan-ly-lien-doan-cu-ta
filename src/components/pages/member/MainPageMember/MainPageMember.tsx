@@ -20,6 +20,7 @@ import accountServices from '~/services/accountServices';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
 import FilterCustom from '~/components/common/FilterCustom';
+import Button from '~/components/common/Button';
 
 function MainPageMember({}: PropsMainPageMember) {
 	const queryClient = useQueryClient();
@@ -30,6 +31,13 @@ function MainPageMember({}: PropsMainPageMember) {
 	const [status, setStatus] = useState<number | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
+
+	const resetFilter = () => {
+		setKeyword('');
+		setPage(1);
+		setPageSize(20);
+		setStatus(null);
+	};
 
 	const {
 		data = {
@@ -125,11 +133,16 @@ function MainPageMember({}: PropsMainPageMember) {
 								]}
 							/>
 						</div>
+						<div className={styles.flex}>
+							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
+								Đặt lại
+							</Button>
+						</div>
 					</div>
 				}
 			/>
 
-			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách người tài khoản'>
+			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách tài khoản'>
 				<DataWrapper
 					data={data?.items || []}
 					loading={isLoading}
@@ -251,7 +264,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				open={!!uuidOpen}
 				onClose={() => setUuidOpen('')}
 				title='Xác nhận mở khóa thành viên'
-				note='Bạn có chắc chắn muốn mở khóa thành viên ABC không?'
+				note='Bạn có chắc chắn muốn mở khóa thành viên không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcOpen.mutate}
 			/>

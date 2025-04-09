@@ -24,7 +24,7 @@ function FormPassword({}: PropsFormPassword) {
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Lấy lại mât khẩu thành công',
+				msgSuccess: 'Lấy lại mật khẩu thành công',
 				http: accountServices.changePassForget({
 					email: form?.email!,
 					otp: form?.otp!,
@@ -69,7 +69,7 @@ function FormPassword({}: PropsFormPassword) {
 					</span>
 				}
 				placeholder='Xác nhận mật khẩu mới'
-				type='rePassword'
+				type='password'
 				name='rePassword'
 				value={form?.rePassword}
 				valueConfirm={form.password}

@@ -240,7 +240,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 											background='#FA4B4B1A'
 											onClick={() => setDataDelete(row)}
 										/>
-										<IconCustom
+										{/* <IconCustom
 											icon={<Eye color='#6170E3' size={24} />}
 											tooltip='Xem chi tiết'
 											background='#6170E31A'
@@ -253,7 +253,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 													},
 												})
 											}
-										/>
+										/> */}
 									</div>
 								),
 							},

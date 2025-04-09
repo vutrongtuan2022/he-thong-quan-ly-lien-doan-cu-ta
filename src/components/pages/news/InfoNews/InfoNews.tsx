@@ -43,7 +43,7 @@ function InfoNews({news}: PropsInfoNews) {
 				</div>
 			</Accordion>
 			<div className={styles.line}></div>
-			<Accordion title='Loại tin tức'>
+			<Accordion title='Loại bài viết'>
 				<div className={styles.category}>
 					<div className={styles.item}>
 						<input name='catalog' type='checkbox' checked={true} />
@@ -57,7 +57,7 @@ function InfoNews({news}: PropsInfoNews) {
 				</div>
 			</Accordion>
 			<div className={styles.line}></div>
-			<Accordion title='Ảnh đại diện'>
+			<Accordion title='Ảnh bài viết'>
 				<div className={styles.image}>
 					<Image
 						style={{

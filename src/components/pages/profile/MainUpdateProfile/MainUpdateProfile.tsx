@@ -171,6 +171,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 										placeholder='Nhập Email '
 										name='email'
 										type='text'
+										isEmail
 										value={form.email}
 										isRequired
 										max={255}

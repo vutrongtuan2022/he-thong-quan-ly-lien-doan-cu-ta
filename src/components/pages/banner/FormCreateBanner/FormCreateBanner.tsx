@@ -25,7 +25,7 @@ function FormCreateBanner({queryKeys, onClose}: PropsFormCreateBanner) {
 		title: '',
 		imagePath: '',
 		sort: 0,
-		privacy: TYPE_DISPLAY.PUBLIC,
+		privacy: TYPE_DISPLAY.PRIVATE,
 	});
 
 	const funcCreateBanner = useMutation({

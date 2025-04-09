@@ -146,7 +146,7 @@ function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 				</div>
 			</Accordion>
 			<div className={styles.line}></div>
-			<Accordion title='Loại tin tức'>
+			<Accordion title='Loại bài viết'>
 				<div className={styles.category}>
 					<div className={styles.item}>
 						<input
@@ -215,7 +215,7 @@ function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 				</div>
 			</Accordion>
 			<div className={styles.line}></div>
-			<Accordion title='Ảnh đại diện'>
+			<Accordion title='Ảnh bài viết'>
 				<UploadImage
 					isWidthFull={true}
 					name='imagePath'
@@ -238,12 +238,12 @@ function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 							name='blockComment'
 							type='checkbox'
 							id='allowComments'
-							checked={!form.blockComment}
+							checked={form.blockComment}
 							onChange={(e) => {
 								const {checked} = e.target;
 								setForm((prev) => ({
 									...prev,
-									blockComment: !checked,
+									blockComment: checked,
 								}));
 							}}
 						/>

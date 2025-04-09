@@ -189,7 +189,7 @@ function MainPageHome({}: PropsMainPageHome) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên người dùng, mã thẻ'
+				placeholder='Tìm kiếm theo họ tên, mã thẻ thành viên'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
@@ -290,8 +290,8 @@ function MainPageHome({}: PropsMainPageHome) {
 					<DataWrapper
 						loading={isLoading}
 						data={data?.items || []}
-						title='Người dùng trống!'
-						note='Danh sách người dùng hiện đang trống!'
+						title='Danh sách người đăng ký trống!'
+						note='Danh sách người đăng ký hiện đang trống!'
 					>
 						<Table<IUser>
 							data={data?.items || []}

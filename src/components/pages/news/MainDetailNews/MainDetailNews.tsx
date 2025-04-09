@@ -51,7 +51,7 @@ function MainDetailNews({}: PropsMainDetailNews) {
 					<TabNavLink
 						listHref={[
 							{
-								title: 'Chi tiết tin tức',
+								title: 'Chi tiết bài viết',
 								pathname: router.pathname,
 								query: null,
 							},

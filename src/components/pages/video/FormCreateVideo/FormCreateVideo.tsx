@@ -85,8 +85,9 @@ function FormCreateVideo({queryKeys, onClose}: PropsFormCreateVideo) {
 						placeholder='Nhập số thứ tự hiển thị vd: 1'
 						name='sort'
 						type='number'
+						isMoney
 						value={form.sort}
-						isRequired
+						// isRequired
 						label={
 							<span>
 								Thứ tự hiển thị <span style={{color: '#EE0033'}}>*</span>

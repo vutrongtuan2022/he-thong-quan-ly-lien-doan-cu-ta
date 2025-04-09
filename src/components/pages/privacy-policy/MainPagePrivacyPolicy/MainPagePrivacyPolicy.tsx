@@ -69,7 +69,7 @@ function MainPagePrivacyPolicy({}: PropsMainPagePrivacyPolicy) {
 					<EditerContent
 						label={
 							<span>
-								Nội dung chính sách <span style={{color: 'red'}}>*</span>
+								Nội dung chính sách bảo mật <span style={{color: 'red'}}>*</span>
 							</span>
 						}
 						content={form.content}
