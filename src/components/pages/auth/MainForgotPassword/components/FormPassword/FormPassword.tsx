@@ -69,7 +69,7 @@ function FormPassword({}: PropsFormPassword) {
 					</span>
 				}
 				placeholder='Xác nhận mật khẩu mới'
-				type='rePassword'
+				type='password'
 				name='rePassword'
 				value={form?.rePassword}
 				valueConfirm={form.password}

@@ -290,8 +290,8 @@ function MainPageHome({}: PropsMainPageHome) {
 					<DataWrapper
 						loading={isLoading}
 						data={data?.items || []}
-						title='Người dùng trống!'
-						note='Danh sách người dùng hiện đang trống!'
+						title='Danh sách người đăng ký trống!'
+						note='Danh sách người đăng ký hiện đang trống!'
 					>
 						<Table<IUser>
 							data={data?.items || []}

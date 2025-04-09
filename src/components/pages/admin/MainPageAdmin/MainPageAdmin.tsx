@@ -27,10 +27,14 @@ import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
 import FilterCustom from '~/components/common/FilterCustom';
 import roleServices from '~/services/roleServices';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
 
 function MainPageAdmin({}: PropsMainPageAdmin) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const {_open, _uuidUpdate} = router.query;
 
@@ -38,9 +42,17 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [status, setStatus] = useState<number | null>(null);
-	const [role, setRole] = useState<number | null>(null);
+	const [role, setRole] = useState<string>('');
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
+
+	const resetFilter = () => {
+		setKeyword('');
+		setPage(1);
+		setPageSize(20);
+		setStatus(null);
+		setRole('');
+	};
 
 	const {
 		data = {
@@ -57,7 +69,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			totalCount: number;
 			totalPage: number;
 		};
-	}>([QUERY_KEY.table_admin, page, status, pageSize, keyword], {
+	}>([QUERY_KEY.table_admin, page, status, pageSize, keyword, role], {
 		queryFn: () =>
 			httpRequest({
 				http: accountServices.listAdminAccount({
@@ -65,7 +77,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 					pageSize: pageSize,
 					keyword: keyword,
 					status: status,
-					role: '',
+					role: role,
 				}),
 			}),
 		select(data) {
@@ -73,7 +85,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 		},
 	});
 
-	const listRole = useQuery([QUERY_KEY.dropdown_category_role], {
+	const {data: listRole} = useQuery([QUERY_KEY.dropdown_category_role], {
 		queryFn: () =>
 			httpRequest({
 				http: roleServices.roleAdmin({
@@ -90,7 +102,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			httpRequest({
 				showMessageSuccess: true,
 				showMessageFailed: true,
-				msgSuccess: 'Khóa thành viên thành công!',
+				msgSuccess: 'Khóa quản trị viên thành công!',
 				http: accountServices.updateStatus({
 					uuid: uuidLocked,
 					status: CONFIG_STATUS.LOCKED,
@@ -109,7 +121,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			httpRequest({
 				showMessageSuccess: true,
 				showMessageFailed: true,
-				msgSuccess: 'Mở khóa thành viên thành công!',
+				msgSuccess: 'Mở khóa quản trị viên thành công!',
 				http: accountServices.updateStatus({
 					uuid: uuidOpen,
 					status: CONFIG_STATUS.ACTIVE,
@@ -129,7 +141,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email, nhóm quyền'
+				placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
@@ -148,22 +160,27 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 									},
 								]}
 							/>
-							{/* <FilterCustom
-								name='Nghề nghiệp'
+							<FilterCustom
+								name='Nhóm quyền'
 								value={role}
 								setValue={setRole}
-								listOption={listRole?.map((v) => ({
-									uuid: v?.value,
+								listOption={listRole?.map((v: any) => ({
+									uuid: v?.uuid,
 									name: v?.name,
 								}))}
-							/> */}
+							/>
+						</div>
+						<div className={styles.flex}>
+							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
+								Đặt lại
+							</Button>
 						</div>
 					</div>
 				}
 			/>
 			<MainTable
 				icon={<UserOctagon size={28} color='#FC6A45' variant='Bold' />}
-				title='Danh sách người đăng ký'
+				title='Danh sách tài khoản quản trị viên'
 				action={
 					<div className={styles.action}>
 						<Button
@@ -189,8 +206,8 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				<DataWrapper
 					data={data?.items || []}
 					loading={isLoading}
-					title='tài khoản trống!'
-					note='Danh sách tài khoản hiện đang trống!'
+					title='Quản trị viên trống!'
+					note='Danh sách quản trị viên hiện đang trống!'
 				>
 					<Table<IPageAdmin>
 						data={data?.items || []}
@@ -246,38 +263,40 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 								fixedRight: true,
 								render: (row, _) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-											{row?.status === CONFIG_STATUS.ACTIVE && (
+										{row?.uuid === infoUser?.uuid ? null : (
+											<>
+												{row?.status === CONFIG_STATUS.ACTIVE && (
+													<IconCustom
+														icon={<HiOutlineLockClosed color='#FA4B4B' size={24} />}
+														tooltip='Khóa quản trị viên'
+														background='rgba(250, 75, 75, 0.10)'
+														onClick={() => setUuidLocked(row?.uuid)}
+													/>
+												)}
+												{row?.status === CONFIG_STATUS.LOCKED && (
+													<IconCustom
+														icon={<HiOutlineLockOpen color=' #33C041' size={24} />}
+														tooltip='Mở khóa quản trị viên'
+														background='rgba(51, 192, 65, 0.10)'
+														onClick={() => setUuidOpen(row?.uuid)}
+													/>
+												)}
 												<IconCustom
-													icon={<HiOutlineLockClosed color='#FA4B4B' size={24} />}
-													tooltip='Khóa thành viên'
-													background='rgba(250, 75, 75, 0.10)'
-													onClick={() => setUuidLocked(row?.uuid)}
+													icon={<Edit color='#3772FF' size={24} />}
+													tooltip='Chỉnh sửa'
+													background='rgba(55, 114, 255, 0.10)'
+													onClick={() =>
+														router.replace({
+															pathname: router.pathname,
+															query: {
+																...router.query,
+																_uuidUpdate: row?.uuid,
+															},
+														})
+													}
 												/>
-											)}
-											{row?.status === CONFIG_STATUS.LOCKED && (
-												<IconCustom
-													icon={<HiOutlineLockOpen color=' #33C041' size={24} />}
-													tooltip='Mở khóa thành viên'
-													background='rgba(51, 192, 65, 0.10)'
-													onClick={() => setUuidOpen(row?.uuid)}
-												/>
-											)}
-										</div>
-										<IconCustom
-											icon={<Edit color='#3772FF' size={24} />}
-											tooltip='Chỉnh sửa'
-											background='rgba(55, 114, 255, 0.10)'
-											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {
-														...router.query,
-														_uuidUpdate: row?.uuid,
-													},
-												})
-											}
-										/>
+											</>
+										)}
 									</div>
 								),
 							},
@@ -292,7 +311,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 						pageSize={pageSize}
 						onSetPageSize={setPageSize}
 						total={data?.pagination?.totalCount || 0}
-						dependencies={[pageSize, keyword, status]}
+						dependencies={[pageSize, keyword, status, role]}
 					/>
 				</div>
 			</MainTable>

@@ -41,7 +41,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
-	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 	const [dataDelete, setDataDelete] = useState<IVideos | null>(null);
 

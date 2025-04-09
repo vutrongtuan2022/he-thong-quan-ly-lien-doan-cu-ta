@@ -26,6 +26,7 @@ import moment from 'moment';
 import {convertCoin} from '~/common/funcs/convertCoin';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
+import Tippy from '@tippyjs/react';
 
 function MainPageNews({}: PropsMainPageNews) {
 	const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ function MainPageNews({}: PropsMainPageNews) {
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [typeNews, setTypeNews] = useState<number | null>(null);
-	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
 	const [dataDelete, setDataDelete] = useState<INews | null>(null);
@@ -200,6 +201,10 @@ function MainPageNews({}: PropsMainPageNews) {
 						data={data?.items || []}
 						column={[
 							{
+								title: 'STT',
+								render: (_, index) => <>{index + 1}</>,
+							},
+							{
 								title: 'Bài viết',
 								render: (row, _) => (
 									<div className={styles.wrapper}>
@@ -214,14 +219,13 @@ function MainPageNews({}: PropsMainPageNews) {
 											width={44}
 											height={44}
 										/>
-										<div className={styles.content}>
-											<Link href={'#'} className={styles.label}>
-												{row?.title || '---'}
-											</Link>
-											<Link href={'#'} className={styles.desc}>
-												{row?.imagePath || '---'}
-											</Link>
-										</div>
+										<Tippy content={row?.title}>
+											<div className={styles.content}>
+												<Link href={`${PATH.News}/${row.uuid}`} className={styles.label}>
+													{row?.title || '---'}
+												</Link>
+											</div>
+										</Tippy>
 									</div>
 								),
 							},
@@ -312,7 +316,7 @@ function MainPageNews({}: PropsMainPageNews) {
 				open={!!dataDelete}
 				onClose={() => setDataDelete(null)}
 				title='Xác nhận xóa bài viết'
-				note='Bạn có chắc chắn muốn xóa bài viết ABC không?'
+				note='Bạn có chắc chắn muốn xóa bài viết không?'
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
 				onSubmit={funcDeleteBlog.mutate}
 			/>
