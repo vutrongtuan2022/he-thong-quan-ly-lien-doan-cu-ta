@@ -41,7 +41,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
-	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 	const [dataDelete, setDataDelete] = useState<IVideos | null>(null);
 
@@ -49,7 +49,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 		setKeyword('');
 		setPage(1);
 		setPageSize(20);
-		setTypeDateDefault(TYPE_DATE.ALL);
+		setTypeDate(TYPE_DATE.ALL);
 		setDate(null);
 	};
 
@@ -131,7 +131,7 @@ function MainPageVideo({}: PropsMainPageVideo) {
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
-							<FilterDateRange typeDateDefault={typeDateDefault} date={date} setDate={setDate} />
+							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>

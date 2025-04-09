@@ -38,7 +38,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
-	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.ALL);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
 	const [dataDelete, setDataDelete] = useState<IBanners | null>(null);
@@ -47,7 +47,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 		setKeyword('');
 		setPage(1);
 		setPageSize(20);
-		setTypeDateDefault(TYPE_DATE.ALL);
+		setTypeDate(TYPE_DATE.ALL);
 		setDate(null);
 	};
 
@@ -129,7 +129,7 @@ function MainPageBanner({}: PropsMainPageBanner) {
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
-							<FilterDateRange typeDateDefault={typeDateDefault} date={date} setDate={setDate} />
+							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>

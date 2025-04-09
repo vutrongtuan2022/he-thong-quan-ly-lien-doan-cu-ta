@@ -34,7 +34,7 @@ function MainPageNews({}: PropsMainPageNews) {
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [typeNews, setTypeNews] = useState<number | null>(null);
-	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.THIS_MONTH);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
 	const [dataDelete, setDataDelete] = useState<INews | null>(null);
@@ -44,7 +44,7 @@ function MainPageNews({}: PropsMainPageNews) {
 		setPage(1);
 		setPageSize(20);
 		setTypeNews(null);
-		setTypeDateDefault(TYPE_DATE.ALL);
+		setTypeDate(TYPE_DATE.ALL);
 		setDate(null);
 	};
 
@@ -149,7 +149,7 @@ function MainPageNews({}: PropsMainPageNews) {
 									},
 								]}
 							/>
-							<FilterDateRange typeDateDefault={typeDateDefault} date={date} setDate={setDate} />
+							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
