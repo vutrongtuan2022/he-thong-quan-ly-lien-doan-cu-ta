@@ -25,7 +25,7 @@ export enum GENDER {
 }
 
 export enum TYPE_NEWS {
-	NEWS,
+	NEWS = 1,
 	OPPORTUNITY,
 	EVENT,
 	DOCUMENT,
