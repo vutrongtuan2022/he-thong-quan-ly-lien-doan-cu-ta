@@ -189,7 +189,7 @@ function MainPageHome({}: PropsMainPageHome) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên người dùng, mã thẻ'
+				placeholder='Tìm kiếm theo họ tên, mã thẻ thành viên'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>

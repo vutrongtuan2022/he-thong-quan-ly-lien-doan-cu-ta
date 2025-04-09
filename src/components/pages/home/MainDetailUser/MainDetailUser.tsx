@@ -261,7 +261,6 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 				</div>
 				<div className={styles.group_info}>
 					<div className={styles.item}>
-						<p>Địa chỉ liên lạc</p>
 						<p>{getTextAddress(user?.addressInfo)}</p>
 					</div>
 				</div>

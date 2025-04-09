@@ -26,7 +26,7 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Cập nhật mât khẩu thành công',
+				msgSuccess: 'Cập nhật mật khẩu thành công',
 				http: accountServices.changePassPersonal({
 					oldPassword: md5(`${form?.old_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),
 					newPassword: md5(`${form?.new_password}${process.env.NEXT_PUBLIC_KEY_PASS}`),

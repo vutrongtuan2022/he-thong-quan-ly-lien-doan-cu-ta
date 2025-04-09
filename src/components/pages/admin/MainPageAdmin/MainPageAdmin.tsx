@@ -26,6 +26,7 @@ import accountServices from '~/services/accountServices';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
 import FilterCustom from '~/components/common/FilterCustom';
+import roleServices from '~/services/roleServices';
 
 function MainPageAdmin({}: PropsMainPageAdmin) {
 	const router = useRouter();
@@ -37,6 +38,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [status, setStatus] = useState<number | null>(null);
+	const [role, setRole] = useState<number | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
 
@@ -64,6 +66,18 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 					keyword: keyword,
 					status: status,
 					role: '',
+				}),
+			}),
+		select(data) {
+			return data;
+		},
+	});
+
+	const listRole = useQuery([QUERY_KEY.dropdown_category_role], {
+		queryFn: () =>
+			httpRequest({
+				http: roleServices.roleAdmin({
+					keyword: '',
 				}),
 			}),
 		select(data) {
@@ -134,6 +148,15 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 									},
 								]}
 							/>
+							{/* <FilterCustom
+								name='Nghề nghiệp'
+								value={role}
+								setValue={setRole}
+								listOption={listRole?.map((v) => ({
+									uuid: v?.value,
+									name: v?.name,
+								}))}
+							/> */}
 						</div>
 					</div>
 				}

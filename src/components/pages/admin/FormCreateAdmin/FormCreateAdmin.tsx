@@ -114,6 +114,7 @@ function FormCreateAdmin({onClose}: PropsFormCreateAdmin) {
 						placeholder='Nhập tên email'
 						name='email'
 						type='text'
+						isEmail
 						value={form.email}
 						max={50}
 						isRequired
