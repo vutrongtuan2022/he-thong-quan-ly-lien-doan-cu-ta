@@ -11,13 +11,8 @@ import {ListOptionFilterDate} from '~/constants/config';
 import {IoIosArrowDown} from 'react-icons/io';
 import DateOption from './components/DateOption';
 
-function FilterDateRange({date, setDate, typeDateDefault = TYPE_DATE.ALL}: PropsFilterDateRange) {
+function FilterDateRange({date, setDate, typeDate, setTypeDate}: PropsFilterDateRange) {
 	const [openDate, setOpenDate] = useState<boolean>(false);
-	const [typeDate, setTypeDate] = useState<TYPE_DATE>(typeDateDefault || TYPE_DATE.ALL);
-
-	useEffect(() => {
-		setTypeDate(typeDateDefault);
-	}, [typeDateDefault]);
 
 	useEffect(() => {
 		if (typeDate != TYPE_DATE.LUA_CHON) {

@@ -46,7 +46,7 @@ function MainPageHome({}: PropsMainPageHome) {
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [expertiseType, setExpertiseType] = useState<number | null>(null);
 	const [state, setState] = useState<number | null>(null);
-	const [typeDateDefault, setTypeDateDefault] = useState<TYPE_DATE>(TYPE_DATE.ALL);
+	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
 	const [uuidConfirmCard, setUuidConfirmCard] = useState<string>('');
@@ -60,7 +60,7 @@ function MainPageHome({}: PropsMainPageHome) {
 		setPageSize(20);
 		setExpertiseType(null);
 		setState(null);
-		setTypeDateDefault(TYPE_DATE.ALL);
+		setTypeDate(TYPE_DATE.ALL);
 		setDate(null);
 	};
 
@@ -229,7 +229,7 @@ function MainPageHome({}: PropsMainPageHome) {
 									},
 								]}
 							/>
-							<FilterDateRange typeDateDefault={typeDateDefault} date={date} setDate={setDate} />
+							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
