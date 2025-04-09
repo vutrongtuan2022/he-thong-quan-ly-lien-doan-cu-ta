@@ -7,7 +7,7 @@ export const listExpertise: {
 }[] = [
 	{
 		value: TYPE_EXPERTISE.COACH,
-		name: 'Huấn luận viên',
+		name: 'Huấn luyện viên',
 		code: 'HLV',
 	},
 	{
@@ -18,7 +18,7 @@ export const listExpertise: {
 	{
 		value: TYPE_EXPERTISE.ATHLETE,
 		name: 'Vận động viên',
-		code: 'VĐv',
+		code: 'VĐV',
 	},
 ];
 
