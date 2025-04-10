@@ -141,7 +141,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên đăng nhập,tài khoản, email'
+				placeholder='Tìm kiếm theo tên đăng nhập, tên tài khoản, email'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
