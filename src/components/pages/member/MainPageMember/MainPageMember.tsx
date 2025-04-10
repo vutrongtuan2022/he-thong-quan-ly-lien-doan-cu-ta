@@ -113,7 +113,7 @@ function MainPageMember({}: PropsMainPageMember) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên người dùng, email, số điện thoại'
+				placeholder='Tìm kiếm theo họ tên, email, số điện thoại'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
@@ -142,7 +142,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				}
 			/>
 
-			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách tài khoản'>
+			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách tài khoản thành viên'>
 				<DataWrapper
 					data={data?.items || []}
 					loading={isLoading}

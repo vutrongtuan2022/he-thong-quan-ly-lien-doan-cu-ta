@@ -201,10 +201,6 @@ function MainPageNews({}: PropsMainPageNews) {
 						data={data?.items || []}
 						column={[
 							{
-								title: 'STT',
-								render: (_, index) => <>{index + 1}</>,
-							},
-							{
 								title: 'Bài viết',
 								render: (row, _) => (
 									<div className={styles.wrapper}>
@@ -239,6 +235,10 @@ function MainPageNews({}: PropsMainPageNews) {
 										{row?.catalog === TYPE_NEWS.DOCUMENT && 'Tài liệu'}
 									</>
 								),
+							},
+							{
+								title: 'Stt',
+								render: (_, index) => <>{index + 1}</>,
 							},
 							{
 								title: 'Hiển thị',
