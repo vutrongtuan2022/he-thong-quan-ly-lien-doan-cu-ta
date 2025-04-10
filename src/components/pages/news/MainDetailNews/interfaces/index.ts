@@ -11,7 +11,7 @@ export interface INews {
 	isSpecial: true;
 	link: string;
 	sort: number;
-	blockComment: false;
+	blockComment: boolean;
 	imagePath: string;
 	created: string;
 	updated: string;
