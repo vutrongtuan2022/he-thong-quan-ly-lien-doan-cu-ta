@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import {PropsEditerContent} from './interfaces';
 import styles from './EditerContent.module.scss';
@@ -143,14 +143,32 @@ const editorConfig: any = {
 	},
 	width: 800,
 	height: 842,
+	// Config Placeholder
+	placeholder: 'Nhập nội dung bài viết...',
+	showPlaceholder: true,
+	useInputsPlaceholder: true,
+
+	// Config Focus editor
+	autofocus: true,
+	cursorAfterAutofocus: 'end',
+	saveSelectionOnBlur: true,
 };
 
 function EditerContent({label, content, setContent, ...props}: PropsEditerContent) {
+	const editorRef = useRef<any>(null);
+
+	useEffect(() => {
+		if (editorRef.current) {
+			editorRef.current.editor?.focus();
+		}
+	}, []);
+
 	return (
 		<div className={styles.content}>
 			<p className={styles.label}>{label}</p>
 			<JoditEditor
 				{...props}
+				ref={editorRef}
 				value={content}
 				config={editorConfig}
 				onBlur={(newContent) => setContent(newContent)}
