@@ -58,9 +58,9 @@ export enum STATE_USER {
 }
 
 export enum TYPE_EXPERTISE {
-	COACH = 1, // HLV
+	ATHLETE = 1, // VĐV
+	COACH, // HLV
 	REFEREE, // Trọng tài
-	ATHLETE, // VĐV
 }
 
 export enum TYPE_EDUCATION {
