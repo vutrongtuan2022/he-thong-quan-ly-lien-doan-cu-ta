@@ -1,6 +1,7 @@
 export interface PropsMainPageMember {}
 
 export interface IMember {
+	cardState: number;
 	userInfo: {
 		code: string;
 		fullname: string;
@@ -14,6 +15,7 @@ export interface IMember {
 		name: string;
 		uuid: string;
 	};
+	expertiseType: number;
 	created: string;
 	status: number;
 	uuid: string;

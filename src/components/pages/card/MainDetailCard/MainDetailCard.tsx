@@ -266,9 +266,10 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 							<p>{listEducation?.find((v) => v?.value == card?.education)?.name}</p>
 						</div>
 						<div className={styles.item}>
-							<p>Nghề nghiệp</p>
-							<p>{listExpertise?.find((v) => v?.value == card?.expertiseType)?.name || '---'} </p>
+							<p>Chức vụ</p>
+							<p>{listExpertise?.find((v) => v?.value == card?.expertiseType)?.name || '---'}</p>
 						</div>
+
 						<div className={styles.item}>
 							<p>Số điện thoại liên lạc</p>
 							<p>{card?.phoneNumber}</p>

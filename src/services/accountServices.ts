@@ -21,7 +21,10 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
-	listUserAccount: (data: {pageSize: number; page: number; keyword: string; status: number | null}, tokenAxios?: any) => {
+	listUserAccount: (
+		data: {pageSize: number; page: number; keyword: string; status: number | null; expertiseType: number | null},
+		tokenAxios?: any
+	) => {
 		return axiosClient.post(`/Account/get-page-list-user-account`, data, {
 			cancelToken: tokenAxios,
 		});
