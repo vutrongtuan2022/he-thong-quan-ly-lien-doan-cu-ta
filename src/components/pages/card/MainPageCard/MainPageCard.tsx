@@ -1,52 +1,57 @@
-import React, {Fragment, useState} from 'react';
-
-import {IUser, PropsMainPageHome} from './interfaces';
-import styles from './MainPageHome.module.scss';
+import {Fragment, useState} from 'react';
+import styles from './MainPageCard.module.scss';
+import {ICard, PropsMainPageCard} from './interfaces';
 import SearchBlock from '~/components/utils/SearchBlock';
+import FilterCustom from '~/components/common/FilterCustom';
+import {QUERY_KEY, STATE_CARD, STATE_USER, TYPE_DATE} from '~/constants/config/enum';
+import FilterDateRange from '~/components/common/FilterDateRange';
 import Button from '~/components/common/Button';
 import Image from 'next/image';
 import icons from '~/constants/images/icons';
-import FilterCustom from '~/components/common/FilterCustom';
-import MainTable from '~/components/utils/MainTable';
-import {CloseCircle, Danger, Eye, TickCircle, User} from 'iconsax-react';
+import clsx from 'clsx';
 import {useRouter} from 'next/router';
-import GridColumn from '~/components/layouts/GridColumn';
-import CardUser from '../CardUser';
-import Pagination from '~/components/common/Pagination';
-import DataWrapper from '~/components/common/DataWrapper';
-import Table from '~/components/common/Table';
-import StateActive from '~/components/utils/StateActive';
-import IconCustom from '~/components/common/IconCustom';
-import FilterDateRange from '~/components/common/FilterDateRange';
-import {QUERY_KEY, STATE_USER, TYPE_DATE} from '~/constants/config/enum';
-import Dialog from '~/components/common/Dialog';
-import Popup from '~/components/common/Popup';
-import FormRejectedUser from '../FormRejectedUser';
-import PositionContainer from '~/components/common/PositionContainer';
-import MainDetailUser from '../MainDetailUser';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import MainTable from '~/components/utils/MainTable';
+import {Card, CardTick, Category, CloseCircle, Danger, DollarCircle, Eye, TaskSquare, TickCircle} from 'iconsax-react';
+import DataWrapper from '~/components/common/DataWrapper';
 import {httpRequest} from '~/services';
 import userServices from '~/services/userServices';
-import {listExpertise} from '~/common/funcs/data';
 import moment from 'moment';
+import Table from '~/components/common/Table';
+import Tippy from '@tippyjs/react';
 import Moment from 'react-moment';
+import StateActive from '~/components/utils/StateActive';
+import IconCustom from '~/components/common/IconCustom';
+import GridColumn from '~/components/layouts/GridColumn';
+import Pagination from '~/components/common/Pagination';
+import Dialog from '~/components/common/Dialog';
+import Popup from '~/components/common/Popup';
+import PositionContainer from '~/components/common/PositionContainer';
+import MainDetailCard from '../MainDetailCard';
+import FormRejectedCard from '../FormRejectedCard';
+import CardIssuance from '../CardIssuance';
+import Link from 'next/link';
+import {listExpertise} from '~/common/funcs/data';
 import Loading from '~/components/common/Loading';
 
-function MainPageHome({}: PropsMainPageHome) {
+function MainPageCard({}: PropsMainPageCard) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_view, _uuidUser} = router.query;
+	const {_view, _uuidCard} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
 	const [expertiseType, setExpertiseType] = useState<number | null>(null);
-	const [state, setState] = useState<number | null>(null);
+	const [status, setStatus] = useState<number | null>(null);
+	const [cardState, setCardState] = useState<number | null>(null);
 	const [typeDate, setTypeDate] = useState<TYPE_DATE>(TYPE_DATE.ALL);
 	const [date, setDate] = useState<{from: Date | null; to: Date | null} | null>(null);
 
 	const [uuidConfirmCard, setUuidConfirmCard] = useState<string>('');
+	const [uuidConfirmCardIssued, setUuidConfirmCardIssued] = useState<string>('');
+
 	const [uuidConfirmPayment, setUuidConfirmPayment] = useState<string>('');
 	const [uuidApprove, setUuidApprove] = useState<string>('');
 	const [uuidRejected, setUuidRejected] = useState<string>('');
@@ -56,7 +61,8 @@ function MainPageHome({}: PropsMainPageHome) {
 		setPage(1);
 		setPageSize(20);
 		setExpertiseType(null);
-		setState(null);
+		setStatus(null);
+		setCardState(null);
 		setTypeDate(TYPE_DATE.ALL);
 		setDate(null);
 	};
@@ -71,20 +77,21 @@ function MainPageHome({}: PropsMainPageHome) {
 		},
 		isLoading,
 	} = useQuery<{
-		items: IUser[];
+		items: ICard[];
 		pagination: {
 			totalCount: number;
 			totalPage: number;
 		};
-	}>([QUERY_KEY.table_user, page, pageSize, keyword, state, expertiseType, date?.from, date?.to], {
+	}>([QUERY_KEY.table_card, page, pageSize, keyword, status, cardState, expertiseType, date?.from, date?.to], {
 		queryFn: () =>
 			httpRequest({
-				http: userServices.getListUser({
+				http: userServices.getListUserRegisterCard({
 					page: page,
 					pageSize: pageSize,
 					keyword: keyword,
-					state: state,
+					status: status,
 					expertiseType: expertiseType,
+					cardState: cardState,
 					startDate: date?.from ? moment(date.from).format('YYYY-MM-DD') : null,
 					endDate: date?.to ? moment(date.to).format('YYYY-MM-DD') : null,
 				}),
@@ -94,73 +101,123 @@ function MainPageHome({}: PropsMainPageHome) {
 		},
 	});
 
-	// Duyệt thành viên
-	const funcApproveUser = useMutation({
+	// Duyệt làm thẻ
+	const funcApproveCard = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Duyệt thành viên thành công!',
-				http: userServices.updateStateUser({
+				msgSuccess: 'Duyệt yêu cầu làm thẻ thành công!',
+				http: userServices.updateCardStateUser({
 					uuid: uuidApprove,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
 				setUuidApprove('');
-				queryClient.invalidateQueries([QUERY_KEY.table_user]);
+				queryClient.invalidateQueries([QUERY_KEY.table_card]);
 			}
 		},
 	});
 
 	// Xác nhận đã đóng tiền
-	const funcConfirmPaymenUser = useMutation({
+	const funcConfirmPaymenCard = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
 				msgSuccess: 'Xác nhận đóng tiền thành công!',
-				http: userServices.updateStateUser({
+				http: userServices.updateCardStateUser({
 					uuid: uuidConfirmPayment,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
 				setUuidConfirmPayment('');
-				queryClient.invalidateQueries([QUERY_KEY.table_user]);
+				queryClient.invalidateQueries([QUERY_KEY.table_card]);
 			}
 		},
 	});
 
 	// Xác nhận đã phát hành thẻ
-	const funcConfirmCardUser = useMutation({
+	const funcConfirmCardIssuance = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
 				msgSuccess: 'Xác nhận phát hành thẻ thành công!',
-				http: userServices.updateStateUser({
+				http: userServices.updateCardStateUser({
 					uuid: uuidConfirmCard,
 				}),
 			}),
 		onSuccess(data) {
 			if (data) {
 				setUuidConfirmCard('');
-				queryClient.invalidateQueries([QUERY_KEY.table_user]);
+				queryClient.invalidateQueries([QUERY_KEY.table_card]);
+			}
+		},
+	});
+
+	// Xác nhận đã phát hành thẻ
+	const funcConfirmCardIssued = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				msgSuccess: 'Xác nhận phát hành thẻ thành công!',
+				http: userServices.updateCardStateUser({
+					uuid: uuidConfirmCardIssued,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				setUuidConfirmCardIssued('');
+				queryClient.invalidateQueries([QUERY_KEY.table_card]);
+			}
+		},
+	});
+
+	const funcExportData = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: userServices.exportListUser({
+					page: page,
+					pageSize: pageSize,
+					keyword: keyword,
+					status: status,
+					cardState: cardState,
+					expertiseType: expertiseType,
+					startDate: date?.from ? moment(date.from).format('YYYY-MM-DD') : null,
+					endDate: date?.to ? moment(date.to).format('YYYY-MM-DD') : null,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
 			}
 		},
 	});
 
 	return (
 		<Fragment>
-			<Loading loading={funcApproveUser.isLoading || funcConfirmPaymenUser.isLoading || funcConfirmCardUser.isLoading} />
+			<Loading
+				loading={
+					funcApproveCard.isLoading ||
+					funcConfirmPaymenCard.isLoading ||
+					funcConfirmCardIssuance.isLoading ||
+					funcExportData.isLoading
+				}
+			/>
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo họ tên'
+				placeholder='Tìm kiếm theo tên người dùng, mã thẻ '
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
+							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 							<FilterCustom
 								name='Nghề nghiệp'
 								value={expertiseType}
@@ -172,55 +229,124 @@ function MainPageHome({}: PropsMainPageHome) {
 							/>
 							<FilterCustom
 								name='Trạng thái'
-								value={state}
-								setValue={setState}
+								value={cardState}
+								setValue={setCardState}
 								listOption={[
 									{
-										uuid: STATE_USER.PENDING_APPROVAL,
+										uuid: STATE_CARD.PENDING_APPROVAL,
 										name: 'Chờ duyệt',
 									},
 									{
-										uuid: STATE_USER.APPROVED,
+										uuid: STATE_CARD.APPROVED,
 										name: 'Đã duyệt',
 									},
 									{
-										uuid: STATE_USER.PAID,
+										uuid: STATE_CARD.PAID,
 										name: 'Đã đóng tiền',
 									},
 									{
-										uuid: STATE_USER.ISSUED,
+										uuid: STATE_CARD.PENDING_ISSUED,
+										name: 'Chờ phát hành thẻ cứng',
+									},
+									{
+										uuid: STATE_CARD.ISSUED,
 										name: 'Đã phát hành thẻ cứng',
 									},
 									{
-										uuid: STATE_USER.REJECTED,
+										uuid: STATE_CARD.REJECTED,
 										name: 'Bị từ chối',
 									},
 								]}
 							/>
-							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
 								Đặt lại
 							</Button>
+							<Button
+								p_8_24
+								orange
+								rounded_8
+								bold
+								icon={<Image alt='icon download' src={icons.iconBtnDownload} width={16} height={16} />}
+								onClick={funcExportData.mutate}
+							>
+								Xuất dữ liệu
+							</Button>
 						</div>
 					</div>
 				}
 			/>
-			<MainTable icon={<User size={28} color='#FC6A45' variant='Bold' />} title='Danh sách người đăng ký'>
+			<MainTable
+				icon={<Card size={28} color='#FC6A45' variant='Bold' />}
+				title='Danh sách yêu cầu phát hành thẻ'
+				action={
+					<div className={styles.action}>
+						<div
+							className={clsx(styles.view, {[styles.active]: _view == 'list'})}
+							onClick={() =>
+								router.replace({
+									pathname: router.pathname,
+									query: {
+										...router.query,
+										_view: 'list',
+									},
+								})
+							}
+						>
+							<Category className={styles.icon_view} size={24} />
+						</div>
+						<div
+							className={clsx(styles.view, {[styles.active]: !_view})}
+							onClick={() => {
+								const {_view, ...rest} = router.query;
+
+								router.replace({
+									pathname: router.pathname,
+									query: {
+										...rest,
+									},
+								});
+							}}
+						>
+							<TaskSquare className={styles.icon_view} size={26} />
+						</div>
+					</div>
+				}
+			>
 				{!_view && (
 					<DataWrapper
 						loading={isLoading}
 						data={data?.items || []}
-						title='Danh sách người đăng ký trống!'
-						note='Danh sách người đăng ký hiện đang trống!'
+						title='Danh sách yêu cầu phát hành thẻ trống!'
+						note='Danh sách yêu cầu phát hành thẻ hiện đang trống!'
 					>
-						<Table<IUser>
+						<Table<ICard>
 							data={data?.items || []}
 							column={[
 								{
 									title: 'STT',
 									render: (_, index) => <>{index + 1}</>,
+								},
+								{
+									title: 'Mã thẻ thành viên',
+									render: (row, _) => (
+										<Tippy content='Xem chi tiết'>
+											<Link
+												href='#'
+												className={styles.link}
+												onClick={(e) => {
+													e.preventDefault();
+													router.replace({
+														pathname: router.pathname,
+														query: {...router.query, _uuidCard: '1'},
+													});
+												}}
+											>
+												{row?.code || ''}
+											</Link>
+										</Tippy>
+									),
 								},
 								{
 									title: 'Họ tên',
@@ -245,52 +371,58 @@ function MainPageHome({}: PropsMainPageHome) {
 								},
 								{
 									title: 'Số điện thoại',
-									render: (row, _) => <>{row.phoneNumber}</>,
+									render: (row, _) => <>{row?.phoneNumber || '---'}</>,
 								},
 								{
 									title: 'Email',
-									render: (row, _) => <>{row.email}</>,
+									render: (row, _) => <>{row?.email || '---'}</>,
 								},
 								{
 									title: 'CMND/CCCD',
-									render: (row, _) => <>{row.identityCode}</>,
+									render: (row, _) => <>{row?.identityCode || '---'}</>,
 								},
 								{
 									title: 'Ngày đăng ký',
-									render: (row, _) => <Moment date={row.created} format='DD/MM/YYYY' />,
+									render: (row, _) => <Moment date={row?.cardCreated} format='DD/MM/YYYY' />,
 								},
 								{
 									title: 'Trạng thái',
 									render: (row, _) => (
 										<StateActive
-											stateActive={row.state}
+											stateActive={row?.cardState}
 											listState={[
 												{
-													state: STATE_USER.PENDING_APPROVAL,
+													state: STATE_CARD.PENDING_APPROVAL,
 													text: 'Chờ duyệt',
 													backgroundColor: '#FD8B6E',
 													textColor: '#fff',
 												},
 												{
-													state: STATE_USER.APPROVED,
+													state: STATE_CARD.APPROVED,
 													text: 'Đã duyệt',
 													backgroundColor: '#4BC9F0',
 													textColor: '#fff',
 												},
 												{
-													state: STATE_USER.PAID,
+													state: STATE_CARD.PAID,
 													text: 'Đã đóng tiền',
 													backgroundColor: '#4ECB71',
 													textColor: '#fff',
 												},
 												{
-													state: STATE_USER.ISSUED,
+													state: STATE_CARD.ISSUED,
 													text: 'Đã phát hành thẻ cứng',
+													backgroundColor: 'rgba(68, 132, 255, 0.10)',
+													textColor: '#4484FF',
+												},
+												{
+													state: STATE_CARD.PENDING_ISSUED,
+													text: 'Chờ phát hành thẻ cứng',
 													backgroundColor: '#4484FF',
 													textColor: '#fff',
 												},
 												{
-													state: STATE_USER.REJECTED,
+													state: STATE_CARD.REJECTED,
 													text: 'Bị từ chối',
 													backgroundColor: '#FA4B4B',
 													textColor: '#fff',
@@ -301,7 +433,7 @@ function MainPageHome({}: PropsMainPageHome) {
 								},
 								{
 									title: 'Lý do từ chối',
-									render: (row, _) => <>{row.rejectedReason || '---'}</>,
+									render: (row, _) => <>{row?.cardRejected || '---'}</>,
 								},
 								{
 									title: 'Tác vụ',
@@ -309,21 +441,51 @@ function MainPageHome({}: PropsMainPageHome) {
 									render: (row, _) => (
 										<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
 											{/* Chờ duyệt */}
-											{row?.state == STATE_USER.PENDING_APPROVAL && (
+											{row?.cardState == STATE_CARD.PENDING_APPROVAL && (
 												<>
 													<IconCustom
 														icon={<TickCircle color='#2CAE39' size={24} />}
-														tooltip='Duyệt thành viên'
+														tooltip='Xác nhận duyệt yêu cầu làm thẻ'
 														background='rgba(44, 174, 57, 0.10)'
 														onClick={() => setUuidApprove(row?.uuid)}
 													/>
 													<IconCustom
 														icon={<CloseCircle color='#EB2E2E' size={24} />}
-														tooltip='Từ chối thành viên'
+														tooltip='Từ chối yêu cầu'
 														background='rgba(244, 97, 97, 0.10)'
 														onClick={() => setUuidRejected(row?.uuid)}
 													/>
 												</>
+											)}
+
+											{/* Đã duyệt */}
+											{row?.cardState == STATE_CARD.APPROVED && (
+												<IconCustom
+													icon={<DollarCircle color='#4ECB71' size={24} />}
+													tooltip='Xác nhận đã đóng tiền'
+													background='rgba(78, 203, 113, 0.10)'
+													onClick={() => setUuidConfirmPayment(row?.uuid)}
+												/>
+											)}
+
+											{/* Đã đóng tiền */}
+											{row?.cardState == STATE_CARD.PAID && (
+												<IconCustom
+													icon={<CardTick color='#3DC5AA' size={24} />}
+													tooltip='Xác nhận chờ phát hành thẻ'
+													background='rgba(61, 197, 170, 0.10)'
+													onClick={() => setUuidConfirmCard(row?.uuid)}
+												/>
+											)}
+
+											{/* Đã phát hành thẻ */}
+											{row?.cardState == STATE_CARD.PENDING_ISSUED && (
+												<IconCustom
+													icon={<TickCircle color='#3DC5AA' size={24} />}
+													tooltip='Xác nhận đã phát hành thẻ'
+													background='rgba(0, 183, 196, 0.10)'
+													onClick={() => setUuidConfirmCardIssued(row?.uuid)}
+												/>
 											)}
 
 											{/* Xem chi tiết */}
@@ -334,7 +496,7 @@ function MainPageHome({}: PropsMainPageHome) {
 												onClick={() =>
 													router.replace({
 														pathname: router.pathname,
-														query: {...router.query, _uuidUser: row?.uuid},
+														query: {...router.query, _uuidCard: row?.uuid},
 													})
 												}
 											/>
@@ -354,7 +516,7 @@ function MainPageHome({}: PropsMainPageHome) {
 					>
 						<GridColumn col_4>
 							{data?.items?.map((v) => (
-								<CardUser key={v?.uuid} user={v} />
+								<CardIssuance key={1} card={v} />
 							))}
 						</GridColumn>
 					</DataWrapper>
@@ -367,11 +529,10 @@ function MainPageHome({}: PropsMainPageHome) {
 						pageSize={pageSize}
 						onSetPageSize={setPageSize}
 						total={data?.pagination?.totalCount || 0}
-						dependencies={[pageSize, keyword, state, expertiseType, date?.from, date?.to]}
+						dependencies={[pageSize, keyword, status, cardState, expertiseType, date?.from, date?.to]}
 					/>
 				</div>
 			</MainTable>
-
 			<Dialog
 				type='primary'
 				open={!!uuidApprove}
@@ -379,9 +540,8 @@ function MainPageHome({}: PropsMainPageHome) {
 				title='Duyệt thành viên'
 				note='Bạn có chắc chắn muốn duyệt thành viên này?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcApproveUser.mutate}
+				onSubmit={funcApproveCard.mutate}
 			/>
-
 			<Dialog
 				type='primary'
 				open={!!uuidConfirmPayment}
@@ -389,9 +549,8 @@ function MainPageHome({}: PropsMainPageHome) {
 				title='Xác nhận đã đóng tiền'
 				note='Bạn có chắc chắn muốn xác nhận thành viên này đã đóng tiền không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcConfirmPaymenUser.mutate}
+				onSubmit={funcConfirmPaymenCard.mutate}
 			/>
-
 			<Dialog
 				type='primary'
 				open={!!uuidConfirmCard}
@@ -399,17 +558,24 @@ function MainPageHome({}: PropsMainPageHome) {
 				title='Xác nhận đã phát hành thẻ'
 				note='Bạn có chắc chắn muốn xác nhận thành viên này đã phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcConfirmCardUser.mutate}
+				onSubmit={funcConfirmCardIssuance.mutate}
 			/>
-
+			<Dialog
+				type='primary'
+				open={!!uuidConfirmCardIssued}
+				onClose={() => setUuidConfirmCardIssued('')}
+				title='Phát hành thẻ'
+				note='Bạn có chắc chắn muốn xác nhận phát hành thẻ không?'
+				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
+				onSubmit={funcConfirmCardIssued.mutate}
+			/>
 			<Popup open={!!uuidRejected} onClose={() => setUuidRejected('')}>
-				<FormRejectedUser uuidRejected={uuidRejected} queryKeys={[QUERY_KEY.table_user]} onClose={() => setUuidRejected('')} />
+				<FormRejectedCard uuidRejected={uuidRejected} queryKeys={[QUERY_KEY.table_card]} onClose={() => setUuidRejected('')} />
 			</Popup>
-
 			<PositionContainer
-				open={!!_uuidUser}
+				open={!!_uuidCard}
 				onClose={() => {
-					const {_uuidUser, ...rest} = router.query;
+					const {_uuidCard, ...rest} = router.query;
 
 					router.replace({
 						pathname: router.pathname,
@@ -419,9 +585,9 @@ function MainPageHome({}: PropsMainPageHome) {
 					});
 				}}
 			>
-				<MainDetailUser
+				<MainDetailCard
 					onClose={() => {
-						const {_uuidUser, ...rest} = router.query;
+						const {_uuidCard, ...rest} = router.query;
 
 						router.replace({
 							pathname: router.pathname,
@@ -436,4 +602,4 @@ function MainPageHome({}: PropsMainPageHome) {
 	);
 }
 
-export default MainPageHome;
+export default MainPageCard;

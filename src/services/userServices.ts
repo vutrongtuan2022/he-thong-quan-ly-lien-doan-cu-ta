@@ -23,7 +23,8 @@ const userServices = {
 			page: number;
 			keyword: string;
 			expertiseType: number | null;
-			state: number | null;
+			status: number | null;
+			cardState: number | null;
 			startDate: string | null;
 			endDate: string | null;
 		},
@@ -61,6 +62,57 @@ const userServices = {
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`/User/update-state-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	//card
+
+	getListUserRegisterCard: (
+		data: {
+			pageSize: number;
+			page: number;
+			keyword: string;
+			expertiseType: number | null;
+			status: number | null;
+			startDate: string | null;
+			endDate: string | null;
+			cardState: number | null;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/get-page-list-user-register-card`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+
+	updateCardStateUser: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/update-card-state-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	rejectedCardUser: (
+		data: {
+			uuid: string;
+			rejectedReason: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/rejected-card-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	getDetailCardUser: (
+		data: {
+			uuid: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/User/get-detail-register-card-user`, data, {
 			cancelToken: tokenAxios,
 		});
 	},

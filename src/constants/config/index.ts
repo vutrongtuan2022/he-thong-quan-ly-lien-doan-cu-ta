@@ -1,4 +1,4 @@
-import {Award, ClipboardText, Gallery, People, PresentionChart, ProfileTick, UserOctagon, VideoPlay} from 'iconsax-react';
+import {Award, Card, ClipboardText, Crown1, Gallery, People, PresentionChart, ProfileTick, UserOctagon, VideoPlay} from 'iconsax-react';
 import {ROLE_ADMIN, TYPE_DATE} from './enum';
 
 export enum PATH {
@@ -13,6 +13,9 @@ export enum PATH {
 	Member = '/member',
 	Admin = '/admin',
 
+	//Card
+	Card = '/card',
+
 	// News
 	News = '/news',
 	NewsCreate = '/news/create',
@@ -24,6 +27,9 @@ export enum PATH {
 	//Profile
 	Profile = '/profile',
 	UpdateProfile = '/profile/update-profile',
+
+	//Link
+	Link = '/link',
 
 	// System
 	Banner = '/banner',
@@ -50,6 +56,13 @@ export const Menus: {
 				icon: ProfileTick,
 				path: PATH.Home,
 				pathActive: PATH.Home,
+				role: ROLE_ADMIN.ADMIN,
+			},
+			{
+				title: 'Phát hành thẻ',
+				icon: Card,
+				path: PATH.Card,
+				pathActive: PATH.Card,
 				role: ROLE_ADMIN.ADMIN,
 			},
 			{
@@ -97,6 +110,13 @@ export const Menus: {
 				pathActive: PATH.Any,
 				role: ROLE_ADMIN.ADMIN,
 			},
+			// {
+			// 	title: 'Thông tin liên đoàn',
+			// 	icon: Crown1,
+			// 	path: PATH.Link,
+			// 	pathActive: PATH.Link,
+			// 	role: ROLE_ADMIN.ADMIN,
+			// },
 			{
 				title: 'Quản lý banner',
 				icon: Gallery,

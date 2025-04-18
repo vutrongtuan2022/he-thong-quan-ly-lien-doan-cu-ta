@@ -1,5 +1,6 @@
 export enum QUERY_KEY {
 	table_user,
+	table_card,
 	table_news,
 	table_videos,
 	table_banners,
@@ -9,6 +10,7 @@ export enum QUERY_KEY {
 	list_comment_news,
 
 	detail_user,
+	detail_card,
 	detail_policy,
 	detail_admin,
 	detail_banners,
@@ -54,6 +56,15 @@ export enum STATE_USER {
 	PENDING_APPROVAL, // Chờ duyệt
 	APPROVED, // Đã duyệt
 	PAID, // Đã đóng tiền
+	ISSUED, // Đã phát hành thẻ cứng
+}
+
+export enum STATE_CARD {
+	REJECTED = 0, // Bị từ chối
+	PENDING_APPROVAL, // Chờ duyệt
+	APPROVED, // Đã duyệt
+	PAID, // Đã đóng tiền
+	PENDING_ISSUED, // Chờ phát hành thẻ cứng
 	ISSUED, // Đã phát hành thẻ cứng
 }
 
