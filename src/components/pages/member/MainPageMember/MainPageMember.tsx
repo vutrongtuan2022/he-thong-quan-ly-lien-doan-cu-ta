@@ -25,13 +25,14 @@ import {listExpertise} from '~/common/funcs/data';
 import {useRouter} from 'next/router';
 import Popup from '~/components/common/Popup';
 import FormCreateExpertise from '../FormCreateExpertise';
+import FormUpdateExpertise from '../FormUpdateExpertise';
 import PositionContainer from '~/components/common/PositionContainer';
 import MainDetailMember from '../MainDetailMember';
 
 function MainPageMember({}: PropsMainPageMember) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const {_uuidCreate, _uuidMember} = router.query;
+	const {_uuidCreate, _uuidUpdate, _uuidMember} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
@@ -264,7 +265,7 @@ function MainPageMember({}: PropsMainPageMember) {
 								fixedRight: true,
 								render: (row, _) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-										{row?.expertiseType == null && (
+										{row?.expertiseType == null ? (
 											<IconCustom
 												icon={<Crown1 color='#6170E3' size={24} />}
 												tooltip='Thêm chức vụ'
@@ -274,7 +275,22 @@ function MainPageMember({}: PropsMainPageMember) {
 														pathname: router.pathname,
 														query: {
 															...router.query,
-															_uuidCreate: row.userInfo.uuid,
+															_uuidCreate: row?.userInfo.uuid,
+														},
+													})
+												}
+											/>
+										) : (
+											<IconCustom
+												icon={<Crown1 color='#6170E3' size={24} />}
+												tooltip='Chỉnh sửa chức vụ'
+												background=' rgba(55, 114, 255, 0.10)'
+												onClick={() =>
+													router.replace({
+														pathname: router.pathname,
+														query: {
+															...router.query,
+															_uuidUpdate: row?.userInfo.uuid,
 														},
 													})
 												}
@@ -351,6 +367,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				onSubmit={funcLocked.mutate}
 			/>
 
+			{/* thêm mới chức vụ */}
 			<Popup
 				open={!!_uuidCreate}
 				onClose={() => {
@@ -369,6 +386,34 @@ function MainPageMember({}: PropsMainPageMember) {
 					queryKeys={[QUERY_KEY.table_member]}
 					onClose={() => {
 						const {_uuidCreate, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: rest,
+						});
+					}}
+				/>
+			</Popup>
+
+			{/* chỉnh sửa chức vụ */}
+			<Popup
+				open={!!_uuidUpdate}
+				onClose={() => {
+					const {_uuidUpdate, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<FormUpdateExpertise
+					uuid={_uuidUpdate as string}
+					queryKeys={[QUERY_KEY.table_member]}
+					onClose={() => {
+						const {_uuidUpdate, ...rest} = router.query;
 
 						router.replace({
 							pathname: router.pathname,
