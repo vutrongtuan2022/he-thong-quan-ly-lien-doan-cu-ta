@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import styles from './FormCreateExpertise.module.scss';
-import {IFormCreateExpertise, PropsFormCreateExpertise} from './interfaces';
+import styles from './FormUpdateExpertise.module.scss';
+import {IFormUpdateExpertise, PropsFormUpdateExpertise} from './interfaces';
 import Form, {FormContext, Input} from '~/components/common/Form';
-import {QUERY_KEY, STATE_CARD, TYPE_EXPERTISE} from '~/constants/config/enum';
+import {QUERY_KEY, TYPE_EXPERTISE} from '~/constants/config/enum';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {httpRequest} from '~/services';
 import userServices from '~/services/userServices';
@@ -11,9 +11,9 @@ import Button from '~/components/common/Button';
 import {IoClose} from 'react-icons/io5';
 import Select, {Option} from '~/components/common/Select';
 import {listExpertise} from '~/common/funcs/data';
-function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertise) {
+function FormUpdateExpertise({uuid, onClose, queryKeys}: PropsFormUpdateExpertise) {
 	const queryClient = useQueryClient();
-	const [form, setForm] = useState<IFormCreateExpertise>({fullname: '', expertiseType: TYPE_EXPERTISE.ATHLETE});
+	const [form, setForm] = useState<IFormUpdateExpertise>({fullname: '', expertiseType: TYPE_EXPERTISE.ATHLETE});
 
 	useQuery([QUERY_KEY.detail_member], {
 		queryFn: () =>
@@ -24,18 +24,18 @@ function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertis
 			}),
 		onSuccess(data) {
 			if (data) {
-				setForm({fullname: data?.fullname || '', expertiseType: data?.expertiseType || null});
+				setForm({fullname: data?.fullname || '', expertiseType: data?.expertiseType});
 			}
 		},
 		enabled: !!uuid,
 	});
 
-	const funcCreateExpertise = useMutation({
+	const funcUpdateExpertise = useMutation({
 		mutationFn: () => {
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Thêm mới chức vụ thành công thành công!',
+				msgSuccess: 'Chỉnh sửa chức vụ thành công thành công!',
 				http: userServices.updateExpertiseType({
 					uuid: uuid,
 					expertiseType: form?.expertiseType || null,
@@ -55,14 +55,14 @@ function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertis
 	});
 
 	const handleSubmit = async () => {
-		return funcCreateExpertise.mutate();
+		return funcUpdateExpertise.mutate();
 	};
 
 	return (
 		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
-			<Loading loading={funcCreateExpertise.isLoading} />
+			<Loading loading={funcUpdateExpertise.isLoading} />
 			<div className={styles.container}>
-				<h4 className={styles.title}>Thêm chức vụ</h4>
+				<h4 className={styles.title}>Chỉnh sửa chức vụ</h4>
 
 				<div className={styles.line}></div>
 				<div className={styles.form}>
@@ -135,4 +135,4 @@ function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertis
 	);
 }
 
-export default FormCreateExpertise;
+export default FormUpdateExpertise;
