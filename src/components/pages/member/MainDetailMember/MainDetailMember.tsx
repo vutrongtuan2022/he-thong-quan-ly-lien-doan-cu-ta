@@ -1,89 +1,63 @@
 import React, {useState} from 'react';
 
-import {IUserDetail, PropsMainDetailUser} from './interfaces';
-import styles from './MainDetailUser.module.scss';
+import {IMemberDetail, PropsMainDetailMember} from './interfaces';
+import styles from './MainDetailMember.module.scss';
 import Button from '~/components/common/Button';
 import StateActive from '~/components/utils/StateActive';
 import Image from 'next/image';
 import GridColumn from '~/components/layouts/GridColumn';
 import {useRouter} from 'next/router';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {GENDER, QUERY_KEY, STATE_USER} from '~/constants/config/enum';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {CONFIG_STATUS, GENDER, QUERY_KEY, STATE_USER} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import userServices from '~/services/userServices';
 import Moment from 'react-moment';
 import {listEducation, listExpertise} from '~/common/funcs/data';
 import {getTextAddress} from '~/common/funcs/convertCoin';
 import Popup from '~/components/common/Popup';
-import FormRejectedUser from '../FormRejectedUser';
-import Loading from '~/components/common/Loading';
 import Dialog from '~/components/common/Dialog';
 import {Danger} from 'iconsax-react';
 
-function MainDetailUser({onClose}: PropsMainDetailUser) {
+function MainDetailMember({onClose}: PropsMainDetailMember) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const {_uuidUser} = router.query;
+	const {_uuidMember} = router.query;
 
-	const [openApprove, setOpenApprove] = useState<boolean>(false);
-	const [openRejected, setOpenRejected] = useState<boolean>(false);
-
-	const {data: user} = useQuery<IUserDetail>([QUERY_KEY.detail_user, _uuidUser], {
+	const {data: member} = useQuery<IMemberDetail>([QUERY_KEY.detail_member, _uuidMember], {
 		queryFn: () =>
 			httpRequest({
-				http: userServices.getDetailUser({
-					uuid: _uuidUser as string,
+				http: userServices.detailUserAccount({
+					uuid: _uuidMember as string,
 				}),
 			}),
 		select(data) {
 			return data;
 		},
-		enabled: !!_uuidUser,
-	});
-
-	// Duyệt thành viên
-	const funcApproveUser = useMutation({
-		mutationFn: () =>
-			httpRequest({
-				showMessageFailed: true,
-				showMessageSuccess: true,
-				msgSuccess: 'Duyệt thành viên thành công!',
-				http: userServices.updateStateUser({
-					uuid: user?.uuid!,
-				}),
-			}),
-		onSuccess(data) {
-			if (data) {
-				setOpenApprove(false);
-				queryClient.invalidateQueries([QUERY_KEY.detail_user]);
-				queryClient.invalidateQueries([QUERY_KEY.table_user]);
-			}
-		},
+		enabled: !!_uuidMember,
 	});
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcApproveUser.isLoading} />
 			<div className={styles.head}>
 				<div className={styles.info}>
 					<h4>Chi tiết thành viên</h4>
 					<div className={styles.status}>
-						<p>Trạng thái hiện tại:</p>
+						<p>Trạng thái thành viên hiện tại:</p>
 						<StateActive
 							isSmall={true}
-							stateActive={user?.state!}
+							stateActive={member?.status!}
 							listState={[
 								{
-									state: STATE_USER.PENDING_APPROVAL,
-									text: 'Chờ duyệt',
-									backgroundColor: '#FD8B6E',
+									state: CONFIG_STATUS.ACTIVE,
+									text: 'Hoạt động',
+									backgroundColor: '#33C041',
 									textColor: '#fff',
 								},
 								{
-									state: STATE_USER.REJECTED,
-									text: 'Bị từ chối',
-									backgroundColor: '#FA4B4B',
+									state: CONFIG_STATUS.LOCKED,
+									text: 'Đang khóa',
+									backgroundColor: '#FD8B6E',
 									textColor: '#fff',
 								},
 							]}
@@ -92,23 +66,13 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 						<p>
 							Ngày đăng ký:
 							<span style={{marginLeft: '4px'}}>
-								{user?.identityDate ? <Moment date={user?.identityDate} format='DD/MM/YYYY' /> : '---'}
+								{member?.identityDate ? <Moment date={member?.identityDate} format='DD/MM/YYYY' /> : '---'}
 							</span>
 						</p>
 					</div>
 				</div>
 				<div className={styles.group_btn}>
 					{/* Chờ duyệt */}
-					{user?.state == STATE_USER.PENDING_APPROVAL && (
-						<>
-							<Button green p_8_24 rounded_8 onClick={() => setOpenApprove(true)}>
-								Duyệt thành viên
-							</Button>
-							<Button red p_8_24 rounded_8 onClick={() => setOpenRejected(true)}>
-								Từ chối thành viên
-							</Button>
-						</>
-					)}
 
 					<Button grey p_8_24 rounded_8 onClick={onClose}>
 						Đóng
@@ -120,10 +84,10 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 					<h4>Thông tin cá nhân</h4>
 				</div>
 				<div className={styles.group_info}>
-					{user?.imageCardPath && (
+					{member?.imageCardPath && (
 						<Image
 							alt='Avatar'
-							src={`${process.env.NEXT_PUBLIC_IMAGE}/${user?.imageCardPath}`}
+							src={`${process.env.NEXT_PUBLIC_IMAGE}/${member?.imageCardPath}`}
 							width={80}
 							height={80}
 							className={styles.avatar}
@@ -132,47 +96,45 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 					<GridColumn col_5>
 						<div className={styles.item}>
 							<p>Họ và tên</p>
-							<p>{user?.fullname}</p>
+							<p>{member?.fullname}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ngày sinh</p>
 							<p>
-								<Moment date={user?.birthday} format='DD/MM/YYYY' />
+								<Moment date={member?.birthday} format='DD/MM/YYYY' />
 							</p>
 						</div>
 						<div className={styles.item}>
 							<p>Giới tính</p>
 							<p>
-								{user?.gender == GENDER?.MALE && 'Nam'}
-								{user?.gender == GENDER?.FEMALE && 'Nữ'}
+								{member?.gender == GENDER?.MALE && 'Nam'}
+								{member?.gender == GENDER?.FEMALE && 'Nữ'}
 							</p>
 						</div>
 						<div className={styles.item}>
 							<p>Chiều cao (cm)</p>
-							<p>{user?.height || '---'}</p>
+							<p>{member?.height || '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Cân nặng (kg)</p>
-							<p>{user?.weight || '---'}</p>
+							<p>{member?.weight || '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Tình trạng học vấn</p>
-							<p>{listEducation?.find((v) => v?.value == user?.education)?.name}</p>
+							<p>{listEducation?.find((v) => v?.value == member?.education)?.name}</p>
+						</div>
+						<div className={styles.item}>
+							<p>Chức vụ</p>
+							<p>{listExpertise?.find((v) => v?.value == member?.expertiseType)?.name || '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Số điện thoại liên lạc</p>
-							<p>{user?.phoneNumber}</p>
+							<p>{member?.phoneNumber}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Email</p>
-							<p>{user?.email}</p>
+							<p>{member?.email}</p>
 						</div>
-						{user?.state == STATE_USER.REJECTED && (
-							<div className={styles.item}>
-								<p>Lý do từ chối</p>
-								<p>{user?.rejectedReason || '---'}</p>
-							</div>
-						)}
 					</GridColumn>
 				</div>
 				<div className={styles.line_width}></div>
@@ -181,7 +143,7 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 				</div>
 				<div className={styles.group_info}>
 					<div className={styles.item}>
-						<p>{getTextAddress(user?.addressInfo)}</p>
+						<p>{getTextAddress(member?.addressInfo)}</p>
 					</div>
 				</div>
 				<div className={styles.line_width}></div>
@@ -192,23 +154,23 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 					<GridColumn col_3>
 						<div className={styles.item}>
 							<p>Số CMND/CCCD</p>
-							<p>{user?.identityCode}</p>
+							<p>{member?.identityCode}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Nơi cấp CMND/CCCD</p>
-							<p>{user?.identityPlace}</p>
+							<p>{member?.identityPlace}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ngày cấp CMND/CCCD</p>
 							<p>
-								<Moment date={user?.identityDate} format='DD/MM/YYYY' />
+								<Moment date={member?.identityDate} format='DD/MM/YYYY' />
 							</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ảnh mặt trước CMND/CCCD</p>
 							<Image
 								alt='Ảnh CCCD mặt trước'
-								src={`${process?.env?.NEXT_PUBLIC_IMAGE}/${user?.frontIdentityPath}`}
+								src={`${process?.env?.NEXT_PUBLIC_IMAGE}/${member?.frontIdentityPath}`}
 								height={216}
 								width={368}
 								style={{borderRadius: '8px'}}
@@ -218,7 +180,7 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 							<p>Ảnh mặt sau CMND/CCCD</p>
 							<Image
 								alt='Ảnh CCCD mặt sau'
-								src={`${process?.env?.NEXT_PUBLIC_IMAGE}/${user?.backIdentityPath}`}
+								src={`${process?.env?.NEXT_PUBLIC_IMAGE}/${member?.backIdentityPath}`}
 								height={216}
 								width={368}
 								style={{borderRadius: '8px'}}
@@ -227,26 +189,8 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 					</GridColumn>
 				</div>
 			</div>
-
-			<Dialog
-				type='primary'
-				open={openApprove}
-				onClose={() => setOpenApprove(false)}
-				title='Duyệt thành viên'
-				note='Bạn có chắc chắn muốn duyệt thành viên này?'
-				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
-				onSubmit={funcApproveUser.mutate}
-			/>
-
-			<Popup open={openRejected} onClose={() => setOpenRejected(false)}>
-				<FormRejectedUser
-					uuidRejected={_uuidUser as string}
-					queryKeys={[QUERY_KEY.detail_user, QUERY_KEY.table_user]}
-					onClose={() => setOpenRejected(false)}
-				/>
-			</Popup>
 		</div>
 	);
 }
 
-export default MainDetailUser;
+export default MainDetailMember;

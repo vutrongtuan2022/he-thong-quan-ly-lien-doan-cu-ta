@@ -4,7 +4,7 @@ import {IMember, PropsMainPageMember} from './interfaces';
 import styles from './MainPageMember.module.scss';
 import SearchBlock from '~/components/utils/SearchBlock';
 import MainTable from '~/components/utils/MainTable';
-import {Danger, People} from 'iconsax-react';
+import {Crown1, Danger, Eye, People} from 'iconsax-react';
 import {HiOutlineLockClosed, HiOutlineLockOpen} from 'react-icons/hi';
 import DataWrapper from '~/components/common/DataWrapper';
 import Table from '~/components/common/Table';
@@ -14,16 +14,24 @@ import Pagination from '~/components/common/Pagination';
 import Dialog from '~/components/common/Dialog';
 import images from '~/constants/images/images';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {CONFIG_STATUS, QUERY_KEY} from '~/constants/config/enum';
+import {CONFIG_STATUS, QUERY_KEY, STATE_CARD} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
 import accountServices from '~/services/accountServices';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
 import FilterCustom from '~/components/common/FilterCustom';
 import Button from '~/components/common/Button';
+import {listExpertise} from '~/common/funcs/data';
+import {useRouter} from 'next/router';
+import Popup from '~/components/common/Popup';
+import FormCreateExpertise from '../FormCreateExpertise';
+import PositionContainer from '~/components/common/PositionContainer';
+import MainDetailMember from '../MainDetailMember';
 
 function MainPageMember({}: PropsMainPageMember) {
+	const router = useRouter();
 	const queryClient = useQueryClient();
+	const {_uuidCreate, _uuidMember} = router.query;
 
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
@@ -31,10 +39,12 @@ function MainPageMember({}: PropsMainPageMember) {
 	const [status, setStatus] = useState<number | null>(null);
 	const [uuidLocked, setUuidLocked] = useState<string>('');
 	const [uuidOpen, setUuidOpen] = useState<string>('');
+	const [expertiseType, setExpertiseType] = useState<number | null>(null);
 
 	const resetFilter = () => {
 		setKeyword('');
 		setPage(1);
+		setExpertiseType(null);
 		setPageSize(20);
 		setStatus(null);
 	};
@@ -54,7 +64,7 @@ function MainPageMember({}: PropsMainPageMember) {
 			totalCount: number;
 			totalPage: number;
 		};
-	}>([QUERY_KEY.table_member, page, pageSize, status, keyword], {
+	}>([QUERY_KEY.table_member, page, pageSize, status, keyword, expertiseType], {
 		queryFn: () =>
 			httpRequest({
 				http: accountServices.listUserAccount({
@@ -62,6 +72,7 @@ function MainPageMember({}: PropsMainPageMember) {
 					pageSize: pageSize,
 					status: status,
 					keyword: keyword,
+					expertiseType: expertiseType,
 				}),
 			}),
 		select(data) {
@@ -132,6 +143,15 @@ function MainPageMember({}: PropsMainPageMember) {
 									},
 								]}
 							/>
+							<FilterCustom
+								name='Chức vụ'
+								value={expertiseType}
+								setValue={setExpertiseType}
+								listOption={listExpertise?.map((v) => ({
+									uuid: v?.value,
+									name: v?.name,
+								}))}
+							/>
 						</div>
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
@@ -186,7 +206,15 @@ function MainPageMember({}: PropsMainPageMember) {
 								render: (row, _) => <>{row?.role?.name}</>,
 							},
 							{
-								title: 'Ngày tham gia',
+								title: 'Chức vụ',
+								render: (row, _) => <>{listExpertise?.find((v) => v?.value == row.expertiseType)?.name || '---'}</>,
+							},
+							{
+								title: 'Mã thẻ thành viên',
+								render: (row, _) => <>{row?.userInfo?.code}</>,
+							},
+							{
+								title: 'Ngày đăng ký',
 								render: (row, _) => (
 									<>
 										<Moment date={row.created} format='DD/MM/YYYY' />
@@ -216,10 +244,42 @@ function MainPageMember({}: PropsMainPageMember) {
 								),
 							},
 							{
+								title: 'Phát hành thẻ',
+								render: (row, _) => (
+									<StateActive
+										stateActive={row?.cardState}
+										listState={[
+											{
+												state: STATE_CARD.ISSUED,
+												text: 'Đã phát hành',
+												backgroundColor: 'rgba(68, 132, 255, 0.10)',
+												textColor: '#4484FF',
+											},
+										]}
+									/>
+								),
+							},
+							{
 								title: 'Tác vụ',
 								fixedRight: true,
 								render: (row, _) => (
 									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										{row?.expertiseType == null && (
+											<IconCustom
+												icon={<Crown1 color='#6170E3' size={24} />}
+												tooltip='Thêm chức vụ'
+												background=' rgba(55, 114, 255, 0.10)'
+												onClick={() =>
+													router.replace({
+														pathname: router.pathname,
+														query: {
+															...router.query,
+															_uuidCreate: row.userInfo.uuid,
+														},
+													})
+												}
+											/>
+										)}
 										{row?.status === CONFIG_STATUS.ACTIVE && (
 											<IconCustom
 												icon={<HiOutlineLockClosed color='#FA4B4B' size={24} />}
@@ -240,6 +300,18 @@ function MainPageMember({}: PropsMainPageMember) {
 												}}
 											/>
 										)}
+										{/* Xem chi tiết */}
+										<IconCustom
+											icon={<Eye color='#6170E3' size={24} />}
+											tooltip='Xem chi tiết'
+											background='rgba(97, 112, 227, 0.10)'
+											onClick={() =>
+												router.replace({
+													pathname: router.pathname,
+													query: {...router.query, _uuidMember: row?.userInfo?.uuid},
+												})
+											}
+										/>
 									</div>
 								),
 							},
@@ -278,6 +350,60 @@ function MainPageMember({}: PropsMainPageMember) {
 				icon={<Danger size='76' color='#F46161' variant='Bold' />}
 				onSubmit={funcLocked.mutate}
 			/>
+
+			<Popup
+				open={!!_uuidCreate}
+				onClose={() => {
+					const {_uuidCreate, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<FormCreateExpertise
+					uuid={_uuidCreate as string}
+					queryKeys={[QUERY_KEY.table_member]}
+					onClose={() => {
+						const {_uuidCreate, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: rest,
+						});
+					}}
+				/>
+			</Popup>
+
+			<PositionContainer
+				open={!!_uuidMember}
+				onClose={() => {
+					const {_uuidMember, ...rest} = router.query;
+
+					router.replace({
+						pathname: router.pathname,
+						query: {
+							...rest,
+						},
+					});
+				}}
+			>
+				<MainDetailMember
+					onClose={() => {
+						const {_uuidMember, ...rest} = router.query;
+
+						router.replace({
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
+						});
+					}}
+				/>
+			</PositionContainer>
 		</Fragment>
 	);
 }

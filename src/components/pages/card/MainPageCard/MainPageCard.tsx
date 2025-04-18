@@ -139,13 +139,13 @@ function MainPageCard({}: PropsMainPageCard) {
 		},
 	});
 
-	// Xác nhận đã phát hành thẻ
+	// Xác nhận chờ phát hành thẻ
 	const funcConfirmCardIssuance = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Xác nhận phát hành thẻ thành công!',
+				msgSuccess: 'Xác nhận chờ phát hành thẻ thành công!',
 				http: userServices.updateCardStateUser({
 					uuid: uuidConfirmCard,
 				}),
@@ -219,15 +219,6 @@ function MainPageCard({}: PropsMainPageCard) {
 						<div className={styles.flex}>
 							<FilterDateRange date={date} setDate={setDate} typeDate={typeDate} setTypeDate={setTypeDate} />
 							<FilterCustom
-								name='Nghề nghiệp'
-								value={expertiseType}
-								setValue={setExpertiseType}
-								listOption={listExpertise?.map((v) => ({
-									uuid: v?.value,
-									name: v?.name,
-								}))}
-							/>
-							<FilterCustom
 								name='Trạng thái'
 								value={cardState}
 								setValue={setCardState}
@@ -257,6 +248,15 @@ function MainPageCard({}: PropsMainPageCard) {
 										name: 'Bị từ chối',
 									},
 								]}
+							/>
+							<FilterCustom
+								name='Chức vụ'
+								value={expertiseType}
+								setValue={setExpertiseType}
+								listOption={listExpertise?.map((v) => ({
+									uuid: v?.value,
+									name: v?.name,
+								}))}
 							/>
 						</div>
 						<div className={styles.flex}>
@@ -339,7 +339,7 @@ function MainPageCard({}: PropsMainPageCard) {
 													e.preventDefault();
 													router.replace({
 														pathname: router.pathname,
-														query: {...router.query, _uuidCard: '1'},
+														query: {...router.query, _uuidCard: row?.uuid},
 													});
 												}}
 											>
@@ -366,8 +366,8 @@ function MainPageCard({}: PropsMainPageCard) {
 									),
 								},
 								{
-									title: 'Nghề nghiệp',
-									render: (row, _) => <>{listExpertise?.find((v) => v?.value == row.expertiseType)?.name}</>,
+									title: 'Chức vụ',
+									render: (row, _) => <>{listExpertise?.find((v) => v?.value == row.expertiseType)?.name || '---'}</>,
 								},
 								{
 									title: 'Số điện thoại',
@@ -537,8 +537,8 @@ function MainPageCard({}: PropsMainPageCard) {
 				type='primary'
 				open={!!uuidApprove}
 				onClose={() => setUuidApprove('')}
-				title='Duyệt thành viên'
-				note='Bạn có chắc chắn muốn duyệt thành viên này?'
+				title='Duyệt yêu cầu'
+				note='Bạn có chắc chắn muốn duyệt yêu cầu này?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcApproveCard.mutate}
 			/>
@@ -547,7 +547,7 @@ function MainPageCard({}: PropsMainPageCard) {
 				open={!!uuidConfirmPayment}
 				onClose={() => setUuidConfirmPayment('')}
 				title='Xác nhận đã đóng tiền'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã đóng tiền không?'
+				note='Bạn có chắc chắn muốn xác nhận này đã đóng tiền không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmPaymenCard.mutate}
 			/>
@@ -555,8 +555,8 @@ function MainPageCard({}: PropsMainPageCard) {
 				type='primary'
 				open={!!uuidConfirmCard}
 				onClose={() => setUuidConfirmCard('')}
-				title='Xác nhận đã phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã phát hành thẻ không?'
+				title='Xác nhận chờ phát hành thẻ'
+				note='Bạn có chắc chắn muốn xác nhận chờ đã phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssuance.mutate}
 			/>
@@ -565,7 +565,7 @@ function MainPageCard({}: PropsMainPageCard) {
 				open={!!uuidConfirmCardIssued}
 				onClose={() => setUuidConfirmCardIssued('')}
 				title='Phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận phát hành thẻ không?'
+				note='Bạn có chắc chắn muốn xác nhận đã phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssued.mutate}
 			/>

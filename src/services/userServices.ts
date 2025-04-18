@@ -116,6 +116,21 @@ const userServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	detailUpdateExpertiseType: (data: {uuid: string}, tokenAxios?: any) => {
+		return axiosClient.post(`User/get-detail-update-expertise-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	updateExpertiseType: (data: {uuid: string; expertiseType: number | null}, tokenAxios?: any) => {
+		return axiosClient.post(`User/update-expertise-type-user`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
+	detailUserAccount: (data: {uuid: string}, tokenAxios?: any) => {
+		return axiosClient.post(`User/get-detail-user-account`, data, {
+			cancelToken: tokenAxios,
+		});
+	},
 };
 
 export default userServices;
