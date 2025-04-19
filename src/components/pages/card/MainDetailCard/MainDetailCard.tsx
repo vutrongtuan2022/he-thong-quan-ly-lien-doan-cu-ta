@@ -134,7 +134,8 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 			<div className={styles.head}>
 				<div className={styles.info}>
 					<h4>
-						Chi tiết thành viên <span>#{card?.code || '---'}</span>
+						Chi tiết thành viên
+						{/* <span>#{card?.code || '---'}</span> */}
 					</h4>
 					<div className={styles.status}>
 						<p>Trạng thái hiện tại:</p>

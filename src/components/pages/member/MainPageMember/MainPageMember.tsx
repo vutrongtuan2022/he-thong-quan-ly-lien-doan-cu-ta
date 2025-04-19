@@ -212,7 +212,7 @@ function MainPageMember({}: PropsMainPageMember) {
 							},
 							{
 								title: 'Mã thẻ thành viên',
-								render: (row, _) => <>{row?.userInfo?.code}</>,
+								render: (row, _) => <>{row?.userInfo?.code || '---'}</>,
 							},
 							{
 								title: 'Ngày đăng ký',

@@ -1,17 +1,17 @@
-export interface PropsMainPageLink {}
+export interface PropsMainUpdateLink {}
+
 export interface IDetailLink {
-	address: string;
 	name: string;
 	shortName: string;
 	introduce: string;
-	facebook: string;
-	zalo: string;
+	address: string;
 	phoneNumber: string;
 	email: string;
-	tiktok: string;
-	instagram: string;
+	zalo: string;
+	facebook: string;
 	youtube: string;
+	instagram: string;
+	tiktok: string;
 	linkedIn: string;
-	uuid: string;
 	imagePath: string;
 }
