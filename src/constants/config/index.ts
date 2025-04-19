@@ -30,6 +30,7 @@ export enum PATH {
 
 	//Link
 	Link = '/link',
+	Updatelink = '/link/update-link',
 
 	// System
 	Banner = '/banner',
@@ -110,13 +111,13 @@ export const Menus: {
 				pathActive: PATH.Any,
 				role: ROLE_ADMIN.ADMIN,
 			},
-			// {
-			// 	title: 'Thông tin liên đoàn',
-			// 	icon: Crown1,
-			// 	path: PATH.Link,
-			// 	pathActive: PATH.Link,
-			// 	role: ROLE_ADMIN.ADMIN,
-			// },
+			{
+				title: 'Thông tin liên đoàn',
+				icon: Crown1,
+				path: PATH.Link,
+				pathActive: PATH.Link,
+				role: ROLE_ADMIN.ADMIN,
+			},
 			{
 				title: 'Quản lý banner',
 				icon: Gallery,

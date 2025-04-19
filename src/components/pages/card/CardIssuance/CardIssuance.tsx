@@ -108,7 +108,7 @@ function CardIssuance({card}: PropsCardIssuance) {
 	return (
 		<div className={styles.cart}>
 			<div className={styles.top}>
-				<p>{card?.code}</p>
+				{/* <p>{card?.code}</p> */}
 				<StateActive
 					borderRadius={24}
 					stateActive={card?.cardState}

@@ -213,7 +213,7 @@ function MainPageCard({}: PropsMainPageCard) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo tên người dùng, mã thẻ '
+				placeholder='Tìm kiếm theo tên người dùng '
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>
@@ -328,26 +328,26 @@ function MainPageCard({}: PropsMainPageCard) {
 									title: 'STT',
 									render: (_, index) => <>{index + 1}</>,
 								},
-								{
-									title: 'Mã thẻ thành viên',
-									render: (row, _) => (
-										<Tippy content='Xem chi tiết'>
-											<Link
-												href='#'
-												className={styles.link}
-												onClick={(e) => {
-													e.preventDefault();
-													router.replace({
-														pathname: router.pathname,
-														query: {...router.query, _uuidCard: row?.uuid},
-													});
-												}}
-											>
-												{row?.code || ''}
-											</Link>
-										</Tippy>
-									),
-								},
+								// {
+								// 	title: 'Mã thẻ thành viên',
+								// 	render: (row, _) => (
+								// 		<Tippy content='Xem chi tiết'>
+								// 			<Link
+								// 				href='#'
+								// 				className={styles.link}
+								// 				onClick={(e) => {
+								// 					e.preventDefault();
+								// 					router.replace({
+								// 						pathname: router.pathname,
+								// 						query: {...router.query, _uuidCard: row?.uuid},
+								// 					});
+								// 				}}
+								// 			>
+								// 				{row?.code || ''}
+								// 			</Link>
+								// 		</Tippy>
+								// 	),
+								// },
 								{
 									title: 'Họ tên',
 									render: (row, _) => (

@@ -18,6 +18,7 @@ export enum QUERY_KEY {
 	detail_video,
 	detail_profile,
 	detail_member,
+	detail_link,
 
 	dropdown_category_role,
 }
