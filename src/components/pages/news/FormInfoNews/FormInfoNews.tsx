@@ -119,7 +119,7 @@ function FormInfoNews({form, setForm, setFile, file}: PropsFormInfoNews) {
 						<p>Thứ tự hiển thị:</p>
 						<div className={styles.order}>
 							<div
-								className={clsx(styles.item_order, {[styles.disable]: form.sort == 1})}
+								className={clsx(styles.item_order, {[styles.disable]: form.sort == 1 || form.sort == 0})}
 								onClick={() =>
 									setForm((prev) => ({
 										...prev,

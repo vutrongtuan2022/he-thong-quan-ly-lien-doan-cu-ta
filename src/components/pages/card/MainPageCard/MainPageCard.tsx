@@ -548,7 +548,7 @@ function MainPageCard({}: PropsMainPageCard) {
 				open={!!uuidConfirmPayment}
 				onClose={() => setUuidConfirmPayment('')}
 				title='Xác nhận đã đóng tiền'
-				note='Bạn có chắc chắn muốn xác nhận này đã đóng tiền không?'
+				note='Bạn có chắc chắn muốn xác nhận đã đóng tiền không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmPaymenCard.mutate}
 			/>
@@ -557,7 +557,7 @@ function MainPageCard({}: PropsMainPageCard) {
 				open={!!uuidConfirmCard}
 				onClose={() => setUuidConfirmCard('')}
 				title='Xác nhận chờ phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận chờ đã phát hành thẻ không?'
+				note='Bạn có chắc chắn muốn xác nhận chờ phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssuance.mutate}
 			/>
@@ -566,7 +566,7 @@ function MainPageCard({}: PropsMainPageCard) {
 				open={!!uuidConfirmCardIssued}
 				onClose={() => setUuidConfirmCardIssued('')}
 				title='Phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận đã phát hành thẻ không?'
+				note='Bạn có chắc chắn muốn xác nhận phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssued.mutate}
 			/>

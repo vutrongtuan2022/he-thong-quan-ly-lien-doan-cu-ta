@@ -62,12 +62,12 @@ function Header({}: PropsHeader) {
 				<div className={styles.full_screen} onClick={toggleFullScreen}>
 					<Image src={icons.full_screen} alt='icon full screen' width={24} height={24} />
 				</div>
-				<div className={styles.box_noti}>
+				{/* <div className={styles.box_noti}>
 					<Image src={icons.bell} alt='icon bell' width={24} height={24} />
 					<div className={styles.box_count}>
 						<span>1</span>
 					</div>
-				</div>
+				</div> */}
 				<TippyHeadless
 					maxWidth={'100%'}
 					interactive

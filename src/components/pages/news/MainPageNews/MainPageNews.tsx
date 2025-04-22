@@ -268,7 +268,7 @@ function MainPageNews({}: PropsMainPageNews) {
 							},
 							{
 								title: 'Thời gian đăng',
-								render: (row, _) => <Moment date={row?.created} format='HH:mm - DD/MM/YYYY' />,
+								render: (row, _) => <Moment date={row?.timePublic} format='HH:mm - DD/MM/YYYY' />,
 							},
 							{
 								title: 'Tác vụ',

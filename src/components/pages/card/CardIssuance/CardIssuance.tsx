@@ -67,13 +67,13 @@ function CardIssuance({card}: PropsCardIssuance) {
 		},
 	});
 
-	// Xác nhận đã phát hành thẻ
+	// Xác nhận chờ phát hành thẻ
 	const funcConfirmCardIssuance = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Xác nhận phát hành thẻ thành công!',
+				msgSuccess: 'Xác nhận chờ phát hành thẻ thành công!',
 				http: userServices.updateCardStateUser({
 					uuid: card?.uuid!,
 				}),
@@ -192,12 +192,12 @@ function CardIssuance({card}: PropsCardIssuance) {
 				{/* Chờ duyệt */}
 				{card?.cardState == STATE_CARD.PENDING_APPROVAL && (
 					<>
-						<Tippy content='Duyệt thành viên'>
+						<Tippy content='Xác nhận duyệt yêu cầu làm thẻ'>
 							<div className={styles.action} onClick={() => setOpenApprove(true)}>
 								<TickCircle size={24} color='#2CAE39' />
 							</div>
 						</Tippy>
-						<Tippy content='Từ chối thành viên'>
+						<Tippy content='Từ chối yêu cầu'>
 							<div className={styles.action} onClick={() => setOpenRejected(true)}>
 								<CloseCircle size={24} color='#EB2E2E' />
 							</div>
@@ -253,8 +253,8 @@ function CardIssuance({card}: PropsCardIssuance) {
 				type='primary'
 				open={openApprove}
 				onClose={() => setOpenApprove(false)}
-				title='Duyệt thành viên'
-				note='Bạn có chắc chắn muốn duyệt thành viên này?'
+				title='Duyệt yêu cầu'
+				note='Bạn có chắc chắn muốn duyệt yêu cầu này?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcApproveCard.mutate}
 			/>
@@ -264,7 +264,7 @@ function CardIssuance({card}: PropsCardIssuance) {
 				open={openConfirmPayment}
 				onClose={() => setOpenConfirmPaymen(false)}
 				title='Xác nhận đã đóng tiền'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã đóng tiền không?'
+				note='Bạn có chắc chắn muốn xác nhận đã đóng tiền không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmPaymenCard.mutate}
 			/>
@@ -273,8 +273,8 @@ function CardIssuance({card}: PropsCardIssuance) {
 				type='primary'
 				open={openConfirmCard}
 				onClose={() => setOpenConfirmCard(false)}
-				title='Xác nhận đã phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã phát hành thẻ không?'
+				title='Xác nhận chờ phát hành thẻ'
+				note='Bạn có chắc chắn muốn xác nhận chờ phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssuance.mutate}
 			/>
