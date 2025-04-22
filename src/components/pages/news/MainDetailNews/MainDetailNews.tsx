@@ -75,22 +75,37 @@ function MainDetailNews({}: PropsMainDetailNews) {
 			<div className={styles.main}>
 				<ContentNews news={news!} />
 				<div className={styles.form}>
-					<TabNavLink
-						listHref={[
-							{
-								title: 'Chi tiết bài viết',
-								pathname: router.pathname,
-								query: null,
-							},
-							{
-								title: `Bình luận (${news?.countComment || 0})`,
-								pathname: router.pathname,
-								query: 'comment',
-							},
-						]}
-						query='_type'
-						outline={true}
-					/>
+					{news?.blockComment ? (
+						<TabNavLink
+							listHref={[
+								{
+									title: 'Chi tiết bài viết',
+									pathname: router.pathname,
+									query: null,
+								},
+								{
+									title: `Bình luận (${news?.countComment || 0})`,
+									pathname: router.pathname,
+									query: 'comment',
+								},
+							]}
+							query='_type'
+							outline={true}
+						/>
+					) : (
+						<TabNavLink
+							listHref={[
+								{
+									title: 'Chi tiết bài viết',
+									pathname: router.pathname,
+									query: null,
+								},
+							]}
+							query='_type'
+							outline={true}
+						/>
+					)}
+
 					<div className={styles.main_display}>
 						{!_type && <InfoNews news={news!} />}
 						{_type == 'comment' && <CommentNews />}

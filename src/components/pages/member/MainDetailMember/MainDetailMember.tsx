@@ -41,7 +41,9 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 		<div className={styles.container}>
 			<div className={styles.head}>
 				<div className={styles.info}>
-					<h4>Chi tiết thành viên</h4>
+					<h4>
+						Chi tiết thành viên <span>#{member?.code}</span>
+					</h4>
 					<div className={styles.status}>
 						<p>Trạng thái thành viên hiện tại:</p>
 						<StateActive
@@ -66,7 +68,7 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 						<p>
 							Ngày đăng ký:
 							<span style={{marginLeft: '4px'}}>
-								{member?.identityDate ? <Moment date={member?.identityDate} format='DD/MM/YYYY' /> : '---'}
+								{member?.created ? <Moment date={member?.created} format='DD/MM/YYYY' /> : '---'}
 							</span>
 						</p>
 					</div>

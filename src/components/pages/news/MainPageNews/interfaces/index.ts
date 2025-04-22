@@ -10,5 +10,6 @@ export interface INews {
 	timePublic: string;
 	created: string;
 	status: number;
+	sort: number;
 	uuid: string;
 }

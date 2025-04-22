@@ -163,7 +163,7 @@ function MainPageMember({}: PropsMainPageMember) {
 				}
 			/>
 
-			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách tài khoản thành viên'>
+			<MainTable icon={<People size={28} color='#FC6A45' variant='Bold' />} title='Danh sách thành viên'>
 				<DataWrapper
 					data={data?.items || []}
 					loading={isLoading}

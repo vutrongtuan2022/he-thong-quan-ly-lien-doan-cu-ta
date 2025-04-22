@@ -136,7 +136,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 				<Loading loading={funcUpdateLink.isLoading || loading} />
 				<div className={styles.container}>
 					<div className={styles.head_main}>
-						<Breadcrumb titles={['Thông tin cá nhân', 'Chỉnh sửa']} listHref={[PATH.Profile]} />
+						<Breadcrumb titles={['Thông tin liên đoàn', 'Chỉnh sửa']} listHref={[PATH.Profile]} />
 						<div className={styles.group_button}>
 							<div>
 								<Button p_10_24 grey rounded_8 href={PATH.Link}>
@@ -153,7 +153,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 						</div>
 					</div>
 					<div className={styles.form_main}>
-						<h4>Thông tin cá nhân</h4>
+						<h4>Thông tin liên đoàn</h4>
 						<div className={styles.add_avatar}>
 							<UploadAvatar
 								path={form?.imagePath ? `${process.env.NEXT_PUBLIC_IMAGE}/${form?.imagePath}` : images?.avatar_default}
@@ -189,13 +189,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										name='shortName'
 										type='text'
 										value={form.shortName}
-										isRequired
 										max={255}
-										label={
-											<span>
-												Tên rút gọn <span style={{color: '#EE0033'}}>*</span>
-											</span>
-										}
+										label={<span>Tên rút gọn</span>}
 									/>
 								</div>
 
@@ -204,13 +199,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									name='introduce'
 									type='text'
 									value={form?.introduce}
-									isRequired
 									max={255}
-									label={
-										<span>
-											Giới thiệu <span style={{color: '#EE0033'}}>*</span>
-										</span>
-									}
+									label={<span>Giới thiệu</span>}
 								/>
 								<div>
 									<Input
@@ -262,13 +252,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									type='text'
 									isNumber
 									value={form?.zalo}
-									isRequired
 									max={255}
-									label={
-										<span>
-											Tài khoản Zalo <span style={{color: '#EE0033'}}>*</span>
-										</span>
-									}
+									label={<span>Tài khoản Zalo</span>}
 								/>
 								<div>
 									<Input
@@ -276,13 +261,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										name='linkedIn'
 										type='text'
 										value={form.linkedIn}
-										isRequired
 										max={255}
-										label={
-											<span>
-												Liên kết LinkedIn <span style={{color: '#EE0033'}}>*</span>
-											</span>
-										}
+										label={<span>Liên kết LinkedIn</span>}
 									/>
 								</div>
 								<Input
@@ -290,13 +270,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									name='facebook'
 									type='text'
 									value={form?.facebook}
-									isRequired
 									max={255}
-									label={
-										<span>
-											Liên kết Facebook <span style={{color: '#EE0033'}}>*</span>
-										</span>
-									}
+									label={<span>Liên kết Facebook</span>}
 								/>
 								<div>
 									<Input
@@ -304,13 +279,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										name='instagram'
 										type='text'
 										value={form.instagram}
-										isRequired
 										max={255}
-										label={
-											<span>
-												Liên kết Insta <span style={{color: '#EE0033'}}>*</span>
-											</span>
-										}
+										label={<span>Liên kết Insta</span>}
 									/>
 								</div>
 								<Input
@@ -318,13 +288,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									name='youtube'
 									type='text'
 									value={form?.youtube}
-									isRequired
 									max={255}
-									label={
-										<span>
-											Liên kết Youtube <span style={{color: '#EE0033'}}>*</span>
-										</span>
-									}
+									label={<span>Liên kết Youtube</span>}
 								/>
 								<div>
 									<Input
@@ -332,13 +297,8 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										name='tiktok'
 										type='text'
 										value={form.tiktok}
-										isRequired
 										max={255}
-										label={
-											<span>
-												Liên kết TikTok <span style={{color: '#EE0033'}}>*</span>
-											</span>
-										}
+										label={<span>Liên kết TikTok</span>}
 									/>
 								</div>
 							</GridColumn>

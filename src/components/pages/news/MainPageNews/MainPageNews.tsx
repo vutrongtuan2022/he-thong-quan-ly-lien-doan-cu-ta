@@ -237,8 +237,8 @@ function MainPageNews({}: PropsMainPageNews) {
 								),
 							},
 							{
-								title: 'Stt',
-								render: (_, index) => <>{index + 1}</>,
+								title: 'Thứ tự hiển thị',
+								render: (row, _) => <>{row?.sort}</>,
 							},
 							{
 								title: 'Hiển thị',
