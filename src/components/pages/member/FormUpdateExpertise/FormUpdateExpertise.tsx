@@ -35,7 +35,7 @@ function FormUpdateExpertise({uuid, onClose, queryKeys}: PropsFormUpdateExpertis
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Chỉnh sửa chức vụ thành công thành công!',
+				msgSuccess: 'Chỉnh sửa chức vụ thành công!',
 				http: userServices.updateExpertiseType({
 					uuid: uuid,
 					expertiseType: form?.expertiseType || null,

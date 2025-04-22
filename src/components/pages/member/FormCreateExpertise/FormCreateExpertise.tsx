@@ -13,7 +13,7 @@ import Select, {Option} from '~/components/common/Select';
 import {listExpertise} from '~/common/funcs/data';
 function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertise) {
 	const queryClient = useQueryClient();
-	const [form, setForm] = useState<IFormCreateExpertise>({fullname: '', expertiseType: TYPE_EXPERTISE.ATHLETE});
+	const [form, setForm] = useState<IFormCreateExpertise>({fullname: '', expertiseType: null});
 
 	useQuery([QUERY_KEY.detail_member], {
 		queryFn: () =>
@@ -35,7 +35,7 @@ function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertis
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Thêm mới chức vụ thành công thành công!',
+				msgSuccess: 'Thêm mới chức vụ thành công!',
 				http: userServices.updateExpertiseType({
 					uuid: uuid,
 					expertiseType: form?.expertiseType || null,
@@ -120,7 +120,7 @@ function FormCreateExpertise({uuid, onClose, queryKeys}: PropsFormCreateExpertis
 							{({isDone}) => (
 								<div>
 									<Button disable={!isDone} p_10_14 aquamarine rounded_6>
-										Cập nhật
+										Lưu lại
 									</Button>
 								</div>
 							)}

@@ -92,7 +92,7 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 						<p>
 							Ngày đăng ký:
 							<span style={{marginLeft: '4px'}}>
-								{user?.identityDate ? <Moment date={user?.identityDate} format='DD/MM/YYYY' /> : '---'}
+								{user?.created ? <Moment date={user?.created} format='DD/MM/YYYY' /> : '---'}
 							</span>
 						</p>
 					</div>

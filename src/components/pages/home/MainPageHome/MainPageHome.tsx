@@ -113,7 +113,7 @@ function MainPageHome({}: PropsMainPageHome) {
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
-				placeholder='Tìm kiếm theo họ tên'
+				placeholder='Tìm kiếm theo họ tên, số điện thoại, email'
 				action={
 					<div className={styles.filter}>
 						<div className={styles.flex}>

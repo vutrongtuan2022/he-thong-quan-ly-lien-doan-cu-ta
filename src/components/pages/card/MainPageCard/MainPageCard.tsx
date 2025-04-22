@@ -207,6 +207,7 @@ function MainPageCard({}: PropsMainPageCard) {
 					funcApproveCard.isLoading ||
 					funcConfirmPaymenCard.isLoading ||
 					funcConfirmCardIssuance.isLoading ||
+					funcConfirmCardIssued.isLoading ||
 					funcExportData.isLoading
 				}
 			/>

@@ -74,7 +74,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 				showMessageFailed: true,
 				showMessageSuccess: true,
 				msgSuccess: 'Xác nhận đóng tiền thành công!',
-				http: userServices.updateStateUser({
+				http: userServices.updateCardStateUser({
 					uuid: card?.uuid!,
 				}),
 			}),
@@ -87,13 +87,13 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 		},
 	});
 
-	// Xác nhận đã phát hành thẻ
+	// Xác nhận chờ phát hành thẻ
 	const funcConfirmCardIssuance = useMutation({
 		mutationFn: () =>
 			httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Xác nhận phát hành thẻ thành công!',
+				msgSuccess: 'Xác nhận chờ phát hành thẻ thành công!',
 				http: userServices.updateCardStateUser({
 					uuid: card?.uuid!,
 				}),
@@ -129,7 +129,14 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcApproveCard.isLoading || funcConfirmPaymenCard.isLoading || funcConfirmCardIssuance.isLoading} />
+			<Loading
+				loading={
+					funcApproveCard.isLoading ||
+					funcConfirmPaymenCard.isLoading ||
+					funcConfirmCardIssuance.isLoading ||
+					funcConfirmCardIssued.isLoading
+				}
+			/>
 
 			<div className={styles.head}>
 				<div className={styles.info}>
@@ -138,7 +145,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 						{/* <span>#{card?.code || '---'}</span> */}
 					</h4>
 					<div className={styles.status}>
-						<p>Trạng thái hiện tại:</p>
+						<p>Trạng thái yêu cầu:</p>
 						<StateActive
 							isSmall={true}
 							stateActive={card?.cardState!}
@@ -185,7 +192,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 						<p>
 							Ngày đăng ký:
 							<span style={{marginLeft: '4px'}}>
-								{card?.identityDate ? <Moment date={card?.identityDate} format='DD/MM/YYYY' /> : '---'}
+								{card?.cardCreated ? <Moment date={card?.cardCreated} format='DD/MM/YYYY' /> : '---'}
 							</span>
 						</p>
 					</div>
@@ -195,24 +202,28 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 					{card?.cardState == STATE_USER.PENDING_APPROVAL && (
 						<>
 							<Button green p_8_24 rounded_8 onClick={() => setOpenApprove(true)}>
-								Duyệt thành viên
+								Duyệt yêu cầu
 							</Button>
 							<Button red p_8_24 rounded_8 onClick={() => setOpenRejected(true)}>
-								Từ chối thành viên
+								Từ chối yêu cầu
 							</Button>
 						</>
 					)}
-
 					{/* Đã duyệt */}
 					{card?.cardState == STATE_USER.APPROVED && (
 						<Button blue p_8_24 rounded_8 onClick={() => setOpenConfirmPayment(true)}>
 							Xác nhận đã đóng tiền
 						</Button>
 					)}
-
 					{/* Đã đóng tiền */}
 					{card?.cardState == STATE_USER.PAID && (
 						<Button blue p_8_24 rounded_8 onClick={() => setOpenConfirmCard(true)}>
+							Xác nhận chờ phát hành thẻ cứng
+						</Button>
+					)}
+					{/* Chờ phát hành thẻ cứng */}
+					{card?.cardState == STATE_USER.ISSUED && (
+						<Button blue p_8_24 rounded_8 onClick={() => setOpenConfirmCardIssued(true)}>
 							Xác nhận đã phát hành thẻ cứng
 						</Button>
 					)}
@@ -364,8 +375,8 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 				type='primary'
 				open={!!openConfirmCard}
 				onClose={() => setOpenConfirmCard(false)}
-				title='Xác nhận đã phát hành thẻ'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã phát hành thẻ không?'
+				title='Xác nhận chờ phát hành thẻ'
+				note='Bạn có chắc chắn muốn xác nhận chờ phát hành thẻ không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmCardIssuance.mutate}
 			/>

@@ -3,7 +3,6 @@ export interface PropsMainDetailUser {
 }
 
 export interface IUserDetail {
-	code: string;
 	identityCode: string;
 	identityPlace: string;
 	identityDate: string;
