@@ -42,7 +42,8 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 			<div className={styles.head}>
 				<div className={styles.info}>
 					<h4>
-						Chi tiết thành viên <span>#{member?.code}</span>
+						Chi tiết thành viên
+						{member?.code && <span> #{member?.code}</span>}
 					</h4>
 					<div className={styles.status}>
 						<p>Trạng thái thành viên hiện tại:</p>

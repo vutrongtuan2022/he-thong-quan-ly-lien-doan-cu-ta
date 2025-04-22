@@ -355,8 +355,8 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 				type='primary'
 				open={openApprove}
 				onClose={() => setOpenApprove(false)}
-				title='Duyệt thành viên'
-				note='Bạn có chắc chắn muốn duyệt thành viên này?'
+				title='Duyệt yêu cầu'
+				note='Bạn có chắc chắn muốn duyệt yêu cầu này?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcApproveCard.mutate}
 			/>
@@ -366,7 +366,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 				open={openConfirmPayment}
 				onClose={() => setOpenConfirmPayment(false)}
 				title='Xác nhận đã đóng tiền'
-				note='Bạn có chắc chắn muốn xác nhận thành viên này đã đóng tiền không?'
+				note='Bạn có chắc chắn muốn xác nhận đã đóng tiền không?'
 				icon={<Danger size='76' color='#3DC5AA' variant='Bold' />}
 				onSubmit={funcConfirmPaymenCard.mutate}
 			/>

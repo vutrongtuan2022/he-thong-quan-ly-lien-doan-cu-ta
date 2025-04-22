@@ -69,19 +69,16 @@ function InfoNews({news}: PropsInfoNews) {
 					/>
 				</div>
 			</Accordion>
-			{news?.blockComment ? (
-				<>
-					<div className={styles.line}></div>
-					<Accordion title='Thảo luận'>
-						<div className={styles.category}>
-							<div className={styles.item}>
-								<input name='blockComment' type='checkbox' id='allowComments' checked={news?.blockComment} />
-								<label htmlFor='allowComments'>Cho phép bình luận</label>
-							</div>
-						</div>
-					</Accordion>
-				</>
-			) : null}
+
+			<div className={styles.line}></div>
+			<Accordion title='Thảo luận'>
+				<div className={styles.category}>
+					<div className={styles.item}>
+						<input name='blockComment' type='checkbox' id='allowComments' checked={news?.blockComment} />
+						<label htmlFor='allowComments'>Cho phép bình luận</label>
+					</div>
+				</div>
+			</Accordion>
 		</div>
 	);
 }

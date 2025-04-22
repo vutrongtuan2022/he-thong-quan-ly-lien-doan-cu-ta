@@ -81,6 +81,12 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 									textColor: '#fff',
 								},
 								{
+									state: STATE_USER.APPROVED,
+									text: 'Đã duyệt',
+									backgroundColor: '#4BC9F0',
+									textColor: '#fff',
+								},
+								{
 									state: STATE_USER.REJECTED,
 									text: 'Bị từ chối',
 									backgroundColor: '#FA4B4B',
