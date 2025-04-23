@@ -25,7 +25,7 @@ function MainDetailNews({}: PropsMainDetailNews) {
 	const {_uuid, _type} = router.query;
 	const [dataDelete, setDataDelete] = useState<INews | null>(null);
 
-	const {data: news, isLoading} = useQuery<INews>([QUERY_KEY.detail_news], {
+	const {data: news, isLoading} = useQuery<INews>([QUERY_KEY.detail_news, _uuid], {
 		queryFn: () =>
 			httpRequest({
 				http: newsServices.detailBlog({
