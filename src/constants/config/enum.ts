@@ -21,6 +21,8 @@ export enum QUERY_KEY {
 	detail_link,
 
 	dropdown_category_role,
+	get_top_scan_user,
+	get_chart_scan_user,
 }
 
 export enum GENDER {

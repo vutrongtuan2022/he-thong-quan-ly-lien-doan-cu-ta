@@ -10,6 +10,7 @@ import iconAdd from '../../../public/static/images/add.svg';
 import iconQuestion from '../../../public/static/images/question.svg';
 import upload from '../../../public/static/images/upload.png';
 import message from '../../../public/static/images/message.svg';
+import total_scan from '../../../public/static/images/total_scan.svg';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -24,4 +25,5 @@ export default {
 	iconQuestion,
 	upload,
 	message,
+	total_scan,
 };

@@ -40,7 +40,7 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 		imagePath: '',
 	});
 
-	useQuery([QUERY_KEY.detail_news], {
+	const {isLoading} = useQuery([QUERY_KEY.detail_news], {
 		queryFn: () =>
 			httpRequest({
 				http: newsServices.detailBlog({
@@ -128,7 +128,7 @@ function MainUpdateNews({}: PropsMainUpdateNews) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcUpdateBlog.isLoading || loading} />
+			<Loading loading={isLoading || funcUpdateBlog.isLoading || loading} />
 			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<div className={styles.head_main}>
 					<Breadcrumb titles={['Quản lý bài viết', 'Chỉnh sửa bài viết']} listHref={[PATH.News]} />

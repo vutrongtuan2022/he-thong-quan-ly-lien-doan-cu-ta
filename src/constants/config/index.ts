@@ -37,6 +37,9 @@ export enum PATH {
 
 	// Privacy policy
 	PrivacyPolicy = '/privacy-policy',
+
+	// Statistical Report
+	StatisticalReport = '/statistical-report',
 }
 
 export const Menus: {
@@ -107,8 +110,8 @@ export const Menus: {
 			{
 				title: 'Thống kê báo cáo',
 				icon: PresentionChart,
-				path: PATH.Any,
-				pathActive: PATH.Any,
+				path: PATH.StatisticalReport,
+				pathActive: PATH.StatisticalReport,
 				role: ROLE_ADMIN.ADMIN,
 			},
 			{

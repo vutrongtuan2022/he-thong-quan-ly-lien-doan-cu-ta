@@ -25,7 +25,7 @@ function MainDetailNews({}: PropsMainDetailNews) {
 	const {_uuid, _type} = router.query;
 	const [dataDelete, setDataDelete] = useState<INews | null>(null);
 
-	const {data: news} = useQuery<INews>([QUERY_KEY.detail_news], {
+	const {data: news, isLoading} = useQuery<INews>([QUERY_KEY.detail_news], {
 		queryFn: () =>
 			httpRequest({
 				http: newsServices.detailBlog({
@@ -60,7 +60,7 @@ function MainDetailNews({}: PropsMainDetailNews) {
 
 	return (
 		<div className={styles.container}>
-			<Loading loading={funcDeleteBlog.isLoading} />
+			<Loading loading={isLoading || funcDeleteBlog.isLoading} />
 			<div className={styles.head_main}>
 				<Breadcrumb titles={['Quản lý tin tức', 'Chi tiết bài viết']} listHref={[PATH.News]} />
 				<div className={styles.group_button}>
@@ -75,36 +75,22 @@ function MainDetailNews({}: PropsMainDetailNews) {
 			<div className={styles.main}>
 				<ContentNews news={news!} />
 				<div className={styles.form}>
-					{news?.blockComment ? (
-						<TabNavLink
-							listHref={[
-								{
-									title: 'Chi tiết bài viết',
-									pathname: router.pathname,
-									query: null,
-								},
-								{
-									title: `Bình luận (${news?.countComment || 0})`,
-									pathname: router.pathname,
-									query: 'comment',
-								},
-							]}
-							query='_type'
-							outline={true}
-						/>
-					) : (
-						<TabNavLink
-							listHref={[
-								{
-									title: 'Chi tiết bài viết',
-									pathname: router.pathname,
-									query: null,
-								},
-							]}
-							query='_type'
-							outline={true}
-						/>
-					)}
+					<TabNavLink
+						listHref={[
+							{
+								title: 'Chi tiết bài viết',
+								pathname: router.pathname,
+								query: null,
+							},
+							{
+								title: `Bình luận (${news?.countComment || 0})`,
+								pathname: router.pathname,
+								query: 'comment',
+							},
+						]}
+						query='_type'
+						outline={true}
+					/>
 
 					<div className={styles.main_display}>
 						{!_type && <InfoNews news={news!} />}
