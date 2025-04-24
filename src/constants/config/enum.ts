@@ -19,6 +19,7 @@ export enum QUERY_KEY {
 	detail_profile,
 	detail_member,
 	detail_link,
+	detail_setting,
 
 	dropdown_category_role,
 	get_top_scan_user,
