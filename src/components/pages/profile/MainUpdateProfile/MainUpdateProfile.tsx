@@ -184,7 +184,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 								</div>
 
 								<Input
-									placeholder='Nhập username '
+									placeholder='Nhập tên đăng nhập '
 									name='userName'
 									type='text'
 									value={form.userName}
@@ -193,7 +193,7 @@ function MainUpdateProfile({}: PropsMainUpdateProfile) {
 									max={255}
 									label={
 										<span>
-											Username <span style={{color: '#EE0033'}}>*</span>
+											Tên đăng nhập <span style={{color: '#EE0033'}}>*</span>
 										</span>
 									}
 								/>

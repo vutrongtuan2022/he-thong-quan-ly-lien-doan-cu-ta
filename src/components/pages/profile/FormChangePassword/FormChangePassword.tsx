@@ -11,6 +11,7 @@ import accountServices from '~/services/accountServices';
 import md5 from 'md5';
 import {QUERY_KEY} from '~/constants/config/enum';
 import Loading from '~/components/common/Loading';
+import {toastWarn} from '~/common/funcs/toast';
 
 function FormChangePassword({onClose}: PropsFormChangePassword) {
 	const queryClient = useQueryClient();
@@ -20,6 +21,8 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 		new_password: '',
 		confirm_password: '',
 	});
+
+	const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
 	const funcChangePassPersonal = useMutation({
 		mutationFn: () => {
@@ -43,13 +46,19 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 	});
 
 	const handleSubmit = () => {
+		if (!regex.test(form?.new_password!)) {
+			return toastWarn({
+				msg: 'Mật khẩu mới phải chứa ít nhất 6 ký tự, bao gồm chữ cái và số',
+			});
+		}
+
 		return funcChangePassPersonal.mutate();
 	};
 
 	return (
-		<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+		<div className={styles.container}>
 			<Loading loading={funcChangePassPersonal.isLoading} />
-			<div className={styles.container}>
+			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
 				<h4 className={styles.title}>Đổi mật khẩu </h4>
 				<div className={styles.line}></div>
 				<div className={styles.form}>
@@ -123,8 +132,8 @@ function FormChangePassword({onClose}: PropsFormChangePassword) {
 				<div className={styles.close} onClick={onClose}>
 					<IoClose size={28} color='#9EA5C0' />
 				</div>
-			</div>
-		</Form>
+			</Form>
+		</div>
 	);
 }
 

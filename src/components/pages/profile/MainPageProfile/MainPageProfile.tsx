@@ -85,7 +85,7 @@ function MainPageProfile({}: PropsMainPageProfile) {
 								<p>{detatilPersonal?.email || '---'}</p>
 							</div>
 							<div className={styles.item}>
-								<p>Username</p>
+								<p>Tên đăng nhập</p>
 								<p>{detatilPersonal?.userName || '---'}</p>
 							</div>
 							<div className={styles.item}>

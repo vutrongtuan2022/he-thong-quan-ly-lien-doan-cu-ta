@@ -13,9 +13,11 @@ import md5 from 'md5';
 import {PATH} from '~/constants/config';
 import accountServices from '~/services/accountServices';
 import Loading from '~/components/common/Loading';
+import {toastWarn} from '~/common/funcs/toast';
 
 function FormPassword({}: PropsFormPassword) {
 	const router = useRouter();
+	const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
 	const {form, setForm} = useContext<IContextForgotPassword>(ContextForgotPassword);
 
@@ -24,7 +26,7 @@ function FormPassword({}: PropsFormPassword) {
 			return httpRequest({
 				showMessageFailed: true,
 				showMessageSuccess: true,
-				msgSuccess: 'Lấy lại mật khẩu thành công',
+				msgSuccess: 'Đổi mật khẩu thành công',
 				http: accountServices.changePassForget({
 					email: form?.email!,
 					otp: form?.otp!,
@@ -40,6 +42,11 @@ function FormPassword({}: PropsFormPassword) {
 	});
 
 	const handleSubmit = () => {
+		if (!regex.test(form?.password!)) {
+			return toastWarn({
+				msg: 'Mật khẩu mới phải chứa ít nhất 6 ký tự, bao gồm chữ cái và số',
+			});
+		}
 		return funcChangePassForget.mutate();
 	};
 
@@ -83,7 +90,7 @@ function FormPassword({}: PropsFormPassword) {
 				<FormContext.Consumer>
 					{({isDone}) => (
 						<Button p_10_24 orange rounded_8 bold disable={!isDone}>
-							Lấy lại mật khẩu
+							Xác nhận
 						</Button>
 					)}
 				</FormContext.Consumer>
