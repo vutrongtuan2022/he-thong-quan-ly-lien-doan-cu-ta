@@ -1,4 +1,16 @@
-import {Award, Card, ClipboardText, Crown1, Gallery, People, PresentionChart, ProfileTick, UserOctagon, VideoPlay} from 'iconsax-react';
+import {
+	Award,
+	Card,
+	ClipboardText,
+	Crown1,
+	Gallery,
+	People,
+	PresentionChart,
+	ProfileTick,
+	Setting2,
+	UserOctagon,
+	VideoPlay,
+} from 'iconsax-react';
 import {ROLE_ADMIN, TYPE_DATE} from './enum';
 
 export enum PATH {
@@ -40,6 +52,9 @@ export enum PATH {
 
 	// Statistical Report
 	StatisticalReport = '/statistical-report',
+
+	// Settings
+	Settings = '/setting',
 }
 
 export const Menus: {
@@ -133,6 +148,13 @@ export const Menus: {
 				icon: Award,
 				path: PATH.PrivacyPolicy,
 				pathActive: PATH.PrivacyPolicy,
+				role: ROLE_ADMIN.ADMIN,
+			},
+			{
+				title: 'Cài đặt hệ thống',
+				icon: Setting2,
+				path: PATH.Settings,
+				pathActive: PATH.Settings,
 				role: ROLE_ADMIN.ADMIN,
 			},
 		],
