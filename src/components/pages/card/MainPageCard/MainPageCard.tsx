@@ -329,40 +329,21 @@ function MainPageCard({}: PropsMainPageCard) {
 									title: 'STT',
 									render: (_, index) => <>{index + 1}</>,
 								},
-								// {
-								// 	title: 'Mã thẻ thành viên',
-								// 	render: (row, _) => (
-								// 		<Tippy content='Xem chi tiết'>
-								// 			<Link
-								// 				href='#'
-								// 				className={styles.link}
-								// 				onClick={(e) => {
-								// 					e.preventDefault();
-								// 					router.replace({
-								// 						pathname: router.pathname,
-								// 						query: {...router.query, _uuidCard: row?.uuid},
-								// 					});
-								// 				}}
-								// 			>
-								// 				{row?.code || ''}
-								// 			</Link>
-								// 		</Tippy>
-								// 	),
-								// },
 								{
 									title: 'Họ tên',
 									render: (row, _) => (
-										<div style={{width: '160px', display: 'flex', alignItems: 'center', gap: '8px'}}>
+										<div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
 											{row?.imagePath && (
-												<Image
-													alt='avatar'
-													width={36}
-													height={36}
-													style={{borderRadius: '50%', border: '1px solid #ff8357'}}
-													src={`${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`}
-												/>
+												<div style={{position: 'relative', width: 36, height: 36}}>
+													<Image
+														fill
+														alt='avatar'
+														style={{borderRadius: '50%', border: '1px solid #ff8357'}}
+														src={`${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`}
+													/>
+												</div>
 											)}
-											<p>{row?.fullname}</p>
+											<p style={{flex: '1'}}>{row?.fullname}</p>
 										</div>
 									),
 								},
