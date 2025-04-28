@@ -12,7 +12,6 @@ import StateActive from '~/components/utils/StateActive';
 import IconCustom from '~/components/common/IconCustom';
 import Pagination from '~/components/common/Pagination';
 import Dialog from '~/components/common/Dialog';
-import images from '~/constants/images/images';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {CONFIG_STATUS, QUERY_KEY, STATE_CARD} from '~/constants/config/enum';
 import {httpRequest} from '~/services';
@@ -180,17 +179,18 @@ function MainPageMember({}: PropsMainPageMember) {
 							{
 								title: 'Họ tên',
 								render: (row, _) => (
-									<div className={styles.wrapper}>
+									<div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
 										{row?.userInfo?.imageCardPath && (
-											<Image
-												alt='avatar'
-												width={36}
-												height={36}
-												className={styles.avatar}
-												src={`${process.env.NEXT_PUBLIC_IMAGE}/${row?.userInfo?.imageCardPath}`}
-											/>
+											<div style={{position: 'relative', width: 36, height: 36}}>
+												<Image
+													fill
+													alt='avatar'
+													style={{borderRadius: '50%', border: '1px solid #ff8357'}}
+													src={`${process.env.NEXT_PUBLIC_IMAGE}/${row?.userInfo?.imageCardPath}`}
+												/>
+											</div>
 										)}
-										<p>{row?.userInfo?.fullname}</p>
+										<p style={{flex: '1'}}>{row?.userInfo?.fullname}</p>
 									</div>
 								),
 							},

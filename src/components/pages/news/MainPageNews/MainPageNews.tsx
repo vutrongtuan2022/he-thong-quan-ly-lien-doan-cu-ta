@@ -203,26 +203,24 @@ function MainPageNews({}: PropsMainPageNews) {
 							{
 								title: 'Bài viết',
 								render: (row, _) => (
-									<div className={styles.wrapper}>
-										<Image
-											className={styles.avatar}
-											src={
-												row?.imagePath
-													? `${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`
-													: images.avatar_default
-											}
-											alt='Image'
-											width={44}
-											height={44}
-										/>
-										<Tippy content={row?.title}>
-											<div className={styles.content}>
-												<Link href={`${PATH.News}/${row.uuid}`} className={styles.label}>
-													{row?.title || '---'}
-												</Link>
-											</div>
-										</Tippy>
-									</div>
+									<Tippy content={row?.title}>
+										<div className={styles.wrapper}>
+											<Image
+												src={
+													row?.imagePath
+														? `${process.env.NEXT_PUBLIC_IMAGE}/${row?.imagePath}`
+														: images.avatar_default
+												}
+												alt='Image'
+												width={44}
+												height={44}
+												className={styles.avatar}
+											/>
+											<Link href={`${PATH.News}/${row.uuid}`} className={styles.label}>
+												{row?.title || '---'}
+											</Link>
+										</div>
+									</Tippy>
 								),
 							},
 							{
