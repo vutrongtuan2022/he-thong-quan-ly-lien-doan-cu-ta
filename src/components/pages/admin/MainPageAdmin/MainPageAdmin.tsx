@@ -234,7 +234,7 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 							},
 							{
 								title: 'Ngày tham gia',
-								render: (row, _) => <Moment date={row?.created} format='DD/MM/YYYY' />,
+								render: (row, _) => <>{row?.created ? <Moment date={row?.created} format='DD/MM/YYYY' /> : '---'}</>,
 							},
 							{
 								title: 'Trạng thái',

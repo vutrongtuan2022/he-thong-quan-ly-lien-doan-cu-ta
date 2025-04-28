@@ -365,7 +365,9 @@ function MainPageCard({}: PropsMainPageCard) {
 								},
 								{
 									title: 'Ngày đăng ký',
-									render: (row, _) => <Moment date={row?.cardCreated} format='DD/MM/YYYY' />,
+									render: (row, _) => (
+										<>{row?.cardCreated ? <Moment date={row?.cardCreated} format='DD/MM/YYYY' /> : '---'}</>
+									),
 								},
 								{
 									title: 'Trạng thái',

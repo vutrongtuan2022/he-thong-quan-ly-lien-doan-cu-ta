@@ -142,9 +142,7 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày sinh</p>
-							<p>
-								<Moment date={user?.birthday} format='DD/MM/YYYY' />
-							</p>
+							<p>{user?.birthday ? <Moment date={user?.birthday} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Giới tính</p>
@@ -206,9 +204,7 @@ function MainDetailUser({onClose}: PropsMainDetailUser) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày cấp CMND/CCCD</p>
-							<p>
-								<Moment date={user?.identityDate} format='DD/MM/YYYY' />
-							</p>
+							<p>{user?.identityDate ? <Moment date={user?.identityDate} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ảnh mặt trước CMND/CCCD</p>

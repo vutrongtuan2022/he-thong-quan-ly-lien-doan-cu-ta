@@ -103,9 +103,7 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày sinh</p>
-							<p>
-								<Moment date={member?.birthday} format='DD/MM/YYYY' />
-							</p>
+							<p>{member?.birthday ? <Moment date={member?.birthday} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Giới tính</p>
@@ -165,9 +163,7 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày cấp CMND/CCCD</p>
-							<p>
-								<Moment date={member?.identityDate} format='DD/MM/YYYY' />
-							</p>
+							<p>{member?.identityDate ? <Moment date={member?.identityDate} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ảnh mặt trước CMND/CCCD</p>

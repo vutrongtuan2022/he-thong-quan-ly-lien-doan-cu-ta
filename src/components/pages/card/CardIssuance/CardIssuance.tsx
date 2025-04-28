@@ -183,9 +183,7 @@ function CardIssuance({card}: PropsCardIssuance) {
 				</div>
 				<div className={styles.item}>
 					<p>Ngày đăng ký:</p>
-					<p>
-						<Moment date={card?.cardCreated} format='DD/MM/YYYY' />
-					</p>
+					<p>{card?.cardCreated ? <Moment date={card?.cardCreated} format='DD/MM/YYYY' /> : '---'}</p>
 				</div>
 			</div>
 			<div className={styles.control}>

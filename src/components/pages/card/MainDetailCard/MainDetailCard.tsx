@@ -254,9 +254,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày sinh</p>
-							<p>
-								<Moment date={card?.birthday} format='DD/MM/YYYY' />
-							</p>
+							<p>{card?.birthday ? <Moment date={card?.birthday} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Giới tính</p>
@@ -323,9 +321,7 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 						</div>
 						<div className={styles.item}>
 							<p>Ngày cấp CMND/CCCD</p>
-							<p>
-								<Moment date={card?.identityDate} format='DD/MM/YYYY' />
-							</p>
+							<p>{card?.identityDate ? <Moment date={card?.identityDate} format='DD/MM/YYYY' /> : '---'}</p>
 						</div>
 						<div className={styles.item}>
 							<p>Ảnh mặt trước CMND/CCCD</p>

@@ -216,11 +216,7 @@ function MainPageMember({}: PropsMainPageMember) {
 							},
 							{
 								title: 'Ngày đăng ký',
-								render: (row, _) => (
-									<>
-										<Moment date={row.created} format='DD/MM/YYYY' />
-									</>
-								),
+								render: (row, _) => <>{row.created ? <Moment date={row.created} format='DD/MM/YYYY' /> : '---'}</>,
 							},
 							{
 								title: 'Trạng thái',
