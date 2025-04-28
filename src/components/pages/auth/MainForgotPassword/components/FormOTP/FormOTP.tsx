@@ -14,7 +14,7 @@ import accountServices from '~/services/accountServices';
 import Loading from '~/components/common/Loading';
 
 function FormOTP({}: PropsFormOTP) {
-	const TIME_OTP = 60;
+	const TIME_OTP = 180;
 
 	const [countDown, setCoutDown] = useState<number>(TIME_OTP);
 
