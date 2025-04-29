@@ -4,7 +4,7 @@ import {IMember, PropsMainPageMember} from './interfaces';
 import styles from './MainPageMember.module.scss';
 import SearchBlock from '~/components/utils/SearchBlock';
 import MainTable from '~/components/utils/MainTable';
-import {Crown1, Danger, Eye, People} from 'iconsax-react';
+import {Crown1, Danger, Edit, Eye, People} from 'iconsax-react';
 import {HiOutlineLockClosed, HiOutlineLockOpen} from 'react-icons/hi';
 import DataWrapper from '~/components/common/DataWrapper';
 import Table from '~/components/common/Table';
@@ -282,7 +282,7 @@ function MainPageMember({}: PropsMainPageMember) {
 											/>
 										) : (
 											<IconCustom
-												icon={<Crown1 color='#6170E3' size={24} />}
+												icon={<Edit color='#6170E3' size={24} />}
 												tooltip='Chỉnh sửa chức vụ'
 												background=' rgba(55, 114, 255, 0.10)'
 												onClick={() =>
