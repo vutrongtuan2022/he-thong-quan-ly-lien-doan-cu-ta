@@ -91,8 +91,8 @@ function MainDetailMember({onClose}: PropsMainDetailMember) {
 						<Image
 							alt='Avatar'
 							src={`${process.env.NEXT_PUBLIC_IMAGE}/${member?.imageCardPath}`}
-							width={80}
-							height={80}
+							width={120}
+							height={160}
 							className={styles.avatar}
 						/>
 					)}

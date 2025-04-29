@@ -7,7 +7,7 @@ import Button from '~/components/common/Button';
 import Image from 'next/image';
 import FilterCustom from '~/components/common/FilterCustom';
 import MainTable from '~/components/utils/MainTable';
-import {CloseCircle, Danger, Eye, TickCircle, User} from 'iconsax-react';
+import {Category, CloseCircle, Danger, Eye, TaskSquare, TickCircle, User} from 'iconsax-react';
 import {useRouter} from 'next/router';
 import Pagination from '~/components/common/Pagination';
 import DataWrapper from '~/components/common/DataWrapper';
@@ -27,6 +27,9 @@ import userServices from '~/services/userServices';
 import moment from 'moment';
 import Moment from 'react-moment';
 import Loading from '~/components/common/Loading';
+import clsx from 'clsx';
+import GridColumn from '~/components/layouts/GridColumn';
+import CardUser from '../CardUser';
 
 function MainPageHome({}: PropsMainPageHome) {
 	const router = useRouter();
@@ -142,7 +145,43 @@ function MainPageHome({}: PropsMainPageHome) {
 					</div>
 				}
 			/>
-			<MainTable icon={<User size={28} color='#FC6A45' variant='Bold' />} title='Danh sách người đăng ký'>
+			<MainTable
+				icon={<User size={28} color='#FC6A45' variant='Bold' />}
+				title='Danh sách người đăng ký'
+				action={
+					<div className={styles.action}>
+						<div
+							className={clsx(styles.view, {[styles.active]: _view == 'list'})}
+							onClick={() =>
+								router.replace({
+									pathname: router.pathname,
+									query: {
+										...router.query,
+										_view: 'list',
+									},
+								})
+							}
+						>
+							<Category className={styles.icon_view} size={24} />
+						</div>
+						<div
+							className={clsx(styles.view, {[styles.active]: !_view})}
+							onClick={() => {
+								const {_view, ...rest} = router.query;
+
+								router.replace({
+									pathname: router.pathname,
+									query: {
+										...rest,
+									},
+								});
+							}}
+						>
+							<TaskSquare className={styles.icon_view} size={26} />
+						</div>
+					</div>
+				}
+			>
 				{!_view && (
 					<DataWrapper
 						loading={isLoading}
@@ -256,6 +295,21 @@ function MainPageHome({}: PropsMainPageHome) {
 								},
 							]}
 						/>
+					</DataWrapper>
+				)}
+
+				{_view == 'list' && (
+					<DataWrapper
+						loading={isLoading}
+						data={data?.items || []}
+						title='Người đăng ký trống!'
+						note='Danh sách người đăng ký hiện đang trống!'
+					>
+						<GridColumn col_4>
+							{data?.items?.map((v) => (
+								<CardUser key={1} user={v} />
+							))}
+						</GridColumn>
 					</DataWrapper>
 				)}
 
