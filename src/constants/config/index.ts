@@ -55,6 +55,7 @@ export enum PATH {
 
 	// Settings
 	Settings = '/setting',
+	UpdateSettings = '/setting/update-setting',
 }
 
 export const Menus: {
@@ -89,7 +90,7 @@ export const Menus: {
 				icon: People,
 				path: PATH.Member,
 				pathActive: PATH.Member,
-				role: ROLE_ADMIN.LEAGUE,
+				role: ROLE_ADMIN.ADMIN,
 			},
 			{
 				title: 'Quản trị viên',

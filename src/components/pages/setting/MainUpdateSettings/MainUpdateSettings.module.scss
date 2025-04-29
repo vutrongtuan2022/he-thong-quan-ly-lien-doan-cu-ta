@@ -1,0 +1,23 @@
+.head_main {
+	padding: 12px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+	border-radius: 16px;
+	background: #fff;
+}
+
+.group_button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.main {
+	margin-top: 20px;
+	padding: 24px;
+	border-radius: 16px;
+	background: #fff;
+}

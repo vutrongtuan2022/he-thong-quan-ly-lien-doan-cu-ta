@@ -242,8 +242,8 @@ function MainDetailCard({onClose}: PropsMainDetailCard) {
 						<Image
 							alt='Avatar'
 							src={`${process.env.NEXT_PUBLIC_IMAGE}/${card?.imageCardPath}`}
-							width={80}
-							height={80}
+							width={120}
+							height={160}
 							className={styles.avatar}
 						/>
 					)}
