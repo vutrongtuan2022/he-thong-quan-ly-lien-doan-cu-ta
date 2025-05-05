@@ -16,6 +16,8 @@ import {toastWarn} from '~/common/funcs/toast';
 import uploadService from '~/services/uploadService';
 import {useRouter} from 'next/router';
 import profileServices from '~/services/profileServices';
+import Image from 'next/image';
+import icons from '~/constants/images/icons';
 
 function MainUpdateLink({}: PropsMainUpdateLink) {
 	const router = useRouter();
@@ -229,6 +231,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 											Số điện thoại <span style={{color: '#EE0033'}}>*</span>
 										</span>
 									}
+									unit={<Image alt='icon download' src={icons.iconPhone} width={28} height={28} />}
 								/>
 								<div>
 									<Input
@@ -244,6 +247,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 												Email <span style={{color: '#EE0033'}}>*</span>
 											</span>
 										}
+										unit={<Image alt='icon download' src={icons.iconEmail} width={28} height={28} />}
 									/>
 								</div>
 								<Input
@@ -254,6 +258,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									value={form?.zalo}
 									max={255}
 									label={<span>Tài khoản Zalo</span>}
+									unit={<Image alt='icon download' src={icons.iconZalo} width={28} height={28} />}
 								/>
 								<div>
 									<Input
@@ -263,6 +268,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										value={form.linkedIn}
 										max={255}
 										label={<span>Liên kết LinkedIn</span>}
+										unit={<Image alt='icon download' src={icons.iconLinkedIn} width={28} height={28} />}
 									/>
 								</div>
 								<Input
@@ -272,6 +278,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									value={form?.facebook}
 									max={255}
 									label={<span>Liên kết Facebook</span>}
+									unit={<Image alt='icon download' src={icons.iconFaceBook} width={28} height={28} />}
 								/>
 								<div>
 									<Input
@@ -281,6 +288,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										value={form.instagram}
 										max={255}
 										label={<span>Liên kết Insta</span>}
+										unit={<Image alt='icon download' src={icons.iconInsta} width={28} height={28} />}
 									/>
 								</div>
 								<Input
@@ -290,6 +298,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 									value={form?.youtube}
 									max={255}
 									label={<span>Liên kết Youtube</span>}
+									unit={<Image alt='icon download' src={icons.iconYoutube} width={28} height={28} />}
 								/>
 								<div>
 									<Input
@@ -299,6 +308,7 @@ function MainUpdateLink({}: PropsMainUpdateLink) {
 										value={form.tiktok}
 										max={255}
 										label={<span>Liên kết TikTok</span>}
+										unit={<Image alt='icon download' src={icons.iconTiktok} width={28} height={28} />}
 									/>
 								</div>
 							</GridColumn>
