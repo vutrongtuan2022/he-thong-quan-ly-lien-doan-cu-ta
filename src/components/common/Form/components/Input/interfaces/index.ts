@@ -18,7 +18,7 @@ export interface PropsInput {
 	note?: string;
 	txtBtn?: string;
 	placeholder: string;
-	unit?: string;
+	unit?: string | React.ReactNode;
 
 	onClick?: () => void;
 
