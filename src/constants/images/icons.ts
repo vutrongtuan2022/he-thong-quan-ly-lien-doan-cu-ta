@@ -12,6 +12,15 @@ import upload from '../../../public/static/images/upload.png';
 import message from '../../../public/static/images/message.svg';
 import total_scan from '../../../public/static/images/total_scan.svg';
 
+import iconPhone from '../../../public/static/images/iconPhone.svg';
+import iconEmail from '../../../public/static/images/iconEmail.svg';
+import iconZalo from '../../../public/static/images/iconZalo.png';
+import iconLinkedIn from '../../../public/static/images/iconLinkedIn.svg';
+import iconFaceBook from '../../../public/static/images/iconFaceBook.svg';
+import iconInsta from '../../../public/static/images/iconInsta.svg';
+import iconYoutube from '../../../public/static/images/iconYoutube.svg';
+import iconTiktok from '../../../public/static/images/iconTiktok.svg';
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
 	logo,
@@ -26,4 +35,12 @@ export default {
 	upload,
 	message,
 	total_scan,
+	iconPhone,
+	iconEmail,
+	iconZalo,
+	iconLinkedIn,
+	iconFaceBook,
+	iconInsta,
+	iconYoutube,
+	iconTiktok,
 };
