@@ -51,7 +51,7 @@ function MainPageLink({}: PropsMainPageLink) {
 						<div className={styles.divider}></div>
 						<GridColumn col_2>
 							<div className={styles.item}>
-								<p>Tên tài khoản</p>
+								<p>Tên liên đoàn</p>
 								<p>{detatilLink?.name || ''}</p>
 							</div>
 							<div className={styles.item}>
