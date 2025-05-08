@@ -16,7 +16,7 @@ import iconPhone from '../../../public/static/images/iconPhone.svg';
 import iconEmail from '../../../public/static/images/iconEmail.svg';
 import iconZalo from '../../../public/static/images/iconZalo.png';
 import iconLinkedIn from '../../../public/static/images/iconLinkedIn.svg';
-import iconFaceBook from '../../../public/static/images/iconFaceBook.svg';
+import iconFaceBook from '../../../public/static/images/iconFacebook.svg';
 import iconInsta from '../../../public/static/images/iconInsta.svg';
 import iconYoutube from '../../../public/static/images/iconYoutube.svg';
 import iconTiktok from '../../../public/static/images/iconTiktok.svg';
