@@ -393,10 +393,17 @@ function MainPageMember({}: PropsMainPageMember) {
 											tooltip='Xem chi tiết'
 											background='rgba(97, 112, 227, 0.10)'
 											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {...router.query, _uuidMember: row?.userInfo?.uuid},
-												})
+												router.replace(
+													{
+														pathname: router.pathname,
+														query: {...router.query, _uuidMember: row?.userInfo?.uuid},
+													},
+													undefined,
+													{
+														scroll: false,
+														shallow: false,
+													}
+												)
 											}
 										/>
 									</div>
@@ -444,12 +451,19 @@ function MainPageMember({}: PropsMainPageMember) {
 				onClose={() => {
 					const {_uuidCreate, ...rest} = router.query;
 
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
 						},
-					});
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormCreateExpertise
@@ -458,10 +472,17 @@ function MainPageMember({}: PropsMainPageMember) {
 					onClose={() => {
 						const {_uuidCreate, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>
@@ -472,12 +493,19 @@ function MainPageMember({}: PropsMainPageMember) {
 				onClose={() => {
 					const {_uuidUpdate, ...rest} = router.query;
 
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
 						},
-					});
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormUpdateExpertise
@@ -486,10 +514,17 @@ function MainPageMember({}: PropsMainPageMember) {
 					onClose={() => {
 						const {_uuidUpdate, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>
@@ -499,24 +534,38 @@ function MainPageMember({}: PropsMainPageMember) {
 				onClose={() => {
 					const {_uuidMember, ...rest} = router.query;
 
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
 						},
-					});
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<MainDetailMember
 					onClose={() => {
 						const {_uuidMember, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: {
-								...rest,
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: {
+									...rest,
+								},
 							},
-						});
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</PositionContainer>

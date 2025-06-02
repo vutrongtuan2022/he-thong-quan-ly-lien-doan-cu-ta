@@ -152,13 +152,20 @@ function MainPageVideo({}: PropsMainPageVideo) {
 							aquamarine
 							icon={<Image alt='icon add' src={icons.iconAdd} width={20} height={20} />}
 							onClick={() => {
-								router.replace({
-									pathname: router.pathname,
-									query: {
-										...router.query,
-										action: 'create',
+								router.replace(
+									{
+										pathname: router.pathname,
+										query: {
+											...router.query,
+											action: 'create',
+										},
 									},
-								});
+									undefined,
+									{
+										scroll: false,
+										shallow: false,
+									}
+								);
 							}}
 						>
 							Thêm video
@@ -218,13 +225,20 @@ function MainPageVideo({}: PropsMainPageVideo) {
 											tooltip='Chỉnh sửa'
 											background='rgba(55, 114, 255, 0.10)'
 											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {
-														...router.query,
-														_uuidUpdate: row.uuid,
+												router.replace(
+													{
+														pathname: router.pathname,
+														query: {
+															...router.query,
+															_uuidUpdate: row.uuid,
+														},
 													},
-												})
+													undefined,
+													{
+														scroll: false,
+														shallow: false,
+													}
+												)
 											}
 										/>
 
@@ -281,12 +295,19 @@ function MainPageVideo({}: PropsMainPageVideo) {
 					onClose={() => {
 						const {action, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: {
-								...rest,
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: {
+									...rest,
+								},
 							},
-						});
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>
@@ -310,10 +331,17 @@ function MainPageVideo({}: PropsMainPageVideo) {
 					onClose={() => {
 						const {_uuidUpdate, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>

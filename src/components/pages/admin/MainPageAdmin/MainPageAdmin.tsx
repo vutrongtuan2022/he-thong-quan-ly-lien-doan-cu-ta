@@ -191,10 +191,17 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 							icon={<Image alt='icon download' src={icons.iconAdd} width={16} height={16} />}
 							onClick={() => {
 								if (_open !== 'create') {
-									router.replace({
-										pathname: router.pathname,
-										query: {...router.query, _open: 'create'},
-									});
+									router.replace(
+										{
+											pathname: router.pathname,
+											query: {...router.query, _open: 'create'},
+										},
+										undefined,
+										{
+											scroll: false,
+											shallow: false,
+										}
+									);
 								}
 							}}
 						>
@@ -286,13 +293,20 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 													tooltip='Chỉnh sửa'
 													background='rgba(55, 114, 255, 0.10)'
 													onClick={() =>
-														router.replace({
-															pathname: router.pathname,
-															query: {
-																...router.query,
-																_uuidUpdate: row?.uuid,
+														router.replace(
+															{
+																pathname: router.pathname,
+																query: {
+																	...router.query,
+																	_uuidUpdate: row?.uuid,
+																},
 															},
-														})
+															undefined,
+															{
+																scroll: false,
+																shallow: false,
+															}
+														)
 													}
 												/>
 											</>
@@ -320,19 +334,33 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				open={_open == 'create'}
 				onClose={() => {
 					const {_open, ...rest} = router.query;
-					router.replace({
-						pathname: router.pathname,
-						query: rest,
-					});
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: rest,
+						},
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormCreateAdmin
 					onClose={() => {
 						const {_open, ...rest} = router.query;
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>
@@ -342,20 +370,34 @@ function MainPageAdmin({}: PropsMainPageAdmin) {
 				onClose={() => {
 					const {_uuidUpdate, ...rest} = router.query;
 
-					router.replace({
-						pathname: router.pathname,
-						query: rest,
-					});
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: rest,
+						},
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormUpdateAdmin
 					onClose={() => {
 						const {_uuidUpdate, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>

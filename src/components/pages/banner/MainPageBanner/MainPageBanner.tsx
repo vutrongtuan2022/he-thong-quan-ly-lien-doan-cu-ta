@@ -152,10 +152,17 @@ function MainPageBanner({}: PropsMainPageBanner) {
 							icon={<Image alt='icon download' src={icons.iconAdd} width={16} height={16} />}
 							onClick={() => {
 								if (_open !== 'create') {
-									router.replace({
-										pathname: router.pathname,
-										query: {...router.query, _open: 'create'},
-									});
+									router.replace(
+										{
+											pathname: router.pathname,
+											query: {...router.query, _open: 'create'},
+										},
+										undefined,
+										{
+											scroll: false,
+											shallow: false,
+										}
+									);
 								}
 							}}
 						>
@@ -225,13 +232,20 @@ function MainPageBanner({}: PropsMainPageBanner) {
 											tooltip='Chỉnh sửa'
 											background='#3772FF1A'
 											onClick={() =>
-												router.replace({
-													pathname: router.pathname,
-													query: {
-														...router.query,
-														_uuidUpdate: row.uuid,
+												router.replace(
+													{
+														pathname: router.pathname,
+														query: {
+															...router.query,
+															_uuidUpdate: row.uuid,
+														},
 													},
-												})
+													undefined,
+													{
+														scroll: false,
+														shallow: false,
+													}
+												)
 											}
 										/>
 										<IconCustom
@@ -277,20 +291,34 @@ function MainPageBanner({}: PropsMainPageBanner) {
 				open={_open === 'create'}
 				onClose={() => {
 					const {_open, ...rest} = router.query;
-					router.replace({
-						pathname: router.pathname,
-						query: rest,
-					});
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: rest,
+						},
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormCreateBanner
 					queryKeys={[QUERY_KEY.table_banners]}
 					onClose={() => {
 						const {_open, ...rest} = router.query;
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>
@@ -312,10 +340,17 @@ function MainPageBanner({}: PropsMainPageBanner) {
 					onClose={() => {
 						const {_uuidUpdate, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>

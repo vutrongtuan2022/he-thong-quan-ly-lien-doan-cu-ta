@@ -127,10 +127,17 @@ function CardUser({user}: PropsCardUser) {
 						className={styles.action}
 						onClick={(e) => {
 							e.preventDefault();
-							router.replace({
-								pathname: router.pathname,
-								query: {...router.query, _uuidUser: user?.uuid},
-							});
+							router.replace(
+								{
+									pathname: router.pathname,
+									query: {...router.query, _uuidUser: user?.uuid},
+								},
+								undefined,
+								{
+									scroll: false,
+									shallow: false,
+								}
+							);
 						}}
 					>
 						<Eye size={24} color='#6170E3' />

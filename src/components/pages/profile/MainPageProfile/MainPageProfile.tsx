@@ -43,10 +43,17 @@ function MainPageProfile({}: PropsMainPageProfile) {
 								orange
 								onClick={() => {
 									if (_action !== 'change_update') {
-										router.replace({
-											pathname: router.pathname,
-											query: {...router.query, _action: 'change_update'},
-										});
+										router.replace(
+											{
+												pathname: router.pathname,
+												query: {...router.query, _action: 'change_update'},
+											},
+											undefined,
+											{
+												scroll: false,
+												shallow: false,
+											}
+										);
 									}
 								}}
 							>
@@ -101,19 +108,33 @@ function MainPageProfile({}: PropsMainPageProfile) {
 				open={_action == 'change_update'}
 				onClose={() => {
 					const {_action, ...rest} = router.query;
-					router.replace({
-						pathname: router.pathname,
-						query: rest,
-					});
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: rest,
+						},
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<FormChangePassword
 					onClose={() => {
 						const {_action, ...rest} = router.query;
-						router.replace({
-							pathname: router.pathname,
-							query: rest,
-						});
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: rest,
+							},
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</Popup>

@@ -286,13 +286,20 @@ function MainPageCard({}: PropsMainPageCard) {
 						<div
 							className={clsx(styles.view, {[styles.active]: _view == 'list'})}
 							onClick={() =>
-								router.replace({
-									pathname: router.pathname,
-									query: {
-										...router.query,
-										_view: 'list',
+								router.replace(
+									{
+										pathname: router.pathname,
+										query: {
+											...router.query,
+											_view: 'list',
+										},
 									},
-								})
+									undefined,
+									{
+										scroll: false,
+										shallow: false,
+									}
+								)
 							}
 						>
 							<Category className={styles.icon_view} size={24} />
@@ -302,12 +309,19 @@ function MainPageCard({}: PropsMainPageCard) {
 							onClick={() => {
 								const {_view, ...rest} = router.query;
 
-								router.replace({
-									pathname: router.pathname,
-									query: {
-										...rest,
+								router.replace(
+									{
+										pathname: router.pathname,
+										query: {
+											...rest,
+										},
 									},
-								});
+									undefined,
+									{
+										scroll: false,
+										shallow: false,
+									}
+								);
 							}}
 						>
 							<TaskSquare className={styles.icon_view} size={26} />
@@ -478,10 +492,17 @@ function MainPageCard({}: PropsMainPageCard) {
 												tooltip='Xem chi tiết'
 												background='rgba(97, 112, 227, 0.10)'
 												onClick={() =>
-													router.replace({
-														pathname: router.pathname,
-														query: {...router.query, _uuidCard: row?.uuid},
-													})
+													router.replace(
+														{
+															pathname: router.pathname,
+															query: {...router.query, _uuidCard: row?.uuid},
+														},
+														undefined,
+														{
+															scroll: false,
+															shallow: false,
+														}
+													)
 												}
 											/>
 										</div>
@@ -561,24 +582,38 @@ function MainPageCard({}: PropsMainPageCard) {
 				onClose={() => {
 					const {_uuidCard, ...rest} = router.query;
 
-					router.replace({
-						pathname: router.pathname,
-						query: {
-							...rest,
+					router.replace(
+						{
+							pathname: router.pathname,
+							query: {
+								...rest,
+							},
 						},
-					});
+						undefined,
+						{
+							scroll: false,
+							shallow: false,
+						}
+					);
 				}}
 			>
 				<MainDetailCard
 					onClose={() => {
 						const {_uuidCard, ...rest} = router.query;
 
-						router.replace({
-							pathname: router.pathname,
-							query: {
-								...rest,
+						router.replace(
+							{
+								pathname: router.pathname,
+								query: {
+									...rest,
+								},
 							},
-						});
+							undefined,
+							{
+								scroll: false,
+								shallow: false,
+							}
+						);
 					}}
 				/>
 			</PositionContainer>

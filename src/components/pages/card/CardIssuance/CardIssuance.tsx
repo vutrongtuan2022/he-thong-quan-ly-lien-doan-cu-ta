@@ -236,10 +236,17 @@ function CardIssuance({card}: PropsCardIssuance) {
 						className={styles.action}
 						onClick={(e) => {
 							e.preventDefault();
-							router.replace({
-								pathname: router.pathname,
-								query: {...router.query, _uuidCard: card?.uuid},
-							});
+							router.replace(
+								{
+									pathname: router.pathname,
+									query: {...router.query, _uuidCard: card?.uuid},
+								},
+								undefined,
+								{
+									scroll: false,
+									shallow: false,
+								}
+							);
 						}}
 					>
 						<Eye size={24} color='#6170E3' />
