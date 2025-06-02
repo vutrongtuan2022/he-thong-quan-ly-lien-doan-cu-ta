@@ -20,6 +20,8 @@ import iconFaceBook from '../../../public/static/images/iconFacebook.svg';
 import iconInsta from '../../../public/static/images/iconInsta.svg';
 import iconYoutube from '../../../public/static/images/iconYoutube.svg';
 import iconTiktok from '../../../public/static/images/iconTiktok.svg';
+import XSL from '../../../public/static/images/XSL.svg';
+import emptyFile from '../../../public/static/images/Empty_File.png';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -43,4 +45,6 @@ export default {
 	iconInsta,
 	iconYoutube,
 	iconTiktok,
+	XSL,
+	emptyFile,
 };

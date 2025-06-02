@@ -27,12 +27,14 @@ import FormCreateExpertise from '../FormCreateExpertise';
 import FormUpdateExpertise from '../FormUpdateExpertise';
 import PositionContainer from '~/components/common/PositionContainer';
 import MainDetailMember from '../MainDetailMember';
+import ImportExcel from '~/components/utils/ImportExcel';
 
 function MainPageMember({}: PropsMainPageMember) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const {_uuidCreate, _uuidUpdate, _uuidMember} = router.query;
+	const {_uuidCreate, _uuidUpdate, _uuidMember, _action} = router.query;
 
+	const [file, setFile] = useState<File | null>(null);
 	const [keyword, setKeyword] = useState<string>('');
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(20);
@@ -118,9 +120,44 @@ function MainPageMember({}: PropsMainPageMember) {
 		},
 	});
 
+	const fucnImportExcel = useMutation({
+		mutationFn: () => {
+			return httpRequest({
+				showMessageFailed: true,
+				showMessageSuccess: true,
+				http: accountServices.importExcel({
+					FileData: file!,
+				}),
+			});
+		},
+		onSuccess(data) {
+			if (data) {
+				handleCloseImportExcel();
+				queryClient.invalidateQueries([QUERY_KEY.table_member]);
+			}
+		},
+	});
+
+	const handleCloseImportExcel = () => {
+		const {_action, ...rest} = router.query;
+
+		setFile(null);
+		router.replace(
+			{
+				query: rest,
+			},
+			undefined,
+			{scroll: false}
+		);
+	};
+
+	const handleImportExcel = async () => {
+		return fucnImportExcel.mutate();
+	};
+
 	return (
 		<Fragment>
-			<Loading loading={funcLocked.isLoading || funcOpen.isLoading} />
+			<Loading loading={funcLocked.isLoading || funcOpen.isLoading || fucnImportExcel.isLoading} />
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -156,6 +193,30 @@ function MainPageMember({}: PropsMainPageMember) {
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
 								Đặt lại
+							</Button>
+							<Button
+								p_8_24
+								green
+								rounded_8
+								bold
+								onClick={() =>
+									router.replace(
+										{
+											pathname: router.pathname,
+											query: {
+												...router.query,
+												_action: 'import-excel',
+											},
+										},
+										undefined,
+										{
+											scroll: false,
+											shallow: false,
+										}
+									)
+								}
+							>
+								Import excel
 							</Button>
 						</div>
 					</div>
@@ -445,6 +506,17 @@ function MainPageMember({}: PropsMainPageMember) {
 					}}
 				/>
 			</PositionContainer>
+
+			<Popup open={_action == 'import-excel'} onClose={handleCloseImportExcel}>
+				<ImportExcel
+					name='file-gateway'
+					file={file}
+					pathTemplate='/static/files/Mau_Import_ID_the_thanh_vien.xlsx'
+					setFile={setFile}
+					onClose={handleCloseImportExcel}
+					onSubmit={handleImportExcel}
+				/>
+			</Popup>
 		</Fragment>
 	);
 }

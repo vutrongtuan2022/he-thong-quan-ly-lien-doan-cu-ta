@@ -82,3 +82,21 @@ export function getTextAddress(detailAddress: any, address?: string): string {
 
 	return parts.length ? parts.join(', ') : '---';
 }
+
+export function convertFileSize(fileSizeInKB: number) {
+	if (typeof fileSizeInKB !== 'number' || fileSizeInKB < 0) {
+		return 'Kích thước không hợp lệ';
+	}
+
+	if (fileSizeInKB < 1024) {
+		return fileSizeInKB.toFixed(2) + ' kb';
+	} else if (fileSizeInKB < 1048576) {
+		// 1024 KB = 1 MB
+		return (fileSizeInKB / 1024).toFixed(2) + ' mb';
+	} else if (fileSizeInKB < 1073741824) {
+		// 1024 MB = 1 GB
+		return (fileSizeInKB / 1048576).toFixed(2) + ' gb';
+	} else {
+		return (fileSizeInKB / 1073741824).toFixed(2) + ' tb';
+	}
+}

@@ -67,5 +67,14 @@ const accountServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	importExcel: (data: {FileData: File}, tokenAxios?: any) => {
+		return axiosClient.post(`/Account/import-excel-account`, data, {
+			cancelToken: tokenAxios,
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				Accept: 'text/plain',
+			},
+		});
+	},
 };
 export default accountServices;
