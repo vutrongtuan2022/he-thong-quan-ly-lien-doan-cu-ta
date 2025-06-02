@@ -19,14 +19,14 @@ const userServices = {
 	},
 	exportListUser: (
 		data: {
-			pageSize: number;
-			page: number;
-			keyword: string;
-			expertiseType: number | null;
-			status: number | null;
-			cardState: number | null;
-			startDate: string | null;
-			endDate: string | null;
+			// pageSize: number;
+			// page: number;
+			// keyword: string;
+			// expertiseType: number | null;
+			// status: number | null;
+			// cardState: number | null;
+			// startDate: string | null;
+			// endDate: string | null;
 		},
 		tokenAxios?: any
 	) => {

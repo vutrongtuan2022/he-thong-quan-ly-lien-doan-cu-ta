@@ -183,14 +183,14 @@ function MainPageCard({}: PropsMainPageCard) {
 				showMessageFailed: false,
 				showMessageSuccess: false,
 				http: userServices.exportListUser({
-					page: page,
-					pageSize: pageSize,
-					keyword: keyword,
-					status: status,
-					cardState: cardState,
-					expertiseType: expertiseType,
-					startDate: date?.from ? moment(date.from).format('YYYY-MM-DD') : null,
-					endDate: date?.to ? moment(date.to).format('YYYY-MM-DD') : null,
+					// page: page,
+					// pageSize: pageSize,
+					// keyword: keyword,
+					// status: status,
+					// cardState: cardState,
+					// expertiseType: expertiseType,
+					// startDate: date?.from ? moment(date.from).format('YYYY-MM-DD') : null,
+					// endDate: date?.to ? moment(date.to).format('YYYY-MM-DD') : null,
 				}),
 			}),
 		onSuccess(data) {
@@ -272,7 +272,7 @@ function MainPageCard({}: PropsMainPageCard) {
 								icon={<Image alt='icon download' src={icons.iconBtnDownload} width={16} height={16} />}
 								onClick={funcExportData.mutate}
 							>
-								Xuất dữ liệu
+								Xuất dữ liệu in thẻ
 							</Button>
 						</div>
 					</div>
