@@ -51,7 +51,7 @@ export default axiosClient;
 export const httpRequest = async ({
 	http,
 	setLoading,
-	msgSuccess = 'Thành công',
+	msgSuccess,
 	showMessageSuccess = false,
 	showMessageFailed = false,
 	onError,

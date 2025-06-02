@@ -78,6 +78,10 @@ function MainCreateNews({}: PropsMainCreateNews) {
 	});
 
 	const handleSubmit = async () => {
+		if (form?.catalog == TYPE_NEWS.EVENT && !form.link) {
+			return toastWarn({msg: 'Vui lòng nhập link đăng ký sự kiện!'});
+		}
+
 		if (!file) {
 			return toastWarn({msg: 'Vui lòng chọn ảnh!'});
 		}
@@ -129,7 +133,6 @@ function MainCreateNews({}: PropsMainCreateNews) {
 						/>
 						{form.catalog == TYPE_NEWS.EVENT && (
 							<Input
-								isRequired={form?.catalog == TYPE_NEWS.EVENT}
 								name='link'
 								placeholder='Nhập link đăng ký sự kiện'
 								value={form.link}

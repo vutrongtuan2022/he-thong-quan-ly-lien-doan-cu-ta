@@ -328,13 +328,20 @@ function MainPageMember({}: PropsMainPageMember) {
 												tooltip='Thêm chức vụ'
 												background=' rgba(55, 114, 255, 0.10)'
 												onClick={() =>
-													router.replace({
-														pathname: router.pathname,
-														query: {
-															...router.query,
-															_uuidCreate: row?.userInfo.uuid,
+													router.replace(
+														{
+															pathname: router.pathname,
+															query: {
+																...router.query,
+																_uuidCreate: row?.userInfo.uuid,
+															},
 														},
-													})
+														undefined,
+														{
+															scroll: false,
+															shallow: false,
+														}
+													)
 												}
 											/>
 										) : (
@@ -343,13 +350,20 @@ function MainPageMember({}: PropsMainPageMember) {
 												tooltip='Chỉnh sửa chức vụ'
 												background=' rgba(55, 114, 255, 0.10)'
 												onClick={() =>
-													router.replace({
-														pathname: router.pathname,
-														query: {
-															...router.query,
-															_uuidUpdate: row?.userInfo.uuid,
+													router.replace(
+														{
+															pathname: router.pathname,
+															query: {
+																...router.query,
+																_uuidUpdate: row?.userInfo.uuid,
+															},
 														},
-													})
+														undefined,
+														{
+															scroll: false,
+															shallow: false,
+														}
+													)
 												}
 											/>
 										)}
