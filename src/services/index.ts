@@ -70,7 +70,7 @@ export const httpRequest = async ({
 		const res: any = await http;
 
 		if (res.error.code === 0) {
-			showMessageSuccess && msgSuccess && toastSuccess({msg: msgSuccess || res?.error?.message});
+			showMessageSuccess && toastSuccess({msg: msgSuccess || res?.error?.message});
 			setLoading && setLoading(() => false);
 
 			return res.data || true;
