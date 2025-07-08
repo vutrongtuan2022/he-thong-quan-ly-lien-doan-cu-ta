@@ -63,14 +63,11 @@ export function getKeyCert(): {
 } {
 	const key: string = process.env.NEXT_PUBLIC_KEY_CERT!;
 	const time = moment(new Date()).format('MM/DD/YYYY HH:mm:ss');
+
 	return {
-		time: 'string',
-		keyCert: 'string',
+		time: time,
+		keyCert: md5(`${key}${time}`),
 	};
-	// return {
-	// 	time: time,
-	// 	keyCert: md5(`${key}${time}`),
-	// };
 }
 
 export function getTextAddress(detailAddress: any, address?: string): string {
