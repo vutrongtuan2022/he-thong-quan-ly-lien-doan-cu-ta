@@ -1,12 +1,12 @@
 'use client';
 
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 
 import {PropsEditerContent} from './interfaces';
 import styles from './EditerContent.module.scss';
 import dynamic from 'next/dynamic';
 
-const JoditEditor = dynamic(() => import('jodit-react'), {ssr: false});
+const JoditEditor = dynamic(() => import('jodit-pro-react'), {ssr: false});
 
 const copyStringToClipboard = function (str: any) {
 	var el: any = document.createElement('textarea');
@@ -83,6 +83,8 @@ const buttons = [
 	'|',
 	'source',
 	'|',
+	'mobileView',
+	'|',
 	{
 		name: 'insertMergeField',
 		tooltip: 'Insert Merge Field',
@@ -91,7 +93,6 @@ const buttons = [
 			function onSelected(e: any) {
 				let mergeField = e.target.value;
 				if (mergeField) {
-					console.log(mergeField);
 					editor.selection.insertNode(editor.create.inside.fromHTML('{{' + mergeField + '}}'));
 				}
 			}
@@ -109,7 +110,6 @@ const buttons = [
 			selectElement.onchange = onSelected;
 			divElement.appendChild(selectElement);
 
-			console.log(divElement);
 			return divElement;
 		},
 	},
@@ -124,36 +124,6 @@ const buttons = [
 	},
 ];
 
-const editorConfig: any = {
-	readonly: false,
-	toolbar: true,
-	spellcheck: true,
-	language: 'vi',
-	toolbarButtonSize: 'medium',
-	toolbarAdaptive: false,
-	showCharsCounter: true,
-	showWordsCounter: true,
-	showXPathInStatusbar: false,
-	askBeforePasteHTML: true,
-	askBeforePasteFromWord: true,
-	defaultActionOnPaste: 'insert_clear_html',
-	buttons: buttons,
-	uploader: {
-		insertImageAsBase64URI: true,
-	},
-	width: 800,
-	height: 842,
-	// Config Placeholder
-	placeholder: 'Nhập nội dung bài viết...',
-	showPlaceholder: true,
-	useInputsPlaceholder: true,
-
-	// Config Focus editor
-	autofocus: true,
-	cursorAfterAutofocus: 'end',
-	saveSelectionOnBlur: true,
-};
-
 function EditerContent({label, content, setContent, ...props}: PropsEditerContent) {
 	const editorRef = useRef<any>(null);
 
@@ -163,16 +133,128 @@ function EditerContent({label, content, setContent, ...props}: PropsEditerConten
 		}
 	}, []);
 
+	const config = useMemo(
+		() => ({
+			license: process.env.NEXT_PUBLIC_KEY_JODIT_PRO,
+			readonly: false,
+			toolbar: true,
+			spellcheck: true,
+			language: 'vi',
+			toolbarButtonSize: 'medium',
+			toolbarAdaptive: false,
+			showCharsCounter: true,
+			showWordsCounter: true,
+			showXPathInStatusbar: false,
+			askBeforePasteHTML: true,
+			askBeforePasteFromWord: true,
+			defaultActionOnPaste: 'insert_clear_html',
+			buttons: buttons,
+
+			width: 800,
+			height: 842,
+
+			// Config Placeholder
+			placeholder: 'Nhập nội dung bài viết...',
+			showPlaceholder: true,
+			useInputsPlaceholder: true,
+
+			// Config Focus editor
+			autofocus: true,
+			cursorAfterAutofocus: 'end',
+			saveSelectionOnBlur: true,
+
+			disablePlugins: ['mobile'],
+
+			// Xử lý ảnh
+			uploader: {
+				insertImageAsBase64URI: false,
+				url: 'https://xdsoft.net/jodit/finder/?action=fileUpload',
+			},
+			filebrowser: {
+				ajax: {
+					url: 'https://xdsoft.net/jodit/finder/',
+				},
+				height: 580,
+			},
+
+			imageEditorOptions: {
+				resize: false,
+			},
+			imageDefaultWidth: null,
+			imageDefaultHeight: null,
+			events: {
+				change: (newValue: string) => {
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(newValue, 'text/html');
+					const imgs = doc.querySelectorAll('img');
+
+					let updated = false;
+					imgs.forEach((img) => {
+						if (img.hasAttribute('width') || img.hasAttribute('height') || img.hasAttribute('style')) {
+							img.removeAttribute('width');
+							img.removeAttribute('height');
+							img.removeAttribute('style');
+							updated = true;
+						}
+					});
+
+					if (updated) {
+						const cleaned = doc.body.innerHTML;
+						setContent(cleaned);
+					}
+				},
+			},
+			allowResizeTags: new Set(['img']),
+			resizer: {
+				showSize: true,
+				hideSizeTimeout: 2000,
+				useAspectRatio: false,
+				forImageChangeAttributes: true,
+				min_width: '100%',
+				min_height: '100%',
+			},
+
+			removePlugins: ['image-resize', 'resize-cells'],
+
+			style: {
+				img: {
+					resize: 'none',
+					maxWidth: '100% !important',
+					height: 'auto !important',
+					display: 'block',
+				},
+			},
+		}),
+		[editorRef?.current]
+	);
+
+	function cleanImageAttributes(html: string): string {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(html, 'text/html');
+		const imgs = doc.querySelectorAll('img');
+
+		imgs.forEach((img) => {
+			img.removeAttribute('width');
+			img.removeAttribute('height');
+			img.removeAttribute('style');
+		});
+
+		return doc.body.innerHTML;
+	}
+
 	return (
 		<div className={styles.content}>
 			<p className={styles.label}>{label}</p>
 			<JoditEditor
 				{...props}
 				ref={editorRef}
+				tabIndex={1}
 				value={content}
-				config={editorConfig}
-				onBlur={(newContent) => setContent(newContent)}
-				onChange={(value) => setContent(value)}
+				config={config}
+				// onBlur={(newContent) => setContent(newContent)}
+				// onChange={(value) => setContent(value)}
+				onBlur={(newContent) => setContent(cleanImageAttributes(newContent))}
+				onChange={(value) => setContent(cleanImageAttributes(value))}
 			/>
 		</div>
 	);
