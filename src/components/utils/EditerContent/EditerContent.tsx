@@ -5,6 +5,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {PropsEditerContent} from './interfaces';
 import styles from './EditerContent.module.scss';
 import dynamic from 'next/dynamic';
+import uploadService from '~/services/uploadService';
 
 const JoditEditor = dynamic(() => import('jodit-pro-react'), {ssr: false});
 
@@ -170,6 +171,31 @@ function EditerContent({label, content, setContent, ...props}: PropsEditerConten
 				insertImageAsBase64URI: false,
 				url: 'https://xdsoft.net/jodit/finder/?action=fileUpload',
 			},
+
+			// uploader: {
+			// 	insertImageAsBase64URI: false,
+			// 	filesVariableName: () => 'files',
+			// 	process: (resp: any, editor: any, files: File[], progress: any) => {
+			// 		uploadService
+			// 			.uploadMutilImage(files, '2')
+			// 			.then((response) => {
+			// 				if (response?.data?.error?.code === 0) {
+			// 					const imageUrls = response.data.data as string[];
+			// 					imageUrls.forEach((url) => {
+			// 						editor.selection.insertImage(url);
+			// 					});
+			// 				} else {
+			// 					editor.alert('Upload file thất bại!');
+			// 				}
+			// 			})
+			// 			.catch((error) => {
+			// 				console.error('Upload error:', error);
+			// 				editor.alert('Lỗi khi upload file!');
+			// 			});
+			// 		return false;
+			// 	},
+			// },
+
 			filebrowser: {
 				ajax: {
 					url: 'https://xdsoft.net/jodit/finder/',
