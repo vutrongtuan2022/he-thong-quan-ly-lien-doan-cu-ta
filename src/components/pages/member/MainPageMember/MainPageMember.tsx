@@ -162,8 +162,6 @@ function MainPageMember({}: PropsMainPageMember) {
 				showMessageFailed: false,
 				showMessageSuccess: false,
 				http: accountServices.exportExcel({
-					page: page,
-					pageSize: pageSize,
 					status: status,
 					keyword: keyword,
 					expertiseType: expertiseType,

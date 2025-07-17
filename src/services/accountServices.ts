@@ -77,7 +77,7 @@ const accountServices = {
 		});
 	},
 	exportExcel: (
-		data: {pageSize: number | null; page: number | null; keyword: string; status: number | null; expertiseType: number | null},
+		data: {pageSize?: number | null; page?: number | null; keyword: string; status: number | null; expertiseType: number | null},
 		tokenAxios?: any
 	) => {
 		return axiosClient.post(`Account/export-list-user-account`, data, {
