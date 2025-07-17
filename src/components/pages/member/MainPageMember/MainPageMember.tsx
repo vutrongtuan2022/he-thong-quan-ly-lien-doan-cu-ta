@@ -28,6 +28,7 @@ import FormUpdateExpertise from '../FormUpdateExpertise';
 import PositionContainer from '~/components/common/PositionContainer';
 import MainDetailMember from '../MainDetailMember';
 import ImportExcel from '~/components/utils/ImportExcel';
+import icons from '~/constants/images/icons';
 
 function MainPageMember({}: PropsMainPageMember) {
 	const router = useRouter();
@@ -155,9 +156,29 @@ function MainPageMember({}: PropsMainPageMember) {
 		return fucnImportExcel.mutate();
 	};
 
+	const funcExportExcel = useMutation({
+		mutationFn: () =>
+			httpRequest({
+				showMessageFailed: false,
+				showMessageSuccess: false,
+				http: accountServices.exportExcel({
+					page: page,
+					pageSize: pageSize,
+					status: status,
+					keyword: keyword,
+					expertiseType: expertiseType,
+				}),
+			}),
+		onSuccess(data) {
+			if (data) {
+				window.open(`${process.env.NEXT_PUBLIC_PATH_EXPORT}/${data}`, '_blank');
+			}
+		},
+	});
+
 	return (
 		<Fragment>
-			<Loading loading={funcLocked.isLoading || funcOpen.isLoading || fucnImportExcel.isLoading} />
+			<Loading loading={funcLocked.isLoading || funcOpen.isLoading || fucnImportExcel.isLoading || funcExportExcel.isLoading} />
 			<SearchBlock
 				keyword={keyword}
 				setKeyword={setKeyword}
@@ -193,6 +214,16 @@ function MainPageMember({}: PropsMainPageMember) {
 						<div className={styles.flex}>
 							<Button p_8_24 black rounded_8 bold onClick={resetFilter}>
 								Đặt lại
+							</Button>
+							<Button
+								p_8_24
+								orange
+								rounded_8
+								bold
+								icon={<Image alt='icon download' src={icons.iconBtnDownload} width={16} height={16} />}
+								onClick={funcExportExcel.mutate}
+							>
+								Xuất excel
 							</Button>
 							<Button
 								p_8_24
